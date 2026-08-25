@@ -976,7 +976,7 @@ html&gt;body{padding:0}&lt;/style&gt;
             &lt;span&gt;Select dates for&lt;/span&gt;
             &lt;div class=&quot;rb-targets&quot; id=&quot;rb-targets&quot; aria-label=&quot;Choose which children to schedule&quot;&gt;&lt;/div&gt;
           &lt;/div&gt;
-          &lt;p class=&quot;rb-helper&quot;&gt;Use &lt;strong&gt;Everyone&lt;/strong&gt; for shared dates, then choose one child to add or remove individual days.&lt;/p&gt;
+          &lt;p class=&quot;rb-helper&quot;&gt;Use &lt;strong&gt;Everyone&lt;/strong&gt; for shared dates, then choose one child to add or remove individual days. Each child keeps the same color throughout.&lt;/p&gt;
 
           &lt;div class=&quot;rb-weekdays&quot; aria-hidden=&quot;true&quot;&gt;
             &lt;span&gt;MON&lt;/span&gt;&lt;span&gt;TUE&lt;/span&gt;&lt;span&gt;WED&lt;/span&gt;&lt;span&gt;THU&lt;/span&gt;&lt;span&gt;FRI&lt;/span&gt;
@@ -1072,7 +1072,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #rb-calendar-booking .rb-children-heading span { display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--rb-soft); color: var(--rb-muted); font-size: 10px; font-weight: 800; }
     #rb-calendar-booking .rb-child-list { display: grid; gap: 8px; margin-top: 9px; }
     #rb-calendar-booking .rb-child-row { display: grid; grid-template-columns: 25px minmax(0, 1fr) 27px; gap: 7px; align-items: center; }
-    #rb-calendar-booking .rb-child-number { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--rb-pale-red); color: var(--rb-red-deep); font-size: 10px; font-weight: 900; }
+    #rb-calendar-booking .rb-child-number { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--child-color, var(--rb-red)); color: #fff; font-size: 10px; font-weight: 900; }
     #rb-calendar-booking .rb-child-row input { width: 100%; min-width: 0; padding: 9px 10px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); outline-color: var(--rb-red); }
     #rb-calendar-booking .rb-remove-child { display: grid; place-items: center; width: 27px; height: 27px; border: 0; border-radius: 50%; background: transparent; color: var(--rb-muted); font-size: 18px; cursor: pointer; }
     #rb-calendar-booking .rb-remove-child:disabled { opacity: 0; cursor: default; }
@@ -1088,20 +1088,24 @@ html&gt;body{padding:0}&lt;/style&gt;
     #rb-calendar-booking .rb-assign-bar &gt; span { flex: none; color: var(--rb-muted); font-size: 10px; font-weight: 800; }
     #rb-calendar-booking .rb-targets { display: flex; flex-wrap: wrap; gap: 5px; }
     #rb-calendar-booking .rb-target { padding: 6px 9px; border: 1px solid var(--rb-line); border-radius: 999px; background: var(--rb-paper); color: var(--rb-ink); font-size: 10px; font-weight: 800; cursor: pointer; }
-    #rb-calendar-booking .rb-target[aria-pressed=&quot;true&quot;] { border-color: var(--rb-red); background: var(--rb-red); color: #fff; }
+    #rb-calendar-booking .rb-target-all[aria-pressed=&quot;true&quot;] { border-color: var(--rb-ink); background: var(--rb-ink); color: #fff; }
+    #rb-calendar-booking .rb-target-child { border-color: var(--child-color); color: var(--child-color); }
+    #rb-calendar-booking .rb-target-child[aria-pressed=&quot;true&quot;] { border-color: var(--child-color); background: var(--child-color); color: #fff; }
     #rb-calendar-booking .rb-helper { margin: 7px 0 11px; color: var(--rb-muted); font-size: 10px; line-height: 1.35; }
     #rb-calendar-booking .rb-weekdays, #rb-calendar-booking .rb-calendar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
     #rb-calendar-booking .rb-weekdays { margin-bottom: 5px; }
     #rb-calendar-booking .rb-weekdays span { text-align: center; color: var(--rb-muted); font-size: 8px; font-weight: 900; letter-spacing: .1em; }
     #rb-calendar-booking .rb-day { position: relative; display: grid; align-content: start; gap: 5px; min-width: 0; min-height: 78px; padding: 7px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); text-align: left; cursor: pointer; }
     #rb-calendar-booking .rb-day:hover:not(:disabled) { border-color: var(--rb-red); }
-    #rb-calendar-booking .rb-day.has-family { border-color: var(--rb-red); box-shadow: inset 0 0 0 1px var(--rb-red); }
-    #rb-calendar-booking .rb-day.is-active-child { background: var(--rb-pale-red); }
+    #rb-calendar-booking .rb-day.has-family { border-color: #999993; box-shadow: inset 0 0 0 1px #999993; }
+    #rb-calendar-booking .rb-day.is-active-child { border-color: var(--active-child-color, var(--rb-red)); background: #fafaf8; box-shadow: inset 0 0 0 1px var(--active-child-color, var(--rb-red)); }
     #rb-calendar-booking .rb-day:disabled { cursor: not-allowed; opacity: .43; background: var(--rb-soft); }
     #rb-calendar-booking .rb-day.rb-blank { visibility: hidden; }
     #rb-calendar-booking .rb-day-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 3px; }
     #rb-calendar-booking .rb-day-number { font-size: 12px; font-weight: 900; }
-    #rb-calendar-booking .rb-family-count { padding: 2px 4px; border-radius: 999px; background: var(--rb-red); color: #fff; font-size: 7px; font-weight: 900; white-space: nowrap; }
+    #rb-calendar-booking .rb-family-badges { display: flex; max-width: 49px; flex-wrap: wrap; justify-content: flex-end; gap: 2px; }
+    #rb-calendar-booking .rb-family-badges[hidden] { display: none; }
+    #rb-calendar-booking .rb-child-badge { display: grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: var(--child-color, var(--rb-red)); color: #fff; font-size: 7px; font-style: normal; font-weight: 900; line-height: 1; }
     #rb-calendar-booking .rb-spot-label { overflow: hidden; color: var(--rb-muted); font-size: 8px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
     #rb-calendar-booking .rb-day.is-low .rb-spot-label { color: var(--rb-red-deep); }
     #rb-calendar-booking .rb-mini-map { display: grid; grid-template-columns: repeat(7, 6px); gap: 3px 2px; min-height: 15px; }
@@ -1163,7 +1167,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       #rb-calendar-booking .rb-day { min-height: 70px; padding: 5px 4px; }
       #rb-calendar-booking .rb-mini-map { grid-template-columns: repeat(7, 4px); gap: 3px 1px; }
       #rb-calendar-booking .rb-mini-map .rb-dot { width: 4px; height: 4px; }
-      #rb-calendar-booking .rb-family-count { font-size: 6px; padding: 2px 3px; }
+      #rb-calendar-booking .rb-family-badges { max-width: 43px; gap: 1px; }
+      #rb-calendar-booking .rb-child-badge { width: 13px; height: 13px; font-size: 6px; }
       #rb-calendar-booking .rb-spot-label { font-size: 7px; }
       #rb-calendar-booking .rb-booking-summary { display: grid; grid-template-columns: 1fr; }
       #rb-calendar-booking .rb-selected-days { grid-column: auto; grid-row: auto; }
@@ -1191,6 +1196,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       const reviewTotal = root.querySelector(&#x27;#rb-review-total&#x27;);
       const parentName = root.querySelector(&#x27;#rb-parent-name&#x27;);
       const parentEmail = root.querySelector(&#x27;#rb-parent-email&#x27;);
+
+      const childColors = [&#x27;#e61717&#x27;, &#x27;#2563eb&#x27;, &#x27;#9a5d00&#x27;, &#x27;#247a45&#x27;, &#x27;#7c3aed&#x27;, &#x27;#087f8c&#x27;];
 
       let children = [
         { id: &#x27;child-1&#x27;, name: &#x27;Ava Miller&#x27; },
@@ -1241,6 +1248,15 @@ html&gt;body{padding:0}&lt;/style&gt;
         return children.find(child =&gt; child.id === id)?.name.trim() || &#x27;Unnamed child&#x27;;
       }
 
+      function childColor(id) {
+        const number = Number(id.split(&#x27;-&#x27;)[1]) || 1;
+        return childColors[(number - 1) % childColors.length];
+      }
+
+      function childInitial(id) {
+        return childName(id).charAt(0).toUpperCase() || &#x27;?&#x27;;
+      }
+
       function shortName(child) {
         return child.name.trim().split(/\s+/)[0] || `Child ${children.indexOf(child) + 1}`;
       }
@@ -1270,6 +1286,8 @@ html&gt;body{padding:0}&lt;/style&gt;
           const number = document.createElement(&#x27;span&#x27;);
           number.className = &#x27;rb-child-number&#x27;;
           number.textContent = String(index + 1);
+          number.style.setProperty(&#x27;--child-color&#x27;, childColor(child.id));
+          number.setAttribute(&#x27;aria-label&#x27;, `${shortName(child)} color marker`);
 
           const input = document.createElement(&#x27;input&#x27;);
           input.type = &#x27;text&#x27;;
@@ -1328,7 +1346,8 @@ html&gt;body{padding:0}&lt;/style&gt;
         options.forEach(option =&gt; {
           const button = document.createElement(&#x27;button&#x27;);
           button.type = &#x27;button&#x27;;
-          button.className = &#x27;rb-target&#x27;;
+          button.className = `rb-target ${option.id === &#x27;all&#x27; ? &#x27;rb-target-all&#x27; : &#x27;rb-target-child&#x27;}`;
+          if (option.id !== &#x27;all&#x27;) button.style.setProperty(&#x27;--child-color&#x27;, childColor(option.id));
           button.textContent = option.label;
           button.setAttribute(&#x27;aria-pressed&#x27;, String(activeTarget === option.id));
           button.addEventListener(&#x27;click&#x27;, () =&gt; {
@@ -1394,7 +1413,7 @@ html&gt;body{padding:0}&lt;/style&gt;
           button.className = &#x27;rb-day&#x27;;
           button.dataset.date = day.date;
           button.innerHTML = `
-            &lt;span class=&quot;rb-day-top&quot;&gt;&lt;strong class=&quot;rb-day-number&quot;&gt;${day.day}&lt;/strong&gt;&lt;span class=&quot;rb-family-count&quot; hidden&gt;&lt;/span&gt;&lt;/span&gt;
+            &lt;span class=&quot;rb-day-top&quot;&gt;&lt;strong class=&quot;rb-day-number&quot;&gt;${day.day}&lt;/strong&gt;&lt;span class=&quot;rb-family-badges&quot; hidden&gt;&lt;/span&gt;&lt;/span&gt;
             &lt;span class=&quot;rb-spot-label&quot;&gt;${availabilityText(day)}&lt;/span&gt;
             &lt;span class=&quot;rb-mini-map&quot;&gt;&lt;/span&gt;
           `;
@@ -1427,11 +1446,21 @@ html&gt;body{padding:0}&lt;/style&gt;
           button.classList.toggle(&#x27;is-active-child&#x27;, allTargetAssigned);
           button.classList.toggle(&#x27;is-low&#x27;, !day.unavailable &amp;&amp; day.spots &gt; 0 &amp;&amp; day.spots &lt;= 3);
           button.disabled = Boolean(day.unavailable) || day.spots === 0 || (!allTargetAssigned &amp;&amp; !canAdd);
+          button.style.setProperty(&#x27;--active-child-color&#x27;, activeTarget === &#x27;all&#x27; ? &#x27;#111111&#x27; : childColor(activeTarget));
 
-          const badge = button.querySelector(&#x27;.rb-family-count&#x27;);
-          badge.hidden = assigned.size === 0;
-          badge.textContent = `${assigned.size} ${assigned.size === 1 ? &#x27;kid&#x27; : &#x27;kids&#x27;}`;
           const names = [...assigned].map(childName);
+          const badges = button.querySelector(&#x27;.rb-family-badges&#x27;);
+          badges.hidden = assigned.size === 0;
+          badges.setAttribute(&#x27;aria-label&#x27;, names.length ? `Scheduled: ${names.join(&#x27; and &#x27;)}` : &#x27;&#x27;);
+          badges.replaceChildren(...[...assigned].map(id =&gt; {
+            const marker = document.createElement(&#x27;i&#x27;);
+            marker.className = &#x27;rb-child-badge&#x27;;
+            marker.style.setProperty(&#x27;--child-color&#x27;, childColor(id));
+            marker.title = childName(id);
+            marker.textContent = childInitial(id);
+            marker.setAttribute(&#x27;aria-hidden&#x27;, &#x27;true&#x27;);
+            return marker;
+          }));
           button.setAttribute(&#x27;aria-label&#x27;, `${formatDate(day.date)}, ${availabilityText(day)}${names.length ? `, selected for ${names.join(&#x27; and &#x27;)}` : &#x27;&#x27;}`);
           button.setAttribute(&#x27;aria-pressed&#x27;, String(allTargetAssigned));
         });

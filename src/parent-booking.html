@@ -69,7 +69,7 @@
             <span>Select dates for</span>
             <div class="rb-targets" id="rb-targets" aria-label="Choose which children to schedule"></div>
           </div>
-          <p class="rb-helper">Use <strong>Everyone</strong> for shared dates, then choose one child to add or remove individual days.</p>
+          <p class="rb-helper">Use <strong>Everyone</strong> for shared dates, then choose one child to add or remove individual days. Each child keeps the same color throughout.</p>
 
           <div class="rb-weekdays" aria-hidden="true">
             <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span>
@@ -165,7 +165,7 @@
     #rb-calendar-booking .rb-children-heading span { display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--rb-soft); color: var(--rb-muted); font-size: 10px; font-weight: 800; }
     #rb-calendar-booking .rb-child-list { display: grid; gap: 8px; margin-top: 9px; }
     #rb-calendar-booking .rb-child-row { display: grid; grid-template-columns: 25px minmax(0, 1fr) 27px; gap: 7px; align-items: center; }
-    #rb-calendar-booking .rb-child-number { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--rb-pale-red); color: var(--rb-red-deep); font-size: 10px; font-weight: 900; }
+    #rb-calendar-booking .rb-child-number { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--child-color, var(--rb-red)); color: #fff; font-size: 10px; font-weight: 900; }
     #rb-calendar-booking .rb-child-row input { width: 100%; min-width: 0; padding: 9px 10px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); outline-color: var(--rb-red); }
     #rb-calendar-booking .rb-remove-child { display: grid; place-items: center; width: 27px; height: 27px; border: 0; border-radius: 50%; background: transparent; color: var(--rb-muted); font-size: 18px; cursor: pointer; }
     #rb-calendar-booking .rb-remove-child:disabled { opacity: 0; cursor: default; }
@@ -181,20 +181,24 @@
     #rb-calendar-booking .rb-assign-bar > span { flex: none; color: var(--rb-muted); font-size: 10px; font-weight: 800; }
     #rb-calendar-booking .rb-targets { display: flex; flex-wrap: wrap; gap: 5px; }
     #rb-calendar-booking .rb-target { padding: 6px 9px; border: 1px solid var(--rb-line); border-radius: 999px; background: var(--rb-paper); color: var(--rb-ink); font-size: 10px; font-weight: 800; cursor: pointer; }
-    #rb-calendar-booking .rb-target[aria-pressed="true"] { border-color: var(--rb-red); background: var(--rb-red); color: #fff; }
+    #rb-calendar-booking .rb-target-all[aria-pressed="true"] { border-color: var(--rb-ink); background: var(--rb-ink); color: #fff; }
+    #rb-calendar-booking .rb-target-child { border-color: var(--child-color); color: var(--child-color); }
+    #rb-calendar-booking .rb-target-child[aria-pressed="true"] { border-color: var(--child-color); background: var(--child-color); color: #fff; }
     #rb-calendar-booking .rb-helper { margin: 7px 0 11px; color: var(--rb-muted); font-size: 10px; line-height: 1.35; }
     #rb-calendar-booking .rb-weekdays, #rb-calendar-booking .rb-calendar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
     #rb-calendar-booking .rb-weekdays { margin-bottom: 5px; }
     #rb-calendar-booking .rb-weekdays span { text-align: center; color: var(--rb-muted); font-size: 8px; font-weight: 900; letter-spacing: .1em; }
     #rb-calendar-booking .rb-day { position: relative; display: grid; align-content: start; gap: 5px; min-width: 0; min-height: 78px; padding: 7px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); text-align: left; cursor: pointer; }
     #rb-calendar-booking .rb-day:hover:not(:disabled) { border-color: var(--rb-red); }
-    #rb-calendar-booking .rb-day.has-family { border-color: var(--rb-red); box-shadow: inset 0 0 0 1px var(--rb-red); }
-    #rb-calendar-booking .rb-day.is-active-child { background: var(--rb-pale-red); }
+    #rb-calendar-booking .rb-day.has-family { border-color: #999993; box-shadow: inset 0 0 0 1px #999993; }
+    #rb-calendar-booking .rb-day.is-active-child { border-color: var(--active-child-color, var(--rb-red)); background: #fafaf8; box-shadow: inset 0 0 0 1px var(--active-child-color, var(--rb-red)); }
     #rb-calendar-booking .rb-day:disabled { cursor: not-allowed; opacity: .43; background: var(--rb-soft); }
     #rb-calendar-booking .rb-day.rb-blank { visibility: hidden; }
     #rb-calendar-booking .rb-day-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 3px; }
     #rb-calendar-booking .rb-day-number { font-size: 12px; font-weight: 900; }
-    #rb-calendar-booking .rb-family-count { padding: 2px 4px; border-radius: 999px; background: var(--rb-red); color: #fff; font-size: 7px; font-weight: 900; white-space: nowrap; }
+    #rb-calendar-booking .rb-family-badges { display: flex; max-width: 49px; flex-wrap: wrap; justify-content: flex-end; gap: 2px; }
+    #rb-calendar-booking .rb-family-badges[hidden] { display: none; }
+    #rb-calendar-booking .rb-child-badge { display: grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: var(--child-color, var(--rb-red)); color: #fff; font-size: 7px; font-style: normal; font-weight: 900; line-height: 1; }
     #rb-calendar-booking .rb-spot-label { overflow: hidden; color: var(--rb-muted); font-size: 8px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
     #rb-calendar-booking .rb-day.is-low .rb-spot-label { color: var(--rb-red-deep); }
     #rb-calendar-booking .rb-mini-map { display: grid; grid-template-columns: repeat(7, 6px); gap: 3px 2px; min-height: 15px; }
@@ -256,7 +260,8 @@
       #rb-calendar-booking .rb-day { min-height: 70px; padding: 5px 4px; }
       #rb-calendar-booking .rb-mini-map { grid-template-columns: repeat(7, 4px); gap: 3px 1px; }
       #rb-calendar-booking .rb-mini-map .rb-dot { width: 4px; height: 4px; }
-      #rb-calendar-booking .rb-family-count { font-size: 6px; padding: 2px 3px; }
+      #rb-calendar-booking .rb-family-badges { max-width: 43px; gap: 1px; }
+      #rb-calendar-booking .rb-child-badge { width: 13px; height: 13px; font-size: 6px; }
       #rb-calendar-booking .rb-spot-label { font-size: 7px; }
       #rb-calendar-booking .rb-booking-summary { display: grid; grid-template-columns: 1fr; }
       #rb-calendar-booking .rb-selected-days { grid-column: auto; grid-row: auto; }
@@ -284,6 +289,8 @@
       const reviewTotal = root.querySelector('#rb-review-total');
       const parentName = root.querySelector('#rb-parent-name');
       const parentEmail = root.querySelector('#rb-parent-email');
+
+      const childColors = ['#e61717', '#2563eb', '#9a5d00', '#247a45', '#7c3aed', '#087f8c'];
 
       let children = [
         { id: 'child-1', name: 'Ava Miller' },
@@ -334,6 +341,15 @@
         return children.find(child => child.id === id)?.name.trim() || 'Unnamed child';
       }
 
+      function childColor(id) {
+        const number = Number(id.split('-')[1]) || 1;
+        return childColors[(number - 1) % childColors.length];
+      }
+
+      function childInitial(id) {
+        return childName(id).charAt(0).toUpperCase() || '?';
+      }
+
       function shortName(child) {
         return child.name.trim().split(/\s+/)[0] || `Child ${children.indexOf(child) + 1}`;
       }
@@ -363,6 +379,8 @@
           const number = document.createElement('span');
           number.className = 'rb-child-number';
           number.textContent = String(index + 1);
+          number.style.setProperty('--child-color', childColor(child.id));
+          number.setAttribute('aria-label', `${shortName(child)} color marker`);
 
           const input = document.createElement('input');
           input.type = 'text';
@@ -421,7 +439,8 @@
         options.forEach(option => {
           const button = document.createElement('button');
           button.type = 'button';
-          button.className = 'rb-target';
+          button.className = `rb-target ${option.id === 'all' ? 'rb-target-all' : 'rb-target-child'}`;
+          if (option.id !== 'all') button.style.setProperty('--child-color', childColor(option.id));
           button.textContent = option.label;
           button.setAttribute('aria-pressed', String(activeTarget === option.id));
           button.addEventListener('click', () => {
@@ -487,7 +506,7 @@
           button.className = 'rb-day';
           button.dataset.date = day.date;
           button.innerHTML = `
-            <span class="rb-day-top"><strong class="rb-day-number">${day.day}</strong><span class="rb-family-count" hidden></span></span>
+            <span class="rb-day-top"><strong class="rb-day-number">${day.day}</strong><span class="rb-family-badges" hidden></span></span>
             <span class="rb-spot-label">${availabilityText(day)}</span>
             <span class="rb-mini-map"></span>
           `;
@@ -520,11 +539,21 @@
           button.classList.toggle('is-active-child', allTargetAssigned);
           button.classList.toggle('is-low', !day.unavailable && day.spots > 0 && day.spots <= 3);
           button.disabled = Boolean(day.unavailable) || day.spots === 0 || (!allTargetAssigned && !canAdd);
+          button.style.setProperty('--active-child-color', activeTarget === 'all' ? '#111111' : childColor(activeTarget));
 
-          const badge = button.querySelector('.rb-family-count');
-          badge.hidden = assigned.size === 0;
-          badge.textContent = `${assigned.size} ${assigned.size === 1 ? 'kid' : 'kids'}`;
           const names = [...assigned].map(childName);
+          const badges = button.querySelector('.rb-family-badges');
+          badges.hidden = assigned.size === 0;
+          badges.setAttribute('aria-label', names.length ? `Scheduled: ${names.join(' and ')}` : '');
+          badges.replaceChildren(...[...assigned].map(id => {
+            const marker = document.createElement('i');
+            marker.className = 'rb-child-badge';
+            marker.style.setProperty('--child-color', childColor(id));
+            marker.title = childName(id);
+            marker.textContent = childInitial(id);
+            marker.setAttribute('aria-hidden', 'true');
+            return marker;
+          }));
           button.setAttribute('aria-label', `${formatDate(day.date)}, ${availabilityText(day)}${names.length ? `, selected for ${names.join(' and ')}` : ''}`);
           button.setAttribute('aria-pressed', String(allTargetAssigned));
         });
