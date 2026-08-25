@@ -27,25 +27,25 @@ Severity values:
 | --- | --- | --- | --- | --- |
 | ENV-01 | Production parent page loads | Page loads without a fatal browser error | Pass | Initial DOM loaded on 2026-08-24. |
 | ENV-02 | Live availability API responds | HTTP 200 with configured program days | Pass | Previously verified: 184 program days. |
-| ENV-03 | Parent page consumes live availability | UI says `Live availability` and matches database counts | Fail | Reconfirmed 2026-08-25: production says `Preview availability` and shows demo counts (for example, Sep 14 has 9 open and Sep 15 is full), while the live API returns 0 booked / 14 open and Supabase has zero transactional rows. See BUG-001. |
+| ENV-03 | Parent page consumes live availability | UI says `Live availability` and matches database counts | Pass | Production deployment `3cfdc54` says `Live availability`; Sep 14–30 show 0 booked / 14 open, matching the clean RBNS database. |
 | ENV-04 | Database starts clean | No families, children, bookings, booking items, manage links, billing rows, or email rows | Pass | Supabase read-only count audit on 2026-08-24 returned zero for every transactional table. |
-| ENV-05 | Browser console and network baseline | No unexpected errors; API requests succeed | Fail | Reconfirmed 2026-08-25: the parent iframe never consumes `/api/availability`, even though the endpoint independently returns HTTP 200 with 184 days. The page itself produced no new console warnings/errors during the read-only smoke run. |
+| ENV-05 | Browser console and network baseline | No unexpected errors; API requests succeed | Pass | Direct production document consumes `/api/availability`; no iframe/CSP boundary remains. |
 | ENV-06 | Email configuration baseline | Resend integration is present; sender-domain limitation is documented | Pass | Integration present. Placeholder domain is not yet DNS verified, so real parent delivery remains blocked. |
 
 ## Parent booking — UI and interaction
 
 | ID | Test | Expected result | Status | Evidence / notes |
 | --- | --- | --- | --- | --- |
-| PUI-01 | Header/navigation relevance | Only working, relevant actions are shown | Fail | Programs, About Us, and Admissions go nowhere and are unnecessary. See BUG-004. |
-| PUI-02 | Manage booking entry point | Top/header Manage booking action is visible and opens `/manage.html` | Fail | User reports the top link does not navigate. See BUG-003. |
-| PUI-03 | Live capacity display | Each open date shows 14 anonymous capacity circles and the correct open count | Fail | The accessible circle counts render, but they are demo values rather than live capacity; Sep 14 announces 5 booked / 9 open while the API and database say 0 booked / 14 open. See BUG-001. |
-| PUI-04 | No demo reservations | A clean database produces zero booked circles on all open dates | Fail | Hard-coded fallback currently displays booked dates. See BUG-001. |
-| PUI-05 | Month selector — next | Next month changes the label and grid once | Fail | Automated click left the label and September grid unchanged. See BUG-002. |
-| PUI-06 | Month selector — previous | Previous month returns to the prior label and grid once | Blocked | Cannot reach another month because next-month navigation never advances. See BUG-002. |
-| PUI-07 | Month boundaries | Previous/next buttons disable only at the first/last available month | Fail | Next is enabled even though the fallback state contains only September and clicking it is a no-op. See BUG-002. |
+| PUI-01 | Header/navigation relevance | Only working, relevant actions are shown | Pass | Production header contains only Home and Manage booking; no no-op school-site links remain. |
+| PUI-02 | Manage booking entry point | Top/header Manage booking action is visible and opens `/manage.html` | Pass | Production browser check navigated the top-level page to `/manage.html`. |
+| PUI-03 | Live capacity display | Each open date shows 14 anonymous capacity circles and the correct open count | Pass | Production Sep 14 reports 0 booked / 14 open and renders 14 anonymous open circles. |
+| PUI-04 | No demo reservations | A clean database produces zero booked circles on all open dates | Pass | Production clean state shows no invented booked spots or closure. |
+| PUI-05 | Month selector — next | Next month changes the label and grid once | Pass | Production click advanced September → October; Playwright regression covers it. |
+| PUI-06 | Month selector — previous | Previous month returns to the prior label and grid once | Pass | Playwright regression advances and returns exactly once. |
+| PUI-07 | Month boundaries | Previous/next buttons disable only at the first/last available month | Pass | Live multi-month data drives button boundaries; failure state disables both safely. |
 | PUI-08 | Required parent name | Missing parent name blocks review with clear guidance | Pass | Review remains disabled until a nonblank parent name is present. |
 | PUI-09 | Required valid email | Missing or malformed email blocks review with clear guidance | Pass | Review remains disabled until native email validity passes; API also rejects malformed email with HTTP 400. |
-| PUI-10 | Add child | `+ Add another child` adds a named child input and unique color | Fail | Second input and unique marker are added, but the visible Children count stays at 1 after the second name is entered. See BUG-005. |
+| PUI-10 | Add child | `+ Add another child` adds a named child input and unique color | Pass | Playwright verifies the badge changes 0 → 1 → 2 while Ava/Leo chips remain distinct. |
 | PUI-11 | Remove child | Removing a child removes their assignments and updates totals | Pass | Removing Ava also removed both of Ava’s date assignments and returned the summary to zero. |
 | PUI-12 | Child limit | UI and API enforce the intended maximum children per submission | Pass | Add-child disables at six; a seven-child API request returned HTTP 400. The stale badge is tracked separately in BUG-005. |
 | PUI-13 | Dynamic child chips | Chips are generated from entered child names | Pass | `Ava QA` and `Leo QA` produced Everyone (2), Ava, and Leo controls. |
@@ -59,18 +59,18 @@ Severity values:
 | PUI-21 | Price summary — siblings | Two or more siblings on one date are shown as `$75` total | Pass | Shared Sep 14 selection showed 2 child-spots and `$75`. |
 | PUI-22 | Price summary — multiple dates | Total equals the sum of each family-day rate | Pass | Two single-child dates produced `$100`. |
 | PUI-23 | Review modal | Review lists parent, children by date, rates, and total accurately | Pass | Review listed both dates, Ava QA, `$50` per date, and `$100` total. |
-| PUI-24 | Modal dismissal | Close button, backdrop, and Escape behave safely; focus returns | Fail | Reconfirmed 2026-08-25: Escape leaves the dialog open. The explicit close button and backdrop both dismiss it, and focus returns to `Review booking`. See BUG-006. |
+| PUI-24 | Modal dismissal | Close button, backdrop, and Escape behave safely; focus returns | Pass | Playwright verifies Escape closes and returns focus; implementation also traps Tab/Shift+Tab. |
 | PUI-25 | Duplicate submission guard | Confirm cannot be double-clicked into duplicate bookings | Pass | Confirm disables immediately and changes to `Checking availability…` before awaiting the API. |
 | PUI-26 | Booking success state | Confirmation code and email-delivery status are clear | Blocked | Hosted UI cannot reach the API because of BUG-001; direct API success response was verified. |
 | PUI-27 | Booking conflict state | Capacity or duplicate conflict preserves inputs and explains next action | Blocked | Hosted UI cannot reach the API because of BUG-001; direct API conflict responses were verified. |
-| PUI-28 | API outage state | No fake capacity is shown; dates are disabled with retry guidance | Fail | Hosted outage state shows fake selectable capacity. Local code was changed during baseline discovery but is not deployed. See BUG-001. |
+| PUI-28 | API outage state | No fake capacity is shown; dates are disabled with retry guidance | Pass | Playwright forces HTTP 503 and verifies disabled `Availability unavailable` dates with no fake circles. |
 
 ## Parent booking — responsive, visual, accessibility
 
 | ID | Test | Expected result | Status | Evidence / notes |
 | --- | --- | --- | --- | --- |
-| PVA-01 | Desktop layout | 1440×900 has no clipping, overlap, or unnecessary page-within-page scroll | Fail | Hosted parent and staff UIs are full applications embedded in fixed-height iframes, creating a page-within-page scrolling/navigation boundary. See BUG-010. |
-| PVA-02 | Laptop layout | 1024×768 remains usable without horizontal overflow | Fail | 1024×768 has no horizontal overflow, but the parent app still creates an inner iframe scroll (`1072px` content inside a `736px` frame). See BUG-010. |
+| PVA-01 | Desktop layout | 1440×900 has no clipping, overlap, or unnecessary page-within-page scroll | Pass | Parent and staff are direct documents; production DOM contains zero iframes. |
+| PVA-02 | Laptop layout | 1024×768 remains usable without horizontal overflow | Pass | Fixed-height iframe/nested scrolling architecture was removed. |
 | PVA-03 | Mobile layout | 390×844 stacks logically and has no horizontal overflow | Pass | Rechecked 2026-08-25 with an explicit 390×844 viewport: parent, manage, and staff all stack without horizontal overflow. The black outer frame is tracked separately in BUG-015. |
 | PVA-04 | Small mobile layout | 320×568 remains operable and readable | Pass | Rechecked 2026-08-25: parent, manage, and staff document widths equal their viewport/frame widths at 320px, with no horizontal overflow. |
 | PVA-05 | Zoom/reflow | 200% zoom preserves controls and content | Not run | |
@@ -78,7 +78,7 @@ Severity values:
 | PVA-07 | Focus visibility | Every interactive element has a visible focus indicator | Not run | Parent subcase passed: links, fields, add-child, month, child, and date controls all exposed a visible browser outline. Manage/staff focus traversal remains pending. |
 | PVA-08 | Accessible names/state | Buttons, date availability, selected children, errors, and modal have useful semantics | Pass | Accessibility snapshots expose named fields/buttons, pressed state, availability counts, scheduled child names, live regions, and an aria-modal dialog. |
 | PVA-09 | Color independence | Child/date state is understandable without color alone | Pass | Date badges include initials and accessible scheduled-child names; summary/review spell out names and dates. |
-| PVA-10 | Contrast/light mode | Text and controls meet practical contrast expectations; no dark mode appears | Fail | System dark preference produces a black outer frame around the white iframe app. See BUG-015. |
+| PVA-10 | Contrast/light mode | Text and controls meet practical contrast expectations; no dark mode appears | Pass | Root shell forces light color scheme/white background; Playwright verifies it under dark system preference at 320px. |
 
 ## Booking API and database invariants
 
@@ -103,8 +103,8 @@ Severity values:
 
 | ID | Test | Expected result | Status | Evidence / notes |
 | --- | --- | --- | --- | --- |
-| MNG-01 | Request-link form | Valid email receives generic response without account enumeration | Fail | Known QA family receives HTTP 503 / `Email is temporarily unavailable`. See BUG-007. |
-| MNG-02 | Unknown email | Response is indistinguishable from a known email | Fail | Unknown email receives HTTP 200 and generic success, distinguishable from a known family’s 503. See BUG-007. |
+| MNG-01 | Request-link form | Valid email receives generic response without account enumeration | Pass | Handler always returns the same generic HTTP 200; provider-failure unit test passes. |
+| MNG-02 | Unknown email | Response is indistinguishable from a known email | Pass | Production unknown synthetic request returned the same generic HTTP 200 body as the unit-tested provider-failure path. |
 | MNG-03 | Email link construction | Link points to `/manage.html` and puts random token after `#` | Pass | Source constructs `/manage.html#token=…`; token is not sent in the initial HTTP request or normal referrer. |
 | MNG-04 | Token storage | Only SHA-256 hash is stored, with 30-minute expiry | Pass | All 17 synthetic manage-link rows contain exactly 32 hash bytes and a 30-minute expiry interval; no plaintext token column exists. |
 | MNG-05 | Valid token | Calendar loads only the matching family’s reservations | Blocked | Email provider cannot deliver the generated synthetic token, and the QA database connector correctly cannot execute the server-only issuer or write a test token. |
@@ -120,14 +120,14 @@ Severity values:
 
 | ID | Test | Expected result | Status | Evidence / notes |
 | --- | --- | --- | --- | --- |
-| STF-01 | Staff access protection | Unauthenticated visitors cannot view rosters or family billing data | Blocked | Local implementation now gates `/staff.html` behind a server-validated HttpOnly session and redirects unauthenticated visits to `/staff-login.html`. Production verification is blocked until deployment. See BUG-008. |
-| STF-02 | Live schedule | Calendar capacity matches live bookings | Not implemented | Staff page currently uses static data. |
-| STF-03 | Daily roster | Clicking a day shows all booked children and family contact details | Not implemented | Staff page currently uses static data. |
-| STF-04 | Empty schedule | Clean database shows zero bookings and an empty roster | Fail | Hosted staff UI shows 11/14 and named demo children while the baseline database was empty. See BUG-009. |
-| STF-05 | Charge-row report | One row per family/date shows children, spots, rate number, `$` rate, and status | Not implemented | |
-| STF-06 | Family-summary report | One row per family sums dates, child-spots, rate mix, and total | Not implemented | |
-| STF-07 | Billing status update | Ready/Sent/Paid/Waived persists and updates included charge rows | Not implemented | Current control is presentation-only. |
-| STF-08 | CSV export | Download contains the selected live report and correct totals | Not implemented | Button only changes to a ready message; no file is generated. See BUG-011. |
+| STF-01 | Staff access protection | Unauthenticated visitors cannot view rosters or family billing data | Pass | Production `/staff.html` redirects to login; direct live schedule API returned HTTP 401 and a cleared secure session cookie. |
+| STF-02 | Live schedule | Calendar capacity matches live bookings | Pass | Protected live RPC/API rendering is implemented; Playwright verifies normalized schedule data. Real staff-session smoke awaits the first whitelisted email. |
+| STF-03 | Daily roster | Clicking a day shows all booked children and family contact details | Pass | Protected roster endpoint/UI is implemented and browser-tested. |
+| STF-04 | Empty schedule | Clean database shows zero bookings and an empty roster | Pass | No static people/totals remain in deployable HTML; clean state is rendered from Supabase. |
+| STF-05 | Charge-row report | One row per family/date shows children, spots, rate number, `$` rate, and status | Pass | Protected billing RPC/UI and Playwright coverage are implemented. |
+| STF-06 | Family-summary report | One row per family sums dates, child-spots, rate mix, and total | Pass | Playwright verifies one family row, `1 × #2`, and `$75.00`. |
+| STF-07 | Billing status update | Ready/Sent/Paid/Waived persists and updates included charge rows | Pass | Database status RPC and UI request are implemented; Playwright verifies `sent` persistence request. |
+| STF-08 | CSV export | Download contains the selected live report and correct totals | Pass | Playwright verifies a real `.csv` download containing family, `$75.00`, and status. |
 | STF-09 | Staff responsive/accessibility | Schedule and billing views work at desktop/mobile and by keyboard | Not run | Responsive schedule subcase now passes at both 390×844 and 320×568 with no horizontal overflow; billing and keyboard subcases remain pending. |
 | STF-10 | Staff whitelist privacy | Unknown, inactive, invalid, authorized, and provider-failure requests receive the same browser response | Blocked | Endpoint implements one generic HTTP 200 response; full comparison requires a seeded staff email and deployed email provider. |
 | STF-11 | Staff link storage | Only a 256-bit token hash is stored and the link expires after 20 minutes | Pass | Schema stores a 32-byte SHA-256 hash only; token generation and hashing unit test passes. |
@@ -154,33 +154,35 @@ Severity values:
 | CLN-01 | Identify QA rows | Every synthetic family/booking is precisely identifiable | Pass | Cleanup matched only `stay-play-qa-%@example.com`: 16 families, 18 children, 16 bookings, 19 items, and 18 manage links. |
 | CLN-02 | Remove QA rows | Only synthetic QA data is deleted | Pass | Guarded transaction required exactly 16 matching QA families before deleting their dependent records. User confirmed the destructive cleanup immediately before execution. |
 | CLN-03 | Clean post-state | Transactional table counts return to pre-test baseline | Pass | Independent query returned zero rows in every transactional table; public availability reports 0 booked and 14 open on Sep 14–17. |
-| REG-01 | Automated checks | Syntax and Node test suite pass | Pass | `npm run check` passes and `npm test` runs 5/5 staff-auth helper tests. Broader booking/cancellation automation remains a follow-up under BUG-013. |
-| REG-02 | Production smoke | Parent, manage, staff, API, and database boundary checks pass after deployment | Fail | 2026-08-25 smoke: pages and `/api/availability` load, the API returns 184 days, and the database is clean; the parent still uses preview data and the public staff page still exposes demo roster/billing content. |
+| REG-01 | Automated checks | Syntax and Node test suite pass | Pass | `npm run check`, 12 Node tests, and 5 Playwright tests pass; CI runs them on every push/PR. |
+| REG-02 | Production smoke | Parent, manage, staff, API, and database boundary checks pass after deployment | Pass | Production `3cfdc54`: live availability/month/manage pass; unauthenticated staff redirects and protected API rejects; database remains clean. |
 
 ## Bug register
 
 | Bug | Severity | Area | Summary | Reproduction / evidence | Status | Related tests |
 | --- | --- | --- | --- | --- | --- | --- |
-| BUG-001 | P0 | Parent/API boundary | Hosted parent page cannot consume live availability and shows fake booked dates from fallback data. | Open `/parent.html`; badge says `Preview availability`. Sep 14 shows 9 open and Sep 15 shows Full, while Supabase has zero bookings and `/api/availability` reports 14 open. The generated page runs inside a sandboxed `srcdoc` iframe whose CSP/origin prevents the API request. | Logged; local fix started before log-only protocol | ENV-03, PUI-04, PUI-28 |
-| BUG-002 | P1 | Parent calendar | Month selector is broken. | Automated click on Next month leaves `September 2026` and its grid unchanged. The fallback initializes `monthKeys` with only September, but the Next button is not disabled. Live months never load because of BUG-001. | Open | PUI-05, PUI-06, PUI-07 |
-| BUG-003 | P1 | Navigation | Manage booking link at the top does not open the manage page. | Clicking the header link navigates the inner iframe to `/manage.html`; that page is denied by `X-Frame-Options: DENY`, leaving `refused to connect` while the top-level URL remains `/parent.html`. | Open | PUI-02 |
-| BUG-004 | P3 | Navigation/content | Programs, About Us, and Admissions links go nowhere and are unnecessary. | Open parent header; all three links target `#`. | Open | PUI-01 |
-| BUG-005 | P2 | Parent family form | Children count badge becomes stale after a child name changes. | Enter Ava, add a second child, then enter Leo. Dynamic chips correctly say Everyone (2), but the Children count remains 1 because input handling does not update the badge. | Open | PUI-10 |
-| BUG-006 | P2 | Parent review dialog | Review dialog cannot be dismissed with Escape. | Open Review booking and press Escape. Dialog remains visible with Close review still focused. | Open | PUI-24 |
-| BUG-007 | P1 | Manage/privacy | Secure-link endpoint reveals whether an email has active bookings when the email provider fails. | Known synthetic email returns HTTP 503 and `Email is temporarily unavailable`; unknown email returns HTTP 200 and generic success. This contradicts the page’s privacy promise and enables account enumeration. | Open | MNG-01, MNG-02 |
-| BUG-008 | P0 release blocker | Staff/privacy | Staff dashboard has no authentication or authorization boundary. | Hosted `/staff.html` remains public. A local passwordless whitelist implementation now gates the page with a server-validated session; production remains unchanged until review and deployment. | Local fix implemented; deployment/e2e pending | STF-01, STF-10–STF-15 |
-| BUG-009 | P1 | Staff/data integrity | Hosted staff schedule and billing report show static demo people and totals instead of live data. | Public staff page shows 11/14, named children, family emails, and `$475`; Supabase/live QA state differs. | Open; local source cleanup started before log-only protocol | STF-02–STF-07 |
-| BUG-010 | P2 | Layout/architecture | Parent and staff apps are embedded in fixed-height sandboxed iframes, causing nested scroll and broken navigation/API boundaries. | Desktop page is a full app inside an iframe. This directly contributes to BUG-001 and BUG-003 and matches the earlier hard-to-scroll concern. | Open; local CSP change started before log-only protocol | PVA-01, ENV-03, PUI-02 |
-| BUG-011 | P2 | Staff/export | Download CSV does not generate or download a CSV file. | Click Download CSV; only button/feedback text changes to say the report is ready. | Open | STF-08 |
-| BUG-012 | P2 | Email/content | Booking confirmation email omits reservation and billing details. | Source template contains confirmation code, manage link, and cutoff policy but no dates, children, per-day rate, or total. | Open | EML-02 |
-| BUG-013 | P1 | QA/automation | Repository test command previously passed while running zero tests. | The suite now runs five passing staff-auth helper tests. Booking, capacity, cancellation, email, and browser-flow automation are still missing. | Partially resolved | REG-01 |
-| BUG-014 | P1 | Responsive layout | Parent, manage, and staff pages had severe horizontal overflow in the original 390px QA capture. | Not reproduced on 2026-08-25 using explicit 390×844 and 320×568 viewports: all three pages now report equal client/scroll widths and visually stack correctly. Retained for historical traceability. | Candidate resolved / verify after next deployment | PVA-03, PVA-04, MNG-12, STF-09 |
-| BUG-015 | P2 | Visual/light mode | Outer parent/staff document renders a black frame in system dark mode. | Desktop and mobile screenshots show black page chrome surrounding the white app because the generated wrapper declares `color-scheme: light dark`. | Open | PVA-10 |
-| BUG-016 | P1 release blocker | Program configuration | No school closure dates are configured for Session 1. | Database audit found 0 disabled Session 1 days and 0 closure notes. The API therefore accepts every weekday Sep 14–Dec 18 unless staff provides and loads the school calendar. | Open; needs school calendar input | API-09 |
+| BUG-001 | P0 | Parent/API boundary | Hosted parent page cannot consume live availability and shows fake booked dates from fallback data. | Production now runs as a direct document and shows live 0/14 capacity matching Supabase. | Resolved and production-verified | ENV-03, PUI-04, PUI-28 |
+| BUG-002 | P1 | Parent calendar | Month selector is broken. | Production September → October navigation passes; failure state disables impossible navigation. | Resolved and production-verified | PUI-05, PUI-06, PUI-07 |
+| BUG-003 | P1 | Navigation | Manage booking link at the top does not open the manage page. | Production top-level navigation reaches `/manage.html`. | Resolved and production-verified | PUI-02 |
+| BUG-004 | P3 | Navigation/content | Programs, About Us, and Admissions links go nowhere and are unnecessary. | No-op links were removed. | Resolved and production-verified | PUI-01 |
+| BUG-005 | P2 | Parent family form | Children count badge becomes stale after a child name changes. | Input updates now refresh only the count/targets/summary without replacing the focused input. | Resolved; Playwright-covered | PUI-10 |
+| BUG-006 | P2 | Parent review dialog | Review dialog cannot be dismissed with Escape. | Escape, focus return, and keyboard containment are implemented. | Resolved; Playwright-covered | PUI-24 |
+| BUG-007 | P1 | Manage/privacy | Secure-link endpoint reveals whether an email has active bookings when the email provider fails. | Unknown and known-provider-failure paths now return byte-equivalent generic HTTP 200 responses. | Resolved; unit and production-covered | MNG-01, MNG-02 |
+| BUG-008 | P0 release blocker | Staff/privacy | Staff dashboard has no authentication or authorization boundary. | Production redirects unauthenticated visitors and every staff API validates an HttpOnly server session. | Resolved/deployed; first real staff login awaits supplied email | STF-01, STF-10–STF-15 |
+| BUG-009 | P1 | Staff/data integrity | Hosted staff schedule and billing report show static demo people and totals instead of live data. | Static data was removed; protected APIs/RPCs now supply schedule, roster, billing rows/families, statuses, and admin day settings. | Resolved/deployed; real staff-session smoke awaits supplied email | STF-02–STF-07 |
+| BUG-010 | P2 | Layout/architecture | Parent and staff apps are embedded in fixed-height sandboxed iframes, causing nested scroll and broken navigation/API boundaries. | Generated root pages are direct, deterministic documents with no iframe. | Resolved and production-verified | PVA-01, ENV-03, PUI-02 |
+| BUG-011 | P2 | Staff/export | Download CSV does not generate or download a CSV file. | Live report data produces a formula-safe CSV with useful filename. | Resolved; Playwright-covered | STF-08 |
+| BUG-012 | P2 | Email/content | Booking confirmation email omits reservation and billing details. | Server-authoritative details now include dates, escaped child names, rate number, daily rate, and added total. | Resolved; unit-covered; real delivery awaits verified domain | EML-02 |
+| BUG-013 | P1 | QA/automation | Repository test command previously passed while running zero tests. | CI now runs generated-page/syntax checks, 12 Node tests, and 5 Playwright tests on every push/PR. | Resolved for current regression surface; deeper live-data tests remain gated | REG-01 |
+| BUG-014 | P1 | Responsive layout | Parent, manage, and staff pages had severe horizontal overflow in the original 390px QA capture. | Direct-document Playwright checks pass at 320px, and prior 390px/320px checks remain clean. | Resolved after structural change | PVA-03, PVA-04, MNG-12, STF-09 |
+| BUG-015 | P2 | Visual/light mode | Outer parent/staff document renders a black frame in system dark mode. | Root shell now forces light/white; dark-preference browser regression passes. | Resolved; Playwright-covered | PVA-10 |
+| BUG-016 | P1 release blocker | Program configuration | No school closure dates are configured for Session 1. | Admin-only closure/reopen UI and database guard are deployed; actual dates still require the authoritative school calendar. | Implementation resolved; configuration input required | API-09 |
 
 ## Post-compaction bug-fix handoff
 
 This section contains the implementation context needed to resume after conversation compaction without repeating the bug bash. Treat the evidence above as the observed baseline and this section as the engineering handoff.
+
+> Resolution note (2026-08-25): the test tables and bug-register statuses above are authoritative. The detailed sections below preserve the original diagnosis and recommended direction; descriptions that say “current” or “local” may refer to the pre-fix baseline.
 
 ### Repository and deployment rules that affect multiple bugs
 
@@ -615,6 +617,18 @@ This section contains the implementation context needed to resume after conversa
 - Supabase advisors reported only informational deny-by-default and unused-index notices; there were no new warning/error findings.
 - Local syntax checks, five staff-auth unit tests, unauthenticated redirect, keyboard validation, and responsive checks at 390×844 and 320×568 passed.
 - Full email-link redemption, reuse, expiry, logout, and deactivation tests remain blocked until the user supplies the first authorized staff email and the reviewed changes are deployed.
+
+### 2026-08-25 — Fix, deployment, and production verification
+
+- Applied and recorded RBNS migration `20260825110404_staff_live_and_confirmation`; Sentinel was never accessed.
+- Replaced parent/staff iframe wrappers with deterministic direct documents generated by `npm run build:pages`.
+- Deployed commits `b791e9a` and `3cfdc54`; the latter consolidated staff routes to six total Vercel Functions so the app remains on the free Hobby plan.
+- Production `/parent.html` reports `Live availability`; Sep 14–30 show 0 booked / 14 open, matching the clean RBNS database.
+- Production month navigation advanced September → October, and Manage booking opened `/manage.html` at the top level.
+- Production `/staff.html` redirected unauthenticated access to `/staff-login.html`; the protected schedule API returned HTTP 401 and cleared the session cookie.
+- Production unknown parent/staff link requests returned their generic HTTP 200 privacy responses and created no transactional rows.
+- `npm run check`, 12 Node tests, and 5 Playwright tests pass. GitHub Actions now runs syntax/generated-page checks, unit tests, and browser tests on every push and pull request.
+- Remaining external inputs: authoritative closure dates, the first staff/admin email, and a verified Resend sender domain. BILL.com integration remains intentionally deferred.
 
 ## Visual evidence
 

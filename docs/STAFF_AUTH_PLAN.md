@@ -4,12 +4,13 @@ This document is the durable implementation plan for protecting the Red Barn Sta
 
 ## Implementation status — August 25, 2026
 
-- The login page, four authentication endpoints, email template, shared session helper, dashboard gate, sign-out action, response headers, and automated unit tests are implemented locally.
+- The login page, authentication endpoints, email template, shared session helper, dashboard gate, sign-out action, response headers, and automated tests are deployed.
 - Supabase migration `20260825045423_staff_auth` is applied to the RBNS project and recorded in Supabase migration history.
 - The three staff-auth tables are empty. No staff or administrator email has been guessed or seeded.
 - Database verification confirms RLS is enabled, `anon` and `authenticated` have no table or function access, and `service_role` has the required access.
-- Local syntax, unit, unauthenticated redirect, responsive layout, and basic accessibility checks pass.
-- Deployment and the full emailed-link end-to-end test remain pending until the first authorized staff email is supplied and the changes are reviewed for push.
+- Syntax, unit, Playwright, production unauthenticated redirect, responsive layout, and basic accessibility checks pass.
+- The staff routes are consolidated behind one Vercel Function to remain within the Hobby plan’s 12-function limit.
+- The full emailed-link end-to-end test remains pending until the first authorized staff email and verified Resend sender domain are supplied.
 
 ## Goal
 
