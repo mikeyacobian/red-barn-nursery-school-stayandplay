@@ -1,0 +1,13 @@
+{
+  "name": "red-barn-nursery-school-stayandplay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check api/availability.js && node --check api/bookings.js && node --check api/manage/request-link.js && node --check api/manage/booking.js && node --check api/manage/cancel.js"
+  }
+}

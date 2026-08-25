@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Manage Stay &amp; Play — Red Barn Nursery School</title>
+  <style>
+    :root { color-scheme: light; --red:#e61717; --red-deep:#c81010; --ink:#111; --muted:#696965; --line:#deded9; --soft:#f5f4f0; --paper:#fff; font-family:Arial,Helvetica,sans-serif; color:var(--ink); background:var(--paper); }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); }
+    button,input { font:inherit; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    .header { display:flex; align-items:center; gap:30px; min-height:82px; padding:13px clamp(18px,5vw,60px); border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:10px; color:var(--ink); text-decoration:none; }
+    .logo { display:grid; place-items:center; width:54px; height:54px; border-radius:50%; background:var(--red); color:#fff; font-weight:900; }
+    .brand-copy { display:grid; gap:2px; }
+    .brand-copy strong { font-size:13px; letter-spacing:.1em; }
+    .brand-copy small { font-size:8px; font-weight:800; letter-spacing:.13em; }
+    .header-link { margin-left:auto; padding:11px 16px; border:1px solid var(--line); border-radius:999px; color:var(--ink); font-size:11px; font-weight:800; text-decoration:none; }
+    main { max-width:1120px; margin:0 auto; padding:38px clamp(16px,4vw,44px) 60px; }
+    .kicker { margin:0 0 8px; color:var(--red); font-size:11px; font-weight:900; letter-spacing:.14em; }
+    h1 { margin:0; font-size:clamp(34px,6vw,54px); line-height:1; letter-spacing:-.045em; }
+    .lede { max-width:660px; margin:14px 0 0; color:var(--muted); font-size:15px; line-height:1.55; }
+    .card { margin-top:30px; padding:clamp(20px,4vw,34px); border:1px solid var(--line); border-radius:20px; background:var(--paper); }
+    .request-card { max-width:620px; }
+    .request-card h2,.calendar-heading h2,.detail-heading h2 { margin:0; font-size:23px; letter-spacing:-.025em; }
+    .request-card p { color:var(--muted); line-height:1.55; }
+    .email-form { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; margin-top:20px; }
+    .email-form label { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+    .email-form input { min-width:0; padding:14px 15px; border:1px solid var(--line); border-radius:11px; background:#fff; color:var(--ink); outline-color:var(--red); }
+    .primary,.cancel-button,.dialog-confirm { border:0; border-radius:999px; background:var(--red); color:#fff; font-weight:800; cursor:pointer; }
+    .primary { padding:14px 20px; }
+    .primary:disabled,.cancel-button:disabled { opacity:.45; cursor:not-allowed; }
+    .form-status { min-height:22px; margin:14px 0 0; color:var(--red-deep); font-size:13px; font-weight:700; }
+    .privacy { margin-top:22px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+    .manage-shell { margin-top:28px; }
+    .manage-top { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; }
+    .family-line { margin:7px 0 0; color:var(--muted); }
+    .session-pill { padding:9px 12px; border-radius:999px; background:var(--soft); font-size:11px; font-weight:800; }
+    .manage-grid { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(280px,.7fr); gap:18px; margin-top:20px; align-items:start; }
+    .calendar-card,.detail-card { margin:0; }
+    .calendar-heading { display:flex; align-items:center; justify-content:space-between; gap:15px; }
+    .month-nav { display:flex; align-items:center; gap:10px; }
+    .month-nav strong { min-width:132px; text-align:center; font-size:13px; }
+    .month-nav button { display:grid; place-items:center; width:34px; height:34px; border:1px solid var(--line); border-radius:50%; background:#fff; cursor:pointer; }
+    .month-nav button:disabled { opacity:.35; cursor:default; }
+    .weekdays,.calendar { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; }
+    .weekdays { margin:22px 0 7px; }
+    .weekdays span { text-align:center; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.1em; }
+    .day { min-height:92px; padding:9px; border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--ink); text-align:left; cursor:default; }
+    .day.blank { visibility:hidden; }
+    .day.has-booking { border-color:#999993; box-shadow:inset 0 0 0 1px #999993; cursor:pointer; }
+    .day.has-booking:hover,.day.is-selected { border-color:var(--red); box-shadow:inset 0 0 0 1px var(--red); }
+    .day-number { display:block; font-size:14px; font-weight:900; }
+    .day-label { display:block; margin-top:10px; color:var(--muted); font-size:9px; font-weight:800; }
+    .badges { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
+    .child-badge { display:grid; place-items:center; width:20px; height:20px; border-radius:50%; background:var(--child-color); color:#fff; font-size:9px; font-style:normal; font-weight:900; }
+    .detail-card { position:sticky; top:18px; }
+    .detail-heading p { margin:6px 0 0; color:var(--muted); font-size:12px; }
+    .reservation-list { display:grid; gap:10px; margin-top:20px; }
+    .reservation { padding:15px; border:1px solid var(--line); border-radius:13px; }
+    .reservation-top { display:flex; align-items:center; gap:9px; }
+    .reservation-top strong { font-size:15px; }
+    .reservation-meta { margin:10px 0 13px; color:var(--muted); font-size:11px; line-height:1.5; }
+    .cancel-button { width:100%; padding:10px 13px; background:#fff; border:1px solid var(--red); color:var(--red-deep); }
+    .late-note { margin:11px 0 0; padding:9px; border-radius:9px; background:#fff1f1; color:var(--red-deep); font-size:11px; line-height:1.45; }
+    .empty { margin:18px 0 0; padding:20px; border-radius:13px; background:var(--soft); color:var(--muted); line-height:1.5; }
+    .policy { margin-top:18px; padding:14px 16px; border-left:4px solid var(--red); background:var(--soft); color:var(--muted); font-size:12px; line-height:1.5; }
+    .policy strong { color:var(--ink); }
+    .toast { position:fixed; left:50%; bottom:24px; z-index:20; width:min(92%,520px); transform:translateX(-50%); padding:14px 17px; border-radius:12px; background:#111; color:#fff; font-size:13px; font-weight:700; box-shadow:0 14px 40px rgba(0,0,0,.2); }
+    dialog { width:min(92%,470px); padding:0; border:0; border-radius:18px; color:var(--ink); box-shadow:0 28px 90px rgba(0,0,0,.3); }
+    dialog::backdrop { background:rgba(0,0,0,.56); }
+    .dialog-body { padding:26px; }
+    .dialog-body h2 { margin:0; font-size:23px; }
+    .dialog-body p { color:var(--muted); line-height:1.55; }
+    .dialog-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:22px; }
+    .dialog-actions button { padding:11px 15px; border-radius:999px; font-weight:800; cursor:pointer; }
+    .dialog-back { border:1px solid var(--line); background:#fff; color:var(--ink); }
+    .dialog-confirm { border:0; }
+    [hidden] { display:none !important; }
+    @media (max-width:760px) { .manage-grid { grid-template-columns:1fr; } .detail-card { position:static; } }
+    @media (max-width:520px) { .brand-copy { display:none; } .email-form { grid-template-columns:1fr; } .manage-top,.calendar-heading { align-items:flex-start; flex-direction:column; } .month-nav { width:100%; justify-content:space-between; } .day { min-height:76px; padding:6px; } .child-badge { width:17px; height:17px; font-size:8px; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="index.html"><span class="logo" aria-hidden="true">RB</span><span class="brand-copy"><strong>RED BARN</strong><small>NURSERY SCHOOL</small></span></a>
+    <a class="header-link" href="parent.html">Book new dates</a>
+  </header>
+  <main>
+    <p class="kicker">STAY &amp; PLAY</p>
+    <h1>Manage your booking</h1>
+    <p class="lede">Request a secure email link to review your family’s calendar and cancel individual children or dates. No password or parent account is required.</p>
+
+    <section class="card request-card" id="request-view">
+      <h2>Email me a secure link</h2>
+      <p>Enter the same email address used for the reservation. The link expires after 30 minutes.</p>
+      <form class="email-form" id="email-form">
+        <label for="manage-email">Parent email</label>
+        <input id="manage-email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <button class="primary" id="send-link" type="submit">Send secure link</button>
+      </form>
+      <p class="form-status" id="form-status" aria-live="polite"></p>
+      <p class="privacy">For privacy, we show the same confirmation whether or not the address matches a reservation.</p>
+    </section>
+
+    <section class="manage-shell" id="manage-view" hidden>
+      <div class="manage-top">
+        <div><h2 id="welcome-name">Your Stay &amp; Play calendar</h2><p class="family-line" id="family-email"></p></div>
+        <span class="session-pill" id="session-name">Stay &amp; Play</span>
+      </div>
+      <div class="manage-grid">
+        <section class="card calendar-card" aria-label="Reservation calendar">
+          <div class="calendar-heading"><h2>Schedule</h2><div class="month-nav"><button id="previous-month" type="button" aria-label="Previous month">‹</button><strong id="month-label"></strong><button id="next-month" type="button" aria-label="Next month">›</button></div></div>
+          <div class="weekdays" aria-hidden="true"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span></div>
+          <div class="calendar" id="calendar"></div>
+          <div class="policy"><strong>Cancel by noon the day before to avoid being billed.</strong> A late cancellation reopens the child’s spot, but the family’s $50 or $75 daily rate still applies.</div>
+        </section>
+        <aside class="card detail-card" id="detail-card">
+          <div class="detail-heading"><h2 id="detail-date">Select a booked date</h2><p id="detail-time">Choose a marked day to see its reservations.</p></div>
+          <div class="reservation-list" id="reservation-list"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="card request-card" id="expired-view" hidden>
+      <h2>This secure link has expired</h2>
+      <p>For your family’s privacy, management links expire after 30 minutes. Request a fresh link to continue.</p>
+      <button class="primary" id="request-another" type="button">Request another link</button>
+    </section>
+  </main>
+
+  <dialog id="cancel-dialog">
+    <div class="dialog-body">
+      <h2>Cancel this reservation?</h2>
+      <p id="cancel-copy"></p>
+      <div class="dialog-actions"><button class="dialog-back" id="keep-reservation" type="button">Keep reservation</button><button class="dialog-confirm" id="confirm-cancel" type="button">Cancel reservation</button></div>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script>
+    (() => {
+      const colors = ['#e61717', '#2563eb', '#9a5d00', '#247a45', '#7c3aed', '#087f8c'];
+      const requestView = document.querySelector('#request-view');
+      const manageView = document.querySelector('#manage-view');
+      const expiredView = document.querySelector('#expired-view');
+      const form = document.querySelector('#email-form');
+      const emailInput = document.querySelector('#manage-email');
+      const sendLink = document.querySelector('#send-link');
+      const formStatus = document.querySelector('#form-status');
+      const calendar = document.querySelector('#calendar');
+      const monthLabel = document.querySelector('#month-label');
+      const previousMonth = document.querySelector('#previous-month');
+      const nextMonth = document.querySelector('#next-month');
+      const reservationList = document.querySelector('#reservation-list');
+      const detailDate = document.querySelector('#detail-date');
+      const detailTime = document.querySelector('#detail-time');
+      const dialog = document.querySelector('#cancel-dialog');
+      const cancelCopy = document.querySelector('#cancel-copy');
+      const confirmCancel = document.querySelector('#confirm-cancel');
+      const toast = document.querySelector('#toast');
+
+      let token = '';
+      let booking = null;
+      let months = [];
+      let monthIndex = 0;
+      let selectedDate = '';
+      let pendingItem = null;
+
+      function dateAtNoon(date) { return new Date(`${date}T12:00:00`); }
+      function dateLabel(date, options = {}) { return new Intl.DateTimeFormat('en-US', { weekday:'long', month:'long', day:'numeric', ...options }).format(dateAtNoon(date)); }
+      function shortTime(value) { const [hour, minute] = String(value).split(':').map(Number); return new Intl.DateTimeFormat('en-US', { hour:'numeric', minute:'2-digit' }).format(new Date(2026,0,1,hour,minute)); }
+      function colorFor(item) { return colors[Number(item.childColorIndex || 0) % colors.length]; }
+      function childInitial(item) { return String(item.childName || '?').trim().charAt(0).toUpperCase(); }
+      function showToast(message) { toast.textContent = message; toast.hidden = false; clearTimeout(showToast.timer); showToast.timer = setTimeout(() => { toast.hidden = true; }, 5500); }
+
+      function takeTokenFromUrl() {
+        const params = new URLSearchParams(location.hash.slice(1));
+        const supplied = params.get('token');
+        if (supplied) sessionStorage.setItem('rb_manage_token', supplied);
+        history.replaceState(null, '', location.pathname);
+        return supplied || sessionStorage.getItem('rb_manage_token') || '';
+      }
+
+      async function requestLink(event) {
+        event.preventDefault();
+        sendLink.disabled = true;
+        formStatus.textContent = 'Sending…';
+        try {
+          const response = await fetch('/api/manage/request-link', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ email:emailInput.value }) });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.message || 'Email is temporarily unavailable.');
+          formStatus.textContent = result.message;
+          form.reset();
+        } catch (error) {
+          formStatus.textContent = error.message;
+        } finally {
+          sendLink.disabled = false;
+        }
+      }
+
+      async function loadBooking() {
+        const response = await fetch('/api/manage/booking', { headers:{ authorization:`Bearer ${token}` }, cache:'no-store' });
+        if (response.status === 401) throw new Error('expired');
+        if (!response.ok) throw new Error('unavailable');
+        booking = await response.json();
+        buildMonths();
+        renderManageView();
+      }
+
+      function buildMonths() {
+        const dates = booking.items.map(item => item.serviceDate).sort();
+        const first = dates[0] ? dateAtNoon(dates[0]) : new Date();
+        const last = dates.at(-1) ? dateAtNoon(dates.at(-1)) : first;
+        months = [];
+        let cursor = new Date(first.getFullYear(), first.getMonth(), 1, 12);
+        const end = new Date(last.getFullYear(), last.getMonth(), 1, 12);
+        while (cursor <= end) { months.push(new Date(cursor)); cursor.setMonth(cursor.getMonth() + 1); }
+        monthIndex = 0;
+        const upcoming = booking.items.find(item => item.status === 'booked' && item.serviceDate >= new Date().toISOString().slice(0,10));
+        selectedDate = upcoming?.serviceDate || booking.items.find(item => item.status === 'booked')?.serviceDate || dates[0] || '';
+        if (selectedDate) {
+          const selectedMonth = dateAtNoon(selectedDate);
+          monthIndex = Math.max(0, months.findIndex(month => month.getFullYear() === selectedMonth.getFullYear() && month.getMonth() === selectedMonth.getMonth()));
+        }
+      }
+
+      function renderManageView() {
+        requestView.hidden = true;
+        expiredView.hidden = true;
+        manageView.hidden = false;
+        document.querySelector('#welcome-name').textContent = `Hi ${booking.family.parentName.split(/\s+/)[0]}, here’s your calendar`;
+        document.querySelector('#family-email').textContent = booking.family.email;
+        document.querySelector('#session-name').textContent = booking.items[0]?.sessionName || 'Stay & Play';
+        renderCalendar();
+        renderDetails();
+      }
+
+      function renderCalendar() {
+        calendar.innerHTML = '';
+        const month = months[monthIndex] || new Date();
+        monthLabel.textContent = new Intl.DateTimeFormat('en-US', { month:'long', year:'numeric' }).format(month);
+        previousMonth.disabled = monthIndex === 0;
+        nextMonth.disabled = monthIndex >= months.length - 1;
+        const firstDay = new Date(month.getFullYear(), month.getMonth(), 1, 12);
+        const mondayOffset = (firstDay.getDay() + 6) % 7;
+        const weekdayOffset = mondayOffset > 4 ? 0 : mondayOffset;
+        for (let i = 0; i < weekdayOffset; i += 1) calendar.append(blankDay());
+        const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+        for (let day = 1; day <= daysInMonth; day += 1) {
+          const date = new Date(month.getFullYear(), month.getMonth(), day, 12);
+          if (date.getDay() === 0 || date.getDay() === 6) continue;
+          const key = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+          const items = booking.items.filter(item => item.serviceDate === key);
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = `day${items.length ? ' has-booking' : ''}${selectedDate === key ? ' is-selected' : ''}`;
+          button.disabled = !items.length;
+          const number = document.createElement('span'); number.className = 'day-number'; number.textContent = String(day);
+          const label = document.createElement('span'); label.className = 'day-label'; label.textContent = items.length ? `${items.length} ${items.length === 1 ? 'child' : 'children'}` : '';
+          const badges = document.createElement('span'); badges.className = 'badges';
+          items.forEach(item => { const badge = document.createElement('i'); badge.className = 'child-badge'; badge.style.setProperty('--child-color', colorFor(item)); badge.textContent = childInitial(item); badge.title = item.childName; badges.append(badge); });
+          button.append(number, label, badges);
+          if (items.length) { button.setAttribute('aria-label', `${dateLabel(key)}, ${items.map(item => item.childName).join(' and ')}`); button.addEventListener('click', () => { selectedDate = key; renderCalendar(); renderDetails(); }); }
+          calendar.append(button);
+        }
+      }
+
+      function blankDay() { const blank = document.createElement('span'); blank.className = 'day blank'; blank.setAttribute('aria-hidden','true'); return blank; }
+
+      function renderDetails() {
+        reservationList.innerHTML = '';
+        const items = booking.items.filter(item => item.serviceDate === selectedDate);
+        if (!items.length) { detailDate.textContent = 'No active reservations'; detailTime.textContent = 'Request a fresh link after making another booking.'; const empty = document.createElement('p'); empty.className='empty'; empty.textContent='There are no active Stay & Play dates on this calendar.'; reservationList.append(empty); return; }
+        detailDate.textContent = dateLabel(selectedDate);
+        detailTime.textContent = `${shortTime(items[0].startTime)}–${shortTime(items[0].endTime)}`;
+        items.forEach(item => {
+          const card = document.createElement('article'); card.className = 'reservation';
+          const top = document.createElement('div'); top.className = 'reservation-top';
+          const badge = document.createElement('i'); badge.className='child-badge'; badge.style.setProperty('--child-color', colorFor(item)); badge.textContent=childInitial(item);
+          const name = document.createElement('strong'); name.textContent=item.childName; top.append(badge,name);
+          const meta = document.createElement('p'); meta.className='reservation-meta'; meta.textContent=`Cancel by ${new Intl.DateTimeFormat('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(item.cancellationDeadline))} to avoid billing.`;
+          card.append(top,meta);
+          if (item.status === 'booked') { const cancel = document.createElement('button'); cancel.type='button'; cancel.className='cancel-button'; cancel.textContent=`Cancel ${item.childName}`; cancel.addEventListener('click',()=>openCancellation(item)); card.append(cancel); }
+          else { const late = document.createElement('p'); late.className='late-note'; late.textContent='Canceled after the deadline · still included in the family’s daily bill.'; card.append(late); }
+          reservationList.append(card);
+        });
+      }
+
+      function openCancellation(item) {
+        pendingItem = item;
+        const deadlinePassed = new Date() > new Date(item.cancellationDeadline);
+        cancelCopy.textContent = deadlinePassed ? `${item.childName} will be removed from ${dateLabel(item.serviceDate)}, but this is after the deadline and the family’s daily rate will still be billed.` : `${item.childName} will be removed from ${dateLabel(item.serviceDate)} and this reservation will not be billed.`;
+        dialog.showModal();
+      }
+
+      async function cancelReservation() {
+        if (!pendingItem) return;
+        confirmCancel.disabled = true;
+        try {
+          const response = await fetch('/api/manage/cancel', { method:'POST', headers:{authorization:`Bearer ${token}`,'content-type':'application/json'}, body:JSON.stringify({bookingItemId:pendingItem.bookingItemId}) });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.message || 'The cancellation could not be completed.');
+          dialog.close();
+          showToast(result.billable ? 'Cancellation recorded. The daily family rate will still be billed.' : 'Cancellation confirmed. This reservation will not be billed.');
+          await loadBooking();
+        } catch (error) {
+          dialog.close();
+          showToast(error.message);
+        } finally {
+          confirmCancel.disabled = false;
+          pendingItem = null;
+        }
+      }
+
+      function showExpired() { sessionStorage.removeItem('rb_manage_token'); requestView.hidden=true; manageView.hidden=true; expiredView.hidden=false; }
+      form.addEventListener('submit', requestLink);
+      previousMonth.addEventListener('click',()=>{ if(monthIndex>0){monthIndex-=1;renderCalendar();} });
+      nextMonth.addEventListener('click',()=>{ if(monthIndex<months.length-1){monthIndex+=1;renderCalendar();} });
+      document.querySelector('#keep-reservation').addEventListener('click',()=>dialog.close());
+      confirmCancel.addEventListener('click',cancelReservation);
+      document.querySelector('#request-another').addEventListener('click',()=>{ expiredView.hidden=true;requestView.hidden=false;emailInput.focus(); });
+
+      token = takeTokenFromUrl();
+      if (token) loadBooking().catch(error => error.message === 'expired' ? showExpired() : (showExpired(), formStatus.textContent='Bookings are temporarily unavailable.'));
+    })();
+  </script>
+</body>
+</html>

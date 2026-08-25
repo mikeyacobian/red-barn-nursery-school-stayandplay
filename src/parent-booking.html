@@ -15,7 +15,7 @@
         <a href="#">About Us</a>
         <a href="#">Admissions</a>
       </nav>
-      <button class="rb-help" type="button">Booking help</button>
+      <a class="rb-help" href="manage.html">Manage booking</a>
     </header>
 
     <main class="rb-main">
@@ -23,9 +23,9 @@
         <div>
           <p class="rb-kicker">STAY &amp; PLAY · SESSION 1</p>
           <h1>Book Stay &amp; Play</h1>
-          <p>September 14–December 18 · Noon–2:00 PM</p>
+          <p id="rb-session-details">September 14–December 18 · Noon–2:00 PM</p>
         </div>
-        <span class="rb-live"><i aria-hidden="true"></i>Live availability</span>
+        <span class="rb-live" id="rb-live-status"><i aria-hidden="true"></i>Connecting to availability</span>
       </div>
 
       <div class="rb-workspace">
@@ -37,11 +37,11 @@
 
           <label class="rb-field" for="rb-parent-name">
             <span>Parent or guardian name</span>
-            <input id="rb-parent-name" type="text" value="Jordan Miller" autocomplete="name" required>
+            <input id="rb-parent-name" type="text" placeholder="Your full name" autocomplete="name" required>
           </label>
           <label class="rb-field" for="rb-parent-email">
             <span>Email</span>
-            <input id="rb-parent-email" type="email" value="jordan@example.com" autocomplete="email" required>
+            <input id="rb-parent-email" type="email" placeholder="you@example.com" autocomplete="email" required>
           </label>
 
           <div class="rb-children-heading">
@@ -59,9 +59,9 @@
               <div><h2 id="rb-calendar-title">Choose dates</h2><p>Weekdays only</p></div>
             </div>
             <div class="rb-month-nav" aria-label="Calendar navigation">
-              <button type="button" disabled aria-label="Previous month">‹</button>
-              <strong>September 2026</strong>
-              <button type="button" aria-label="Next month">›</button>
+              <button id="rb-previous-month" type="button" aria-label="Previous month">‹</button>
+              <strong id="rb-month-label">September 2026</strong>
+              <button id="rb-next-month" type="button" aria-label="Next month">›</button>
             </div>
           </div>
 
@@ -107,7 +107,8 @@
         <div class="rb-review-list" id="rb-review-list"></div>
         <div class="rb-review-total"><span>Estimated school bill</span><strong id="rb-review-total">$175</strong></div>
         <p class="rb-billing-note"><strong>No payment is due now.</strong> Availability is checked once more when you confirm.</p>
-        <button class="rb-confirm" type="button">Confirm reservation</button>
+        <p class="rb-status" id="rb-confirm-status" aria-live="polite"></p>
+        <button class="rb-confirm" id="rb-confirm-booking" type="button">Confirm reservation</button>
       </section>
     </div>
   </section>
@@ -143,7 +144,7 @@
     #rb-calendar-booking .rb-nav a { padding: 7px 0 5px; border-bottom: 1px solid transparent; color: var(--rb-ink); font-size: 13px; font-weight: 700; text-decoration: none; }
     #rb-calendar-booking .rb-nav a.is-active { border-color: var(--rb-ink); }
     #rb-calendar-booking .rb-help, #rb-calendar-booking .rb-review-button, #rb-calendar-booking .rb-confirm { border: 0; border-radius: 999px; background: var(--rb-red); color: #fff; font-weight: 800; cursor: pointer; }
-    #rb-calendar-booking .rb-help { padding: 11px 16px; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+    #rb-calendar-booking .rb-help { padding: 11px 16px; font-size: 10px; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; }
     #rb-calendar-booking .rb-main { padding: 24px clamp(15px, 3.5vw, 32px) 27px; }
     #rb-calendar-booking .rb-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
     #rb-calendar-booking .rb-kicker { margin: 0 0 6px; color: var(--rb-red); font-size: 10px; font-weight: 900; letter-spacing: .14em; }
@@ -289,17 +290,24 @@
       const reviewTotal = root.querySelector('#rb-review-total');
       const parentName = root.querySelector('#rb-parent-name');
       const parentEmail = root.querySelector('#rb-parent-email');
+      const previousMonth = root.querySelector('#rb-previous-month');
+      const nextMonth = root.querySelector('#rb-next-month');
+      const monthLabel = root.querySelector('#rb-month-label');
+      const liveStatus = root.querySelector('#rb-live-status');
+      const sessionDetails = root.querySelector('#rb-session-details');
+      const confirmBooking = root.querySelector('#rb-confirm-booking');
+      const confirmStatus = root.querySelector('#rb-confirm-status');
 
       const childColors = ['#e61717', '#2563eb', '#9a5d00', '#247a45', '#7c3aed', '#087f8c'];
 
-      let children = [
-        { id: 'child-1', name: 'Ava Miller' },
-        { id: 'child-2', name: 'Leo Miller' }
-      ];
+      let children = [{ id: 'child-1', name: '' }];
       let activeTarget = 'all';
-      let nextChildNumber = 3;
+      let nextChildNumber = 2;
+      let backendReady = false;
+      let currentMonthIndex = 0;
+      let monthKeys = ['2026-09'];
 
-      const dayData = [
+      const fallbackDayData = [
         null,
         { date: '2026-09-01', day: 1, unavailable: 'Session not open' },
         { date: '2026-09-02', day: 2, unavailable: 'Session not open' },
@@ -327,11 +335,9 @@
         null
       ];
 
-      const assignments = new Map([
-        ['2026-09-14', new Set(['child-1', 'child-2'])],
-        ['2026-09-16', new Set(['child-1'])],
-        ['2026-09-18', new Set(['child-2'])]
-      ]);
+      let allDays = fallbackDayData.filter(Boolean);
+      let dayData = fallbackDayData;
+      const assignments = new Map();
 
       function namedChildren() {
         return children.filter(child => child.name.trim());
@@ -364,6 +370,83 @@
         if (day.spots === 1) return 'Only 1 left';
         if (day.spots <= 3) return `Only ${day.spots} left`;
         return `${day.spots} open`;
+      }
+
+      function monthGrid(monthKey) {
+        const [year, month] = monthKey.split('-').map(Number);
+        const byDate = new Map(allDays.map(day => [day.date, day]));
+        const result = [];
+        const first = new Date(Date.UTC(year, month - 1, 1, 12));
+        const rawOffset = (first.getUTCDay() + 6) % 7;
+        const offset = rawOffset > 4 ? 0 : rawOffset;
+        for (let index = 0; index < offset; index += 1) result.push(null);
+        const finalDay = new Date(Date.UTC(year, month, 0, 12)).getUTCDate();
+        for (let number = 1; number <= finalDay; number += 1) {
+          const date = new Date(Date.UTC(year, month - 1, number, 12));
+          if (date.getUTCDay() === 0 || date.getUTCDay() === 6) continue;
+          const key = `${year}-${String(month).padStart(2, '0')}-${String(number).padStart(2, '0')}`;
+          result.push(byDate.get(key) || { date: key, day: number, unavailable: 'Session not open' });
+        }
+        while (result.length % 5) result.push(null);
+        return result;
+      }
+
+      function updateMonth() {
+        const monthKey = monthKeys[currentMonthIndex] || monthKeys[0];
+        dayData = monthGrid(monthKey);
+        const [year, month] = monthKey.split('-').map(Number);
+        monthLabel.textContent = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(year, month - 1, 1, 12)));
+        previousMonth.disabled = currentMonthIndex === 0;
+        nextMonth.disabled = currentMonthIndex >= monthKeys.length - 1;
+
+        const currentDays = allDays.filter(day => day.date.startsWith(monthKey));
+        const sessionName = currentDays.find(day => day.sessionName)?.sessionName;
+        if (sessionName) {
+          const sessionDays = allDays.filter(day => day.sessionName === sessionName);
+          const first = sessionDays[0];
+          const last = sessionDays[sessionDays.length - 1];
+          sessionDetails.textContent = `${formatDate(first.date).replace(/^\w+, /, '')}–${formatDate(last.date).replace(/^\w+, /, '')} · ${first.startTimeLabel || 'Noon'}–${first.endTimeLabel || '2:00 PM'}`;
+        }
+        buildCalendar();
+      }
+
+      function timeLabel(value) {
+        if (!value) return '';
+        const [hour, minute] = value.split(':').map(Number);
+        return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(new Date(2026, 0, 1, hour, minute));
+      }
+
+      async function loadAvailability() {
+        try {
+          const response = await fetch('/api/availability', { cache: 'no-store' });
+          if (!response.ok) throw new Error('Availability could not be loaded.');
+          const result = await response.json();
+          allDays = result.days.map(day => {
+            const bookingDeadline = new Date(day.booking_deadline);
+            const unavailable = day.closure_note || (!day.booking_enabled
+              ? (bookingDeadline < new Date() ? 'Booking closed' : 'Booking not open')
+              : '');
+            return {
+              date: day.service_date,
+              day: Number(day.service_date.slice(-2)),
+              spots: Number(day.open_count),
+              unavailable,
+              sessionName: day.session_name,
+              startTimeLabel: timeLabel(day.start_time),
+              endTimeLabel: timeLabel(day.end_time)
+            };
+          });
+          monthKeys = [...new Set(allDays.map(day => day.date.slice(0, 7)))].sort();
+          const firstOpenMonth = monthKeys.findIndex(key => allDays.some(day => day.date.startsWith(key) && !day.unavailable));
+          currentMonthIndex = Math.max(0, firstOpenMonth);
+          backendReady = true;
+          liveStatus.innerHTML = '<i aria-hidden="true"></i>Live availability';
+          updateMonth();
+        } catch (error) {
+          backendReady = false;
+          liveStatus.innerHTML = '<i aria-hidden="true"></i>Preview availability';
+          status.textContent = 'The live booking service is not connected yet. You can still explore this preview.';
+        }
       }
 
       function priceForCount(count) {
@@ -596,13 +679,49 @@
           reviewList.append(row);
         });
         reviewTotal.textContent = `$${total}`;
+        confirmStatus.textContent = '';
+        confirmBooking.disabled = false;
+        confirmBooking.textContent = 'Confirm reservation';
         backdrop.hidden = false;
         closeReview.focus();
+      }
+
+      async function submitBooking() {
+        const bookingChildren = namedChildren().map(child => ({ client_id: child.id, full_name: child.name.trim() }));
+        const selections = bookedDates().flatMap(([serviceDate, set]) => [...set].map(childId => ({ service_date: serviceDate, client_id: childId })));
+        confirmBooking.disabled = true;
+        confirmBooking.textContent = 'Checking availability…';
+        confirmStatus.textContent = '';
+        try {
+          const response = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ parentName: parentName.value.trim(), email: parentEmail.value.trim(), children: bookingChildren, selections })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.message || 'The booking could not be completed.');
+          confirmBooking.textContent = 'Reservation confirmed';
+          confirmStatus.textContent = result.emailSent
+            ? `Confirmation ${result.confirmationCode} was emailed to you.`
+            : `Confirmation ${result.confirmationCode} is saved. The school can resend the email if needed.`;
+          await loadAvailability();
+        } catch (error) {
+          confirmBooking.disabled = false;
+          confirmBooking.textContent = 'Try again';
+          confirmStatus.textContent = error.message;
+        }
       }
 
       addChildButton.addEventListener('click', addChild);
       [parentName, parentEmail].forEach(input => input.addEventListener('input', updateSummary));
       reviewButton.addEventListener('click', openReview);
+      confirmBooking.addEventListener('click', submitBooking);
+      previousMonth.addEventListener('click', () => {
+        if (currentMonthIndex > 0) { currentMonthIndex -= 1; updateMonth(); }
+      });
+      nextMonth.addEventListener('click', () => {
+        if (currentMonthIndex < monthKeys.length - 1) { currentMonthIndex += 1; updateMonth(); }
+      });
       closeReview.addEventListener('click', () => {
         backdrop.hidden = true;
         reviewButton.focus();
@@ -615,6 +734,7 @@
       renderTargets();
       buildCalendar();
       updateSummary();
+      loadAvailability();
     })();
   </script>
 </div>

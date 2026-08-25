@@ -922,7 +922,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;a href=&quot;#&quot;&gt;About Us&lt;/a&gt;
         &lt;a href=&quot;#&quot;&gt;Admissions&lt;/a&gt;
       &lt;/nav&gt;
-      &lt;button class=&quot;rb-help&quot; type=&quot;button&quot;&gt;Booking help&lt;/button&gt;
+      &lt;a class=&quot;rb-help&quot; href=&quot;manage.html&quot;&gt;Manage booking&lt;/a&gt;
     &lt;/header&gt;
 
     &lt;main class=&quot;rb-main&quot;&gt;
@@ -930,9 +930,9 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;div&gt;
           &lt;p class=&quot;rb-kicker&quot;&gt;STAY &amp;amp; PLAY · SESSION 1&lt;/p&gt;
           &lt;h1&gt;Book Stay &amp;amp; Play&lt;/h1&gt;
-          &lt;p&gt;September 14–December 18 · Noon–2:00 PM&lt;/p&gt;
+          &lt;p id=&quot;rb-session-details&quot;&gt;September 14–December 18 · Noon–2:00 PM&lt;/p&gt;
         &lt;/div&gt;
-        &lt;span class=&quot;rb-live&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Live availability&lt;/span&gt;
+        &lt;span class=&quot;rb-live&quot; id=&quot;rb-live-status&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Connecting to availability&lt;/span&gt;
       &lt;/div&gt;
 
       &lt;div class=&quot;rb-workspace&quot;&gt;
@@ -944,11 +944,11 @@ html&gt;body{padding:0}&lt;/style&gt;
 
           &lt;label class=&quot;rb-field&quot; for=&quot;rb-parent-name&quot;&gt;
             &lt;span&gt;Parent or guardian name&lt;/span&gt;
-            &lt;input id=&quot;rb-parent-name&quot; type=&quot;text&quot; value=&quot;Jordan Miller&quot; autocomplete=&quot;name&quot; required&gt;
+            &lt;input id=&quot;rb-parent-name&quot; type=&quot;text&quot; placeholder=&quot;Your full name&quot; autocomplete=&quot;name&quot; required&gt;
           &lt;/label&gt;
           &lt;label class=&quot;rb-field&quot; for=&quot;rb-parent-email&quot;&gt;
             &lt;span&gt;Email&lt;/span&gt;
-            &lt;input id=&quot;rb-parent-email&quot; type=&quot;email&quot; value=&quot;jordan@example.com&quot; autocomplete=&quot;email&quot; required&gt;
+            &lt;input id=&quot;rb-parent-email&quot; type=&quot;email&quot; placeholder=&quot;you@example.com&quot; autocomplete=&quot;email&quot; required&gt;
           &lt;/label&gt;
 
           &lt;div class=&quot;rb-children-heading&quot;&gt;
@@ -966,9 +966,9 @@ html&gt;body{padding:0}&lt;/style&gt;
               &lt;div&gt;&lt;h2 id=&quot;rb-calendar-title&quot;&gt;Choose dates&lt;/h2&gt;&lt;p&gt;Weekdays only&lt;/p&gt;&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class=&quot;rb-month-nav&quot; aria-label=&quot;Calendar navigation&quot;&gt;
-              &lt;button type=&quot;button&quot; disabled aria-label=&quot;Previous month&quot;&gt;‹&lt;/button&gt;
-              &lt;strong&gt;September 2026&lt;/strong&gt;
-              &lt;button type=&quot;button&quot; aria-label=&quot;Next month&quot;&gt;›&lt;/button&gt;
+              &lt;button id=&quot;rb-previous-month&quot; type=&quot;button&quot; aria-label=&quot;Previous month&quot;&gt;‹&lt;/button&gt;
+              &lt;strong id=&quot;rb-month-label&quot;&gt;September 2026&lt;/strong&gt;
+              &lt;button id=&quot;rb-next-month&quot; type=&quot;button&quot; aria-label=&quot;Next month&quot;&gt;›&lt;/button&gt;
             &lt;/div&gt;
           &lt;/div&gt;
 
@@ -1014,7 +1014,8 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;div class=&quot;rb-review-list&quot; id=&quot;rb-review-list&quot;&gt;&lt;/div&gt;
         &lt;div class=&quot;rb-review-total&quot;&gt;&lt;span&gt;Estimated school bill&lt;/span&gt;&lt;strong id=&quot;rb-review-total&quot;&gt;$175&lt;/strong&gt;&lt;/div&gt;
         &lt;p class=&quot;rb-billing-note&quot;&gt;&lt;strong&gt;No payment is due now.&lt;/strong&gt; Availability is checked once more when you confirm.&lt;/p&gt;
-        &lt;button class=&quot;rb-confirm&quot; type=&quot;button&quot;&gt;Confirm reservation&lt;/button&gt;
+        &lt;p class=&quot;rb-status&quot; id=&quot;rb-confirm-status&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+        &lt;button class=&quot;rb-confirm&quot; id=&quot;rb-confirm-booking&quot; type=&quot;button&quot;&gt;Confirm reservation&lt;/button&gt;
       &lt;/section&gt;
     &lt;/div&gt;
   &lt;/section&gt;
@@ -1050,7 +1051,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #rb-calendar-booking .rb-nav a { padding: 7px 0 5px; border-bottom: 1px solid transparent; color: var(--rb-ink); font-size: 13px; font-weight: 700; text-decoration: none; }
     #rb-calendar-booking .rb-nav a.is-active { border-color: var(--rb-ink); }
     #rb-calendar-booking .rb-help, #rb-calendar-booking .rb-review-button, #rb-calendar-booking .rb-confirm { border: 0; border-radius: 999px; background: var(--rb-red); color: #fff; font-weight: 800; cursor: pointer; }
-    #rb-calendar-booking .rb-help { padding: 11px 16px; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+    #rb-calendar-booking .rb-help { padding: 11px 16px; font-size: 10px; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; }
     #rb-calendar-booking .rb-main { padding: 24px clamp(15px, 3.5vw, 32px) 27px; }
     #rb-calendar-booking .rb-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
     #rb-calendar-booking .rb-kicker { margin: 0 0 6px; color: var(--rb-red); font-size: 10px; font-weight: 900; letter-spacing: .14em; }
@@ -1196,17 +1197,24 @@ html&gt;body{padding:0}&lt;/style&gt;
       const reviewTotal = root.querySelector(&#x27;#rb-review-total&#x27;);
       const parentName = root.querySelector(&#x27;#rb-parent-name&#x27;);
       const parentEmail = root.querySelector(&#x27;#rb-parent-email&#x27;);
+      const previousMonth = root.querySelector(&#x27;#rb-previous-month&#x27;);
+      const nextMonth = root.querySelector(&#x27;#rb-next-month&#x27;);
+      const monthLabel = root.querySelector(&#x27;#rb-month-label&#x27;);
+      const liveStatus = root.querySelector(&#x27;#rb-live-status&#x27;);
+      const sessionDetails = root.querySelector(&#x27;#rb-session-details&#x27;);
+      const confirmBooking = root.querySelector(&#x27;#rb-confirm-booking&#x27;);
+      const confirmStatus = root.querySelector(&#x27;#rb-confirm-status&#x27;);
 
       const childColors = [&#x27;#e61717&#x27;, &#x27;#2563eb&#x27;, &#x27;#9a5d00&#x27;, &#x27;#247a45&#x27;, &#x27;#7c3aed&#x27;, &#x27;#087f8c&#x27;];
 
-      let children = [
-        { id: &#x27;child-1&#x27;, name: &#x27;Ava Miller&#x27; },
-        { id: &#x27;child-2&#x27;, name: &#x27;Leo Miller&#x27; }
-      ];
+      let children = [{ id: &#x27;child-1&#x27;, name: &#x27;&#x27; }];
       let activeTarget = &#x27;all&#x27;;
-      let nextChildNumber = 3;
+      let nextChildNumber = 2;
+      let backendReady = false;
+      let currentMonthIndex = 0;
+      let monthKeys = [&#x27;2026-09&#x27;];
 
-      const dayData = [
+      const fallbackDayData = [
         null,
         { date: &#x27;2026-09-01&#x27;, day: 1, unavailable: &#x27;Session not open&#x27; },
         { date: &#x27;2026-09-02&#x27;, day: 2, unavailable: &#x27;Session not open&#x27; },
@@ -1234,11 +1242,9 @@ html&gt;body{padding:0}&lt;/style&gt;
         null
       ];
 
-      const assignments = new Map([
-        [&#x27;2026-09-14&#x27;, new Set([&#x27;child-1&#x27;, &#x27;child-2&#x27;])],
-        [&#x27;2026-09-16&#x27;, new Set([&#x27;child-1&#x27;])],
-        [&#x27;2026-09-18&#x27;, new Set([&#x27;child-2&#x27;])]
-      ]);
+      let allDays = fallbackDayData.filter(Boolean);
+      let dayData = fallbackDayData;
+      const assignments = new Map();
 
       function namedChildren() {
         return children.filter(child =&gt; child.name.trim());
@@ -1271,6 +1277,83 @@ html&gt;body{padding:0}&lt;/style&gt;
         if (day.spots === 1) return &#x27;Only 1 left&#x27;;
         if (day.spots &lt;= 3) return `Only ${day.spots} left`;
         return `${day.spots} open`;
+      }
+
+      function monthGrid(monthKey) {
+        const [year, month] = monthKey.split(&#x27;-&#x27;).map(Number);
+        const byDate = new Map(allDays.map(day =&gt; [day.date, day]));
+        const result = [];
+        const first = new Date(Date.UTC(year, month - 1, 1, 12));
+        const rawOffset = (first.getUTCDay() + 6) % 7;
+        const offset = rawOffset &gt; 4 ? 0 : rawOffset;
+        for (let index = 0; index &lt; offset; index += 1) result.push(null);
+        const finalDay = new Date(Date.UTC(year, month, 0, 12)).getUTCDate();
+        for (let number = 1; number &lt;= finalDay; number += 1) {
+          const date = new Date(Date.UTC(year, month - 1, number, 12));
+          if (date.getUTCDay() === 0 || date.getUTCDay() === 6) continue;
+          const key = `${year}-${String(month).padStart(2, &#x27;0&#x27;)}-${String(number).padStart(2, &#x27;0&#x27;)}`;
+          result.push(byDate.get(key) || { date: key, day: number, unavailable: &#x27;Session not open&#x27; });
+        }
+        while (result.length % 5) result.push(null);
+        return result;
+      }
+
+      function updateMonth() {
+        const monthKey = monthKeys[currentMonthIndex] || monthKeys[0];
+        dayData = monthGrid(monthKey);
+        const [year, month] = monthKey.split(&#x27;-&#x27;).map(Number);
+        monthLabel.textContent = new Intl.DateTimeFormat(&#x27;en-US&#x27;, { month: &#x27;long&#x27;, year: &#x27;numeric&#x27;, timeZone: &#x27;UTC&#x27; }).format(new Date(Date.UTC(year, month - 1, 1, 12)));
+        previousMonth.disabled = currentMonthIndex === 0;
+        nextMonth.disabled = currentMonthIndex &gt;= monthKeys.length - 1;
+
+        const currentDays = allDays.filter(day =&gt; day.date.startsWith(monthKey));
+        const sessionName = currentDays.find(day =&gt; day.sessionName)?.sessionName;
+        if (sessionName) {
+          const sessionDays = allDays.filter(day =&gt; day.sessionName === sessionName);
+          const first = sessionDays[0];
+          const last = sessionDays[sessionDays.length - 1];
+          sessionDetails.textContent = `${formatDate(first.date).replace(/^\w+, /, &#x27;&#x27;)}–${formatDate(last.date).replace(/^\w+, /, &#x27;&#x27;)} · ${first.startTimeLabel || &#x27;Noon&#x27;}–${first.endTimeLabel || &#x27;2:00 PM&#x27;}`;
+        }
+        buildCalendar();
+      }
+
+      function timeLabel(value) {
+        if (!value) return &#x27;&#x27;;
+        const [hour, minute] = value.split(&#x27;:&#x27;).map(Number);
+        return new Intl.DateTimeFormat(&#x27;en-US&#x27;, { hour: &#x27;numeric&#x27;, minute: &#x27;2-digit&#x27; }).format(new Date(2026, 0, 1, hour, minute));
+      }
+
+      async function loadAvailability() {
+        try {
+          const response = await fetch(&#x27;/api/availability&#x27;, { cache: &#x27;no-store&#x27; });
+          if (!response.ok) throw new Error(&#x27;Availability could not be loaded.&#x27;);
+          const result = await response.json();
+          allDays = result.days.map(day =&gt; {
+            const bookingDeadline = new Date(day.booking_deadline);
+            const unavailable = day.closure_note || (!day.booking_enabled
+              ? (bookingDeadline &lt; new Date() ? &#x27;Booking closed&#x27; : &#x27;Booking not open&#x27;)
+              : &#x27;&#x27;);
+            return {
+              date: day.service_date,
+              day: Number(day.service_date.slice(-2)),
+              spots: Number(day.open_count),
+              unavailable,
+              sessionName: day.session_name,
+              startTimeLabel: timeLabel(day.start_time),
+              endTimeLabel: timeLabel(day.end_time)
+            };
+          });
+          monthKeys = [...new Set(allDays.map(day =&gt; day.date.slice(0, 7)))].sort();
+          const firstOpenMonth = monthKeys.findIndex(key =&gt; allDays.some(day =&gt; day.date.startsWith(key) &amp;&amp; !day.unavailable));
+          currentMonthIndex = Math.max(0, firstOpenMonth);
+          backendReady = true;
+          liveStatus.innerHTML = &#x27;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Live availability&#x27;;
+          updateMonth();
+        } catch (error) {
+          backendReady = false;
+          liveStatus.innerHTML = &#x27;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Preview availability&#x27;;
+          status.textContent = &#x27;The live booking service is not connected yet. You can still explore this preview.&#x27;;
+        }
       }
 
       function priceForCount(count) {
@@ -1503,13 +1586,49 @@ html&gt;body{padding:0}&lt;/style&gt;
           reviewList.append(row);
         });
         reviewTotal.textContent = `$${total}`;
+        confirmStatus.textContent = &#x27;&#x27;;
+        confirmBooking.disabled = false;
+        confirmBooking.textContent = &#x27;Confirm reservation&#x27;;
         backdrop.hidden = false;
         closeReview.focus();
+      }
+
+      async function submitBooking() {
+        const bookingChildren = namedChildren().map(child =&gt; ({ client_id: child.id, full_name: child.name.trim() }));
+        const selections = bookedDates().flatMap(([serviceDate, set]) =&gt; [...set].map(childId =&gt; ({ service_date: serviceDate, client_id: childId })));
+        confirmBooking.disabled = true;
+        confirmBooking.textContent = &#x27;Checking availability…&#x27;;
+        confirmStatus.textContent = &#x27;&#x27;;
+        try {
+          const response = await fetch(&#x27;/api/bookings&#x27;, {
+            method: &#x27;POST&#x27;,
+            headers: { &#x27;content-type&#x27;: &#x27;application/json&#x27; },
+            body: JSON.stringify({ parentName: parentName.value.trim(), email: parentEmail.value.trim(), children: bookingChildren, selections })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.message || &#x27;The booking could not be completed.&#x27;);
+          confirmBooking.textContent = &#x27;Reservation confirmed&#x27;;
+          confirmStatus.textContent = result.emailSent
+            ? `Confirmation ${result.confirmationCode} was emailed to you.`
+            : `Confirmation ${result.confirmationCode} is saved. The school can resend the email if needed.`;
+          await loadAvailability();
+        } catch (error) {
+          confirmBooking.disabled = false;
+          confirmBooking.textContent = &#x27;Try again&#x27;;
+          confirmStatus.textContent = error.message;
+        }
       }
 
       addChildButton.addEventListener(&#x27;click&#x27;, addChild);
       [parentName, parentEmail].forEach(input =&gt; input.addEventListener(&#x27;input&#x27;, updateSummary));
       reviewButton.addEventListener(&#x27;click&#x27;, openReview);
+      confirmBooking.addEventListener(&#x27;click&#x27;, submitBooking);
+      previousMonth.addEventListener(&#x27;click&#x27;, () =&gt; {
+        if (currentMonthIndex &gt; 0) { currentMonthIndex -= 1; updateMonth(); }
+      });
+      nextMonth.addEventListener(&#x27;click&#x27;, () =&gt; {
+        if (currentMonthIndex &lt; monthKeys.length - 1) { currentMonthIndex += 1; updateMonth(); }
+      });
       closeReview.addEventListener(&#x27;click&#x27;, () =&gt; {
         backdrop.hidden = true;
         reviewButton.focus();
@@ -1522,6 +1641,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       renderTargets();
       buildCalendar();
       updateSummary();
+      loadAvailability();
     })();
   &lt;/script&gt;
 &lt;/div&gt;

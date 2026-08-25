@@ -37,7 +37,7 @@
     p.eyebrow { margin: 0 0 10px; color: #e61717; font-size: 12px; font-weight: 900; letter-spacing: .14em; }
     h1 { max-width: 700px; margin: 0; font-size: clamp(38px, 7vw, 68px); line-height: .98; letter-spacing: -.05em; }
     .intro { max-width: 650px; margin: 20px 0 34px; color: #696965; line-height: 1.6; }
-    .links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
     a {
       display: grid;
       gap: 8px;
@@ -63,13 +63,14 @@
   </header>
   <main>
     <p class="eyebrow">STAY &amp; PLAY</p>
-    <h1>Scheduling prototypes</h1>
-    <p class="intro">Interactive, front-end prototypes for the parent reservation flow and the staff schedule and billing views. Data is illustrative and is not connected to Supabase or BILL.com yet.</p>
+    <h1>Stay &amp; Play scheduling</h1>
+    <p class="intro">Book Stay &amp; Play dates, request a secure link to review or cancel reservations, or open the staff schedule and billing preview.</p>
     <div class="links">
       <a href="parent.html"><span>01</span><strong>Parent booking</strong><small>Add children, assign dates, see live capacity, and review the estimated school bill.</small></a>
-      <a href="staff.html"><span>02</span><strong>Staff dashboard</strong><small>Open the schedule by date and manage family billing statuses from Ready through Paid.</small></a>
+      <a href="manage.html"><span>02</span><strong>Manage booking</strong><small>Request a secure email link, return to the family calendar, and cancel by child or date.</small></a>
+      <a href="staff.html"><span>03</span><strong>Staff dashboard</strong><small>Open the schedule by date and manage family billing statuses from Ready through Paid.</small></a>
     </div>
-    <footer>Prototype only · No real family information is included.</footer>
+    <footer>Parent reservations use private server-side storage. BILL.com integration will be added after the scheduling workflow is approved.</footer>
   </main>
 </body>
 </html>
