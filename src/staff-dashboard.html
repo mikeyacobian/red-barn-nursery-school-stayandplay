@@ -1,7 +1,7 @@
 <div id="rb-staff-output">
-  <section class="rb-admin" aria-label="Red Barn Stay and Play staff dashboard preview">
+  <section class="rb-admin" aria-label="Red Barn Stay and Play staff dashboard">
     <header class="rb-header">
-      <a class="rb-brand" href="#" aria-label="Red Barn Nursery School staff home">
+      <a class="rb-brand" href="/staff.html" aria-label="Red Barn Nursery School staff home">
         <span class="rb-logo" aria-hidden="true">
           <svg viewBox="0 0 64 64">
             <circle cx="32" cy="32" r="29"></circle>
@@ -14,7 +14,7 @@
         <button type="button" data-view="schedule" aria-pressed="true">Schedule</button>
         <button type="button" data-view="billing" aria-pressed="false">Billing</button>
       </nav>
-      <button class="rb-profile" type="button" aria-label="Staff account">MS</button>
+      <button class="rb-profile" id="rb-staff-signout" type="button" aria-label="Sign out"><span id="rb-staff-profile">ST</span></button>
     </header>
 
     <main class="rb-main">
@@ -31,19 +31,19 @@
         </div>
 
         <div class="rb-filters">
-          <label>Billing period
-            <select id="rb-period">
-              <option>Sep 14–Sep 30, 2026</option>
-              <option>October 2026</option>
-              <option>Custom range</option>
-            </select>
+          <label>Period start
+            <input id="rb-period-start" type="date" value="2026-09-14">
+          </label>
+          <label>Period end
+            <input id="rb-period-end" type="date" value="2026-09-30">
           </label>
           <label>Status
-            <select>
-              <option>Ready to bill</option>
-              <option>Already sent</option>
-              <option>Waived</option>
-              <option>All statuses</option>
+            <select id="rb-status-filter">
+              <option value="all">All statuses</option>
+              <option value="ready">Ready</option>
+              <option value="sent">Sent</option>
+              <option value="paid">Paid</option>
+              <option value="waived">Waived</option>
             </select>
           </label>
           <div class="rb-view-toggle" aria-label="Billing report view">
@@ -53,44 +53,33 @@
         </div>
 
         <div class="rb-stats" aria-label="Billing totals">
-          <div><span>Period total</span><strong>$475</strong></div>
-          <div><span>Families</span><strong>5</strong></div>
-          <div><span>Child-spots</span><strong>12</strong></div>
+          <div><span>Period total</span><strong id="rb-period-total">$0</strong></div>
+          <div><span>Families</span><strong id="rb-family-count">0</strong></div>
+          <div><span>Child-spots</span><strong id="rb-child-spots">0</strong></div>
         </div>
 
         <div class="rb-report-head">
           <div><h2 id="rb-report-heading">Family totals</h2><p id="rb-report-caption">One row per family for the selected period</p></div>
-          <span id="rb-row-count">5 families</span>
+          <span id="rb-row-count">0 families</span>
         </div>
 
         <div class="rb-table-wrap" id="rb-charges-table" hidden>
           <table>
             <thead><tr><th>Date</th><th>Family</th><th>Children</th><th class="rb-number">Spots</th><th class="rb-number">Rate #</th><th class="rb-money">Rate</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td>Sep 14</td><td>Jordan Miller</td><td>Ava, Leo</td><td class="rb-number">2</td><td class="rb-number">2</td><td class="rb-money">$75</td><td><span class="rb-status rb-sent">Sent</span></td></tr>
-              <tr><td>Sep 16</td><td>Jordan Miller</td><td>Ava</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status rb-sent">Sent</span></td></tr>
-              <tr><td>Sep 18</td><td>Jordan Miller</td><td>Leo</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status rb-sent">Sent</span></td></tr>
-              <tr><td>Sep 14</td><td>Casey Smith</td><td>Nora</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status">Ready</span></td></tr>
-              <tr><td>Sep 17</td><td>Priya Patel</td><td>Mira, Anish</td><td class="rb-number">2</td><td class="rb-number">2</td><td class="rb-money">$75</td><td><span class="rb-status rb-paid">Paid</span></td></tr>
-              <tr><td>Sep 21</td><td>Casey Smith</td><td>Nora</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status">Ready</span></td></tr>
-              <tr><td>Sep 22</td><td>Taylor Lee</td><td>Maya</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status">Ready</span></td></tr>
-              <tr><td>Sep 24</td><td>Elena Garcia</td><td>Sofia, Eli, Noah</td><td class="rb-number">3</td><td class="rb-number">2</td><td class="rb-money">$75</td><td><span class="rb-status">Ready</span></td></tr>
+            <tbody id="rb-charges-body">
+              <tr><td colspan="7">No billable reservations in this period.</td></tr>
             </tbody>
-            <tfoot><tr><td colspan="3">Period total</td><td class="rb-number">12</td><td></td><td class="rb-money">$475</td><td></td></tr></tfoot>
+            <tfoot><tr><td colspan="3">Period total</td><td class="rb-number" id="rb-charges-spots">0</td><td></td><td class="rb-money" id="rb-charges-total">$0</td><td></td></tr></tfoot>
           </table>
         </div>
 
         <div class="rb-table-wrap" id="rb-families-table">
           <table>
             <thead><tr><th>Family</th><th>Email</th><th class="rb-number">Dates</th><th class="rb-number">Child-spots</th><th>Rate mix</th><th class="rb-money">Total</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td>Jordan Miller</td><td>jordan@example.com</td><td class="rb-number">3</td><td class="rb-number">4</td><td>2 × #1 · 1 × #2</td><td class="rb-money">$175</td><td><select class="rb-billing-status" aria-label="Jordan Miller billing status"><option>Ready</option><option selected>Sent</option><option>Paid</option><option>Waived</option></select></td></tr>
-              <tr><td>Casey Smith</td><td>casey@example.com</td><td class="rb-number">2</td><td class="rb-number">2</td><td>2 × #1</td><td class="rb-money">$100</td><td><select class="rb-billing-status" aria-label="Casey Smith billing status"><option selected>Ready</option><option>Sent</option><option>Paid</option><option>Waived</option></select></td></tr>
-              <tr><td>Priya Patel</td><td>priya@example.com</td><td class="rb-number">1</td><td class="rb-number">2</td><td>1 × #2</td><td class="rb-money">$75</td><td><select class="rb-billing-status" aria-label="Priya Patel billing status"><option>Ready</option><option>Sent</option><option selected>Paid</option><option>Waived</option></select></td></tr>
-              <tr><td>Taylor Lee</td><td>taylor@example.com</td><td class="rb-number">1</td><td class="rb-number">1</td><td>1 × #1</td><td class="rb-money">$50</td><td><select class="rb-billing-status" aria-label="Taylor Lee billing status"><option selected>Ready</option><option>Sent</option><option>Paid</option><option>Waived</option></select></td></tr>
-              <tr><td>Elena Garcia</td><td>elena@example.com</td><td class="rb-number">1</td><td class="rb-number">3</td><td>1 × #2</td><td class="rb-money">$75</td><td><select class="rb-billing-status" aria-label="Elena Garcia billing status"><option selected>Ready</option><option>Sent</option><option>Paid</option><option>Waived</option></select></td></tr>
+            <tbody id="rb-families-body">
+              <tr><td colspan="7">No families to bill in this period.</td></tr>
             </tbody>
-            <tfoot><tr><td colspan="3">5 families</td><td class="rb-number">12</td><td></td><td class="rb-money">$475</td><td></td></tr></tfoot>
+            <tfoot><tr><td colspan="3" id="rb-families-count">0 families</td><td class="rb-number" id="rb-families-spots">0</td><td></td><td class="rb-money" id="rb-families-total">$0</td><td></td></tr></tfoot>
           </table>
         </div>
 
@@ -111,9 +100,9 @@
             <p>Select a day to see its roster and remaining spots.</p>
           </div>
           <div class="rb-month-nav" aria-label="Calendar navigation">
-            <button type="button" disabled aria-label="Previous month">‹</button>
-            <strong>September 2026</strong>
-            <button type="button" aria-label="Next month">›</button>
+            <button id="rb-staff-previous-month" type="button" disabled aria-label="Previous month">‹</button>
+            <strong id="rb-staff-month-label">September 2026</strong>
+            <button id="rb-staff-next-month" type="button" aria-label="Next month">›</button>
           </div>
         </div>
 
@@ -127,14 +116,14 @@
           <aside class="rb-day-detail" aria-labelledby="rb-day-title">
             <div class="rb-day-detail-head">
               <div><p class="rb-kicker">SELECTED DAY</p><h2 id="rb-day-title">Monday, September 14</h2><span>Noon–2:00 PM</span></div>
-              <button class="rb-secondary" type="button">Print</button>
+              <div class="rb-day-actions"><button class="rb-secondary" id="rb-print-roster" type="button">Print</button><button class="rb-secondary" id="rb-toggle-day" type="button" hidden>Mark school closed</button></div>
             </div>
             <div class="rb-capacity">
-              <span>Booked</span><strong id="rb-booked-count">11 of 14</strong>
-              <div class="rb-capacity-dots" id="rb-capacity-dots" aria-label="11 booked and 3 open spots"></div>
+              <span>Booked</span><strong id="rb-booked-count">0 of 14</strong>
+              <div class="rb-capacity-dots" id="rb-capacity-dots" aria-label="0 booked and 14 open spots"></div>
             </div>
             <div class="rb-roster-list" id="rb-roster-list"></div>
-            <p class="rb-more" id="rb-roster-note">Showing 6 of 11 children.</p>
+            <p class="rb-more" id="rb-roster-note">0 children signed up.</p>
           </aside>
         </div>
       </section>
@@ -157,7 +146,7 @@
       font-family: Arial, Helvetica, ui-sans-serif, sans-serif;
     }
     #rb-staff-output * { box-sizing: border-box; }
-    #rb-staff-output button, #rb-staff-output select { font: inherit; }
+    #rb-staff-output button, #rb-staff-output select, #rb-staff-output input { font: inherit; }
     #rb-staff-output .rb-admin { overflow: hidden; width: 100%; background: var(--rb-paper); border: 1px solid var(--rb-line); border-radius: 18px; }
     #rb-staff-output .rb-header { display: flex; align-items: center; gap: clamp(18px, 4vw, 40px); padding: 13px clamp(15px, 4vw, 30px); border-bottom: 1px solid var(--rb-line); }
     #rb-staff-output .rb-brand { display: inline-flex; align-items: center; gap: 9px; color: var(--rb-ink); text-decoration: none; }
@@ -181,9 +170,9 @@
     #rb-staff-output .rb-primary, #rb-staff-output .rb-secondary { padding: 10px 14px; border-radius: 999px; font-size: 10px; font-weight: 800; cursor: pointer; }
     #rb-staff-output .rb-primary { border: 1px solid var(--rb-red); background: var(--rb-red); color: #fff; }
     #rb-staff-output .rb-secondary { border: 1px solid var(--rb-line); background: var(--rb-paper); color: var(--rb-ink); }
-    #rb-staff-output .rb-filters { display: grid; grid-template-columns: minmax(150px, .8fr) minmax(140px, .55fr) minmax(230px, 1.25fr); gap: 10px; align-items: end; margin-top: 21px; padding: 12px; background: var(--rb-soft); }
+    #rb-staff-output .rb-filters { display: grid; grid-template-columns: minmax(135px,.7fr) minmax(135px,.7fr) minmax(130px,.6fr) minmax(230px,1.25fr); gap: 10px; align-items: end; margin-top: 21px; padding: 12px; background: var(--rb-soft); }
     #rb-staff-output .rb-filters label { display: grid; gap: 5px; color: var(--rb-muted); font-size: 9px; font-weight: 800; }
-    #rb-staff-output .rb-filters select { width: 100%; min-width: 0; padding: 8px 9px; border: 1px solid var(--rb-line); border-radius: 8px; background: var(--rb-paper); color: var(--rb-ink); }
+    #rb-staff-output .rb-filters select, #rb-staff-output .rb-filters input { width: 100%; min-width: 0; padding: 8px 9px; border: 1px solid var(--rb-line); border-radius: 8px; background: var(--rb-paper); color: var(--rb-ink); }
     #rb-staff-output .rb-view-toggle { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); }
     #rb-staff-output .rb-view-toggle button { padding: 7px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--rb-muted); font-size: 9px; font-weight: 800; cursor: pointer; }
     #rb-staff-output .rb-view-toggle button[aria-pressed="true"] { background: var(--rb-red); color: #fff; }
@@ -238,6 +227,7 @@
     #rb-staff-output .rb-calendar-key i { width: 7px; height: 7px; border-radius: 50%; background: var(--rb-ink); }
     #rb-staff-output .rb-calendar-key i.is-full { background: var(--rb-red); }
     #rb-staff-output .rb-day-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    #rb-staff-output .rb-day-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
     #rb-staff-output .rb-day-detail-head h2 { margin: 0; font-size: 16px; line-height: 1.1; }
     #rb-staff-output .rb-day-detail-head span { display: block; margin-top: 4px; color: var(--rb-muted); font-size: 9px; }
     #rb-staff-output .rb-capacity { display: grid; grid-template-columns: auto auto; align-items: center; gap: 5px 9px; margin-top: 14px; padding: 9px; background: var(--rb-soft); }
@@ -279,144 +269,5 @@
     }
   </style>
 
-  <script>
-    (() => {
-      const root = document.getElementById('rb-staff-output');
-      const navButtons = [...root.querySelectorAll('.rb-nav button')];
-      const billingView = root.querySelector('#rb-billing-view');
-      const scheduleView = root.querySelector('#rb-schedule-view');
-      const reportButtons = [...root.querySelectorAll('.rb-view-toggle button')];
-      const chargesTable = root.querySelector('#rb-charges-table');
-      const familiesTable = root.querySelector('#rb-families-table');
-      const reportHeading = root.querySelector('#rb-report-heading');
-      const reportCaption = root.querySelector('#rb-report-caption');
-      const rowCount = root.querySelector('#rb-row-count');
-      const feedback = root.querySelector('#rb-feedback');
-      const scheduleCalendar = root.querySelector('#rb-schedule-calendar');
-      const dayTitle = root.querySelector('#rb-day-title');
-      const bookedCount = root.querySelector('#rb-booked-count');
-      const capacityDots = root.querySelector('#rb-capacity-dots');
-      const rosterList = root.querySelector('#rb-roster-list');
-      const rosterNote = root.querySelector('#rb-roster-note');
-
-      const scheduleDays = [
-        null,
-        { day: 1, disabled: 'Not open' }, { day: 2, disabled: 'Not open' }, { day: 3, disabled: 'Not open' }, { day: 4, disabled: 'Not open' },
-        { day: 7, disabled: 'Not open' }, { day: 8, disabled: 'Not open' }, { day: 9, disabled: 'Not open' }, { day: 10, disabled: 'Not open' }, { day: 11, disabled: 'Not open' },
-        { day: 14, booked: 11 }, { day: 15, booked: 14 }, { day: 16, booked: 10 }, { day: 17, booked: 2 }, { day: 18, booked: 12 },
-        { day: 21, booked: 7 }, { day: 22, booked: 13 }, { day: 23, disabled: 'Closed' }, { day: 24, booked: 4 }, { day: 25, booked: 8 },
-        { day: 28, booked: 0 }, { day: 29, booked: 11 }, { day: 30, booked: 6 }, null, null
-      ];
-
-      const rosterByDay = {
-        14: [
-          ['Ava Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'],
-          ['Leo Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'],
-          ['Nora Smith', 'Casey Smith', 'casey@example.com', 'RB-1048'],
-          ['Mira Patel', 'Priya Patel', 'priya@example.com', 'RB-1051'],
-          ['Anish Patel', 'Priya Patel', 'priya@example.com', 'RB-1051'],
-          ['Maya Lee', 'Taylor Lee', 'taylor@example.com', 'RB-1056']
-        ],
-        15: [['Sofia Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061'], ['Eli Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061']],
-        16: [['Ava Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'], ['Nora Smith', 'Casey Smith', 'casey@example.com', 'RB-1048'], ['Olivia Thompson', 'Morgan Thompson', 'morgan@example.com', 'RB-1064']],
-        17: [['Mira Patel', 'Priya Patel', 'priya@example.com', 'RB-1051'], ['Anish Patel', 'Priya Patel', 'priya@example.com', 'RB-1051']],
-        18: [['Leo Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'], ['Maya Lee', 'Taylor Lee', 'taylor@example.com', 'RB-1056']],
-        21: [['Nora Smith', 'Casey Smith', 'casey@example.com', 'RB-1048'], ['Sofia Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061']],
-        22: [['Maya Lee', 'Taylor Lee', 'taylor@example.com', 'RB-1056'], ['Olivia Thompson', 'Morgan Thompson', 'morgan@example.com', 'RB-1064']],
-        24: [['Sofia Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061'], ['Eli Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061'], ['Noah Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061']],
-        25: [['Ava Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'], ['Leo Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042']],
-        29: [['Mira Patel', 'Priya Patel', 'priya@example.com', 'RB-1051']],
-        30: [['Nora Smith', 'Casey Smith', 'casey@example.com', 'RB-1048']]
-      };
-
-      navButtons.forEach(button => button.addEventListener('click', () => {
-        const view = button.dataset.view;
-        navButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-        billingView.hidden = view !== 'billing';
-        scheduleView.hidden = view !== 'schedule';
-      }));
-
-      reportButtons.forEach(button => button.addEventListener('click', () => {
-        const report = button.dataset.report;
-        reportButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-        chargesTable.hidden = report !== 'charges';
-        familiesTable.hidden = report !== 'families';
-        reportHeading.textContent = report === 'charges' ? 'Charges by date' : 'Family totals';
-        reportCaption.textContent = report === 'charges' ? 'One family charge for each service date' : 'One row per family for the selected period';
-        rowCount.textContent = report === 'charges' ? '8 charges' : '5 families';
-        feedback.textContent = report === 'charges' ? 'Each charge shows the rate used on that date.' : 'Update Sent and Paid status directly in the final column.';
-      }));
-
-      root.querySelectorAll('.rb-billing-status').forEach(select => select.addEventListener('change', event => {
-        const family = event.currentTarget.getAttribute('aria-label').replace(' billing status', '');
-        const statusClass = { Sent: 'rb-sent', Paid: 'rb-paid', Waived: 'rb-late' }[event.currentTarget.value] || '';
-        root.querySelectorAll('#rb-charges-table tbody tr').forEach(row => {
-          if (row.cells[1].textContent !== family) return;
-          const badge = row.querySelector('.rb-status');
-          badge.className = `rb-status ${statusClass}`.trim();
-          badge.textContent = event.currentTarget.value;
-        });
-        feedback.textContent = `${family} marked ${event.currentTarget.value}. The included charges were updated together.`;
-      }));
-
-      root.querySelector('#rb-export').addEventListener('click', event => {
-        event.currentTarget.textContent = 'CSV ready';
-        feedback.textContent = 'The current report view is ready to download as a CSV.';
-      });
-
-      function showDay(day) {
-        const roster = rosterByDay[day.day] || [];
-        const open = 14 - day.booked;
-        dayTitle.textContent = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(`2026-09-${String(day.day).padStart(2, '0')}T12:00:00Z`));
-        bookedCount.textContent = `${day.booked} of 14`;
-        capacityDots.setAttribute('aria-label', `${day.booked} booked and ${open} open spots`);
-        capacityDots.innerHTML = Array.from({ length: 14 }, (_, index) => `<i class="${index >= day.booked ? 'is-open' : ''}" aria-hidden="true"></i>`).join('');
-        rosterList.innerHTML = '';
-        roster.forEach(([child, parent, email, reference]) => {
-          const row = document.createElement('div');
-          row.className = 'rb-roster-row';
-          const childName = document.createElement('strong');
-          childName.textContent = child;
-          const booking = document.createElement('b');
-          booking.textContent = reference;
-          const contact = document.createElement('span');
-          contact.textContent = `${parent} · ${email}`;
-          row.append(childName, booking, contact);
-          rosterList.append(row);
-        });
-        if (!roster.length) {
-          const empty = document.createElement('div');
-          empty.className = 'rb-roster-row';
-          empty.textContent = 'No children signed up yet.';
-          rosterList.append(empty);
-        }
-        rosterNote.textContent = roster.length < day.booked ? `Showing ${roster.length} of ${day.booked} children.` : `${day.booked} ${day.booked === 1 ? 'child' : 'children'} signed up.`;
-        scheduleCalendar.querySelectorAll('.rb-day').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.day) === day.day)));
-      }
-
-      scheduleDays.forEach(day => {
-        if (!day) {
-          const blank = document.createElement('span');
-          blank.className = 'rb-day rb-blank';
-          blank.setAttribute('aria-hidden', 'true');
-          scheduleCalendar.append(blank);
-          return;
-        }
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'rb-day';
-        button.dataset.day = String(day.day);
-        const label = day.disabled || (day.booked === 14 ? 'Full' : `${14 - day.booked} open`);
-        button.innerHTML = `<span class="rb-day-top"><strong class="rb-day-number">${day.day}</strong>${day.disabled ? '' : `<span class="rb-day-count">${day.booked}/14</span>`}</span><span class="rb-day-label">${label}</span>`;
-        button.disabled = Boolean(day.disabled);
-        button.classList.toggle('is-full', day.booked === 14);
-        button.setAttribute('aria-label', `September ${day.day}, ${label}`);
-        button.setAttribute('aria-pressed', 'false');
-        if (!day.disabled) button.addEventListener('click', () => showDay(day));
-        scheduleCalendar.append(button);
-      });
-
-      showDay(scheduleDays.find(day => day?.day === 14));
-    })();
-  </script>
+  <script type="module" src="/staff-dashboard.js"></script>
 </div>

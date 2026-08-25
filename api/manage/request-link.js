@@ -31,6 +31,8 @@ export default async function handler(request, response) {
     json(response, 200, { message: genericMessage });
   } catch (error) {
     console.error('manage_link_failed', error?.details || error?.message);
-    json(response, 503, { error: 'email_unavailable', message: 'Email is temporarily unavailable. Please try again shortly.' });
+    // Deliberately match the response for unknown and authorized emails so a
+    // provider or database outage cannot reveal which families have bookings.
+    json(response, 200, { message: genericMessage });
   }
 }

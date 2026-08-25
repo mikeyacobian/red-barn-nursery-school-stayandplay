@@ -23,11 +23,16 @@ export default async function handler(request, response) {
         p_expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString()
       });
       if (link?.send) {
+        const confirmation = await rpc('get_stay_play_booking_confirmation', {
+          p_booking_id: result.bookingId
+        });
         await sendBookingConfirmationEmail({
           to: link.email,
           parentName: link.parentName,
           confirmationCode: result.confirmationCode,
           bookingId: result.bookingId,
+          lines: confirmation?.lines || [],
+          addedChargeCents: Number(confirmation?.addedChargeCents ?? result.estimatedAddedChargeCents ?? 0),
           manageUrl: `${appUrl(request)}/manage.html#token=${encodeURIComponent(token)}`
         });
         emailSent = true;

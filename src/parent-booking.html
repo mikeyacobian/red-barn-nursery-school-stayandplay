@@ -1,7 +1,7 @@
 <div id="rb-calendar-booking">
-  <section class="rb-shell" aria-label="Red Barn Stay and Play booking preview">
+  <section class="rb-shell" aria-label="Red Barn Stay and Play booking">
     <header class="rb-header">
-      <a class="rb-brand" href="#" aria-label="Red Barn Nursery School home">
+      <a class="rb-brand" href="/" aria-label="Red Barn Nursery School Stay and Play home">
         <span class="rb-logo" aria-hidden="true">
           <svg viewBox="0 0 64 64">
             <circle cx="32" cy="32" r="29"></circle>
@@ -10,12 +10,7 @@
         </span>
         <span><strong>RED BARN</strong><small>NURSERY SCHOOL</small></span>
       </a>
-      <nav class="rb-nav" aria-label="Main navigation">
-        <a href="#" class="is-active">Programs</a>
-        <a href="#">About Us</a>
-        <a href="#">Admissions</a>
-      </nav>
-      <a class="rb-help" href="manage.html">Manage booking</a>
+      <a class="rb-help" href="/manage.html">Manage booking</a>
     </header>
 
     <main class="rb-main">
@@ -46,7 +41,7 @@
 
           <div class="rb-children-heading">
             <h3>Children</h3>
-            <span id="rb-child-count">2</span>
+            <span id="rb-child-count">0</span>
           </div>
           <div class="rb-child-list" id="rb-child-list"></div>
           <button class="rb-add-child" id="rb-add-child" type="button"><b aria-hidden="true">+</b>Add another child</button>
@@ -81,7 +76,7 @@
             <span><i class="rb-dot rb-dot-booked" aria-hidden="true"></i>Booked</span>
             <span>Each date has 14 spots · names stay private</span>
           </div>
-          <p class="rb-status" id="rb-status" aria-live="polite">Everyone is selected. Calendar changes apply to both children.</p>
+          <p class="rb-status" id="rb-status" aria-live="polite">Add your child’s name, then choose dates.</p>
         </section>
       </div>
 
@@ -89,11 +84,11 @@
 
       <section class="rb-booking-summary" aria-label="Booking summary">
         <div class="rb-summary-copy">
-          <p id="rb-summary-line" aria-live="polite">4 child-spots across 3 dates</p>
-          <strong id="rb-summary-price">$175 added to your school bill</strong>
+          <p id="rb-summary-line" aria-live="polite">0 child-spots across 0 dates</p>
+          <strong id="rb-summary-price">Choose at least one date</strong>
         </div>
         <div class="rb-selected-days" id="rb-selected-days" aria-label="Selected dates and children"></div>
-        <button class="rb-review-button" id="rb-review-button" type="button">Review booking</button>
+        <button class="rb-review-button" id="rb-review-button" type="button" disabled>Review booking</button>
       </section>
     </main>
 
@@ -105,7 +100,7 @@
         </div>
         <p class="rb-review-family" id="rb-review-family"></p>
         <div class="rb-review-list" id="rb-review-list"></div>
-        <div class="rb-review-total"><span>Estimated school bill</span><strong id="rb-review-total">$175</strong></div>
+        <div class="rb-review-total"><span>Estimated school bill</span><strong id="rb-review-total">$0</strong></div>
         <p class="rb-billing-note"><strong>No payment is due now.</strong> Availability is checked once more when you confirm.</p>
         <p class="rb-status" id="rb-confirm-status" aria-live="polite"></p>
         <button class="rb-confirm" id="rb-confirm-booking" type="button">Confirm reservation</button>
@@ -140,11 +135,8 @@
     #rb-calendar-booking .rb-logo { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 50%; background: var(--rb-red); color: #fff; }
     #rb-calendar-booking .rb-logo svg { width: 43px; height: 43px; }
     #rb-calendar-booking .rb-logo circle, #rb-calendar-booking .rb-logo path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    #rb-calendar-booking .rb-nav { display: flex; align-items: center; gap: 23px; flex: 1; }
-    #rb-calendar-booking .rb-nav a { padding: 7px 0 5px; border-bottom: 1px solid transparent; color: var(--rb-ink); font-size: 13px; font-weight: 700; text-decoration: none; }
-    #rb-calendar-booking .rb-nav a.is-active { border-color: var(--rb-ink); }
     #rb-calendar-booking .rb-help, #rb-calendar-booking .rb-review-button, #rb-calendar-booking .rb-confirm { border: 0; border-radius: 999px; background: var(--rb-red); color: #fff; font-weight: 800; cursor: pointer; }
-    #rb-calendar-booking .rb-help { padding: 11px 16px; font-size: 10px; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; }
+    #rb-calendar-booking .rb-help { margin-left: auto; padding: 11px 16px; font-size: 10px; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; }
     #rb-calendar-booking .rb-main { padding: 24px clamp(15px, 3.5vw, 32px) 27px; }
     #rb-calendar-booking .rb-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
     #rb-calendar-booking .rb-kicker { margin: 0 0 6px; color: var(--rb-red); font-size: 10px; font-weight: 900; letter-spacing: .14em; }
@@ -306,6 +298,7 @@
       let backendReady = false;
       let currentMonthIndex = 0;
       let monthKeys = ['2026-09'];
+      let reviewReturnFocus = null;
 
       const fallbackDayData = [
         null,
@@ -318,19 +311,19 @@
         { date: '2026-09-09', day: 9, unavailable: 'Session not open' },
         { date: '2026-09-10', day: 10, unavailable: 'Session not open' },
         { date: '2026-09-11', day: 11, unavailable: 'Session not open' },
-        { date: '2026-09-14', day: 14, spots: 9 },
-        { date: '2026-09-15', day: 15, spots: 0 },
-        { date: '2026-09-16', day: 16, spots: 4 },
-        { date: '2026-09-17', day: 17, spots: 12 },
-        { date: '2026-09-18', day: 18, spots: 2 },
-        { date: '2026-09-21', day: 21, spots: 7 },
-        { date: '2026-09-22', day: 22, spots: 1 },
-        { date: '2026-09-23', day: 23, unavailable: 'School closed' },
-        { date: '2026-09-24', day: 24, spots: 10 },
-        { date: '2026-09-25', day: 25, spots: 6 },
-        { date: '2026-09-28', day: 28, spots: 14 },
-        { date: '2026-09-29', day: 29, spots: 3 },
-        { date: '2026-09-30', day: 30, spots: 8 },
+        { date: '2026-09-14', day: 14, unavailable: 'Availability unavailable' },
+        { date: '2026-09-15', day: 15, unavailable: 'Availability unavailable' },
+        { date: '2026-09-16', day: 16, unavailable: 'Availability unavailable' },
+        { date: '2026-09-17', day: 17, unavailable: 'Availability unavailable' },
+        { date: '2026-09-18', day: 18, unavailable: 'Availability unavailable' },
+        { date: '2026-09-21', day: 21, unavailable: 'Availability unavailable' },
+        { date: '2026-09-22', day: 22, unavailable: 'Availability unavailable' },
+        { date: '2026-09-23', day: 23, unavailable: 'Availability unavailable' },
+        { date: '2026-09-24', day: 24, unavailable: 'Availability unavailable' },
+        { date: '2026-09-25', day: 25, unavailable: 'Availability unavailable' },
+        { date: '2026-09-28', day: 28, unavailable: 'Availability unavailable' },
+        { date: '2026-09-29', day: 29, unavailable: 'Availability unavailable' },
+        { date: '2026-09-30', day: 30, unavailable: 'Availability unavailable' },
         null,
         null
       ];
@@ -341,6 +334,10 @@
 
       function namedChildren() {
         return children.filter(child => child.name.trim());
+      }
+
+      function updateChildCount() {
+        childCount.textContent = String(namedChildren().length);
       }
 
       function childName(id) {
@@ -444,8 +441,9 @@
           updateMonth();
         } catch (error) {
           backendReady = false;
-          liveStatus.innerHTML = '<i aria-hidden="true"></i>Preview availability';
-          status.textContent = 'The live booking service is not connected yet. You can still explore this preview.';
+          liveStatus.innerHTML = '<i aria-hidden="true"></i>Availability unavailable';
+          status.textContent = 'Live availability could not be loaded. Please refresh before choosing dates.';
+          updateMonth();
         }
       }
 
@@ -472,6 +470,7 @@
           input.placeholder = `Child ${index + 1} full name`;
           input.addEventListener('input', event => {
             child.name = event.target.value;
+            updateChildCount();
             renderTargets();
             updateCalendar();
             updateSummary();
@@ -488,7 +487,7 @@
           row.append(number, input, remove);
           childList.append(row);
         });
-        childCount.textContent = String(namedChildren().length);
+        updateChildCount();
         addChildButton.disabled = children.length >= 6;
       }
 
@@ -682,8 +681,39 @@
         confirmStatus.textContent = '';
         confirmBooking.disabled = false;
         confirmBooking.textContent = 'Confirm reservation';
+        reviewReturnFocus = document.activeElement;
         backdrop.hidden = false;
         closeReview.focus();
+      }
+
+      function closeReviewModal() {
+        if (backdrop.hidden) return;
+        backdrop.hidden = true;
+        const target = reviewReturnFocus instanceof HTMLElement ? reviewReturnFocus : reviewButton;
+        reviewReturnFocus = null;
+        target.focus();
+      }
+
+      function handleReviewKeydown(event) {
+        if (backdrop.hidden) return;
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closeReviewModal();
+          return;
+        }
+        if (event.key !== 'Tab') return;
+        const controls = [...backdrop.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+          .filter(control => !control.hidden);
+        if (!controls.length) return;
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
 
       async function submitBooking() {
@@ -722,17 +752,15 @@
       nextMonth.addEventListener('click', () => {
         if (currentMonthIndex < monthKeys.length - 1) { currentMonthIndex += 1; updateMonth(); }
       });
-      closeReview.addEventListener('click', () => {
-        backdrop.hidden = true;
-        reviewButton.focus();
-      });
+      closeReview.addEventListener('click', closeReviewModal);
       backdrop.addEventListener('click', event => {
-        if (event.target === backdrop) closeReview.click();
+        if (event.target === backdrop) closeReviewModal();
       });
+      document.addEventListener('keydown', handleReviewKeydown);
 
       renderChildren();
       renderTargets();
-      buildCalendar();
+      updateMonth();
       updateSummary();
       loadAvailability();
     })();

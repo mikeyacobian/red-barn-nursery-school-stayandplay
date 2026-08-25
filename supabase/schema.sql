@@ -749,3 +749,644 @@ on conflict (service_date) do update set
   session_id = excluded.session_id,
   capacity = excluded.capacity,
   updated_at = now();
+
+-- Passwordless staff access for the Red Barn Stay & Play dashboard.
+-- Browser roles have no access; Vercel server functions use the service role.
+
+create table if not exists public.stay_play_staff_members (
+  id bigint generated always as identity primary key,
+  email extensions.citext not null unique,
+  display_name text,
+  role text not null default 'staff' check (role in ('staff', 'admin')),
+  active boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  check (position('@' in email::text) > 1),
+  check (display_name is null or length(btrim(display_name)) between 1 and 160)
+);
+
+create table if not exists public.stay_play_staff_login_links (
+  id bigint generated always as identity primary key,
+  staff_member_id bigint not null references public.stay_play_staff_members(id) on delete cascade,
+  token_hash bytea not null unique,
+  expires_at timestamptz not null,
+  used_at timestamptz,
+  revoked_at timestamptz,
+  created_at timestamptz not null default now(),
+  check (octet_length(token_hash) = 32),
+  check (expires_at > created_at)
+);
+
+create index if not exists stay_play_staff_login_links_staff_created_idx
+  on public.stay_play_staff_login_links (staff_member_id, created_at desc);
+
+create index if not exists stay_play_staff_login_links_active_expiry_idx
+  on public.stay_play_staff_login_links (expires_at)
+  where used_at is null and revoked_at is null;
+
+create table if not exists public.stay_play_staff_sessions (
+  id bigint generated always as identity primary key,
+  staff_member_id bigint not null references public.stay_play_staff_members(id) on delete cascade,
+  token_hash bytea not null unique,
+  expires_at timestamptz not null,
+  last_seen_at timestamptz,
+  revoked_at timestamptz,
+  created_at timestamptz not null default now(),
+  check (octet_length(token_hash) = 32),
+  check (expires_at > created_at)
+);
+
+create index if not exists stay_play_staff_sessions_staff_created_idx
+  on public.stay_play_staff_sessions (staff_member_id, created_at desc);
+
+create index if not exists stay_play_staff_sessions_active_expiry_idx
+  on public.stay_play_staff_sessions (expires_at)
+  where revoked_at is null;
+
+alter table public.stay_play_staff_members enable row level security;
+alter table public.stay_play_staff_login_links enable row level security;
+alter table public.stay_play_staff_sessions enable row level security;
+
+revoke all on public.stay_play_staff_members from public, anon, authenticated;
+revoke all on public.stay_play_staff_login_links from public, anon, authenticated;
+revoke all on public.stay_play_staff_sessions from public, anon, authenticated;
+grant select, insert, update, delete on public.stay_play_staff_members to service_role;
+grant select, insert, update, delete on public.stay_play_staff_login_links to service_role;
+grant select, insert, update, delete on public.stay_play_staff_sessions to service_role;
+grant usage, select on sequence public.stay_play_staff_members_id_seq to service_role;
+grant usage, select on sequence public.stay_play_staff_login_links_id_seq to service_role;
+grant usage, select on sequence public.stay_play_staff_sessions_id_seq to service_role;
+
+create or replace function public.issue_stay_play_staff_link(
+  p_email text,
+  p_token_hash_hex text,
+  p_expires_at timestamptz
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_staff public.stay_play_staff_members%rowtype;
+  v_link_id bigint;
+begin
+  if p_token_hash_hex !~ '^[0-9a-f]{64}$'
+     or p_expires_at <= now()
+     or p_expires_at > now() + interval '1 hour' then
+    raise exception 'Invalid staff link parameters.';
+  end if;
+
+  select * into v_staff
+  from public.stay_play_staff_members
+  where email = lower(btrim(coalesce(p_email, '')))::extensions.citext
+    and active = true;
+
+  if not found then
+    return null;
+  end if;
+
+  if exists (
+    select 1
+    from public.stay_play_staff_login_links
+    where staff_member_id = v_staff.id
+      and created_at > now() - interval '60 seconds'
+  ) then
+    return jsonb_build_object('send', false, 'reason', 'rate_limited');
+  end if;
+
+  update public.stay_play_staff_login_links
+  set revoked_at = now()
+  where staff_member_id = v_staff.id
+    and used_at is null
+    and revoked_at is null
+    and expires_at > now();
+
+  insert into public.stay_play_staff_login_links (staff_member_id, token_hash, expires_at)
+  values (v_staff.id, decode(p_token_hash_hex, 'hex'), p_expires_at)
+  returning id into v_link_id;
+
+  return jsonb_build_object(
+    'send', true,
+    'staffMemberId', v_staff.id,
+    'displayName', v_staff.display_name,
+    'email', v_staff.email::text,
+    'role', v_staff.role,
+    'staffLinkId', v_link_id
+  );
+end;
+$$;
+
+create or replace function public.redeem_stay_play_staff_link(
+  p_token_hash_hex text,
+  p_session_hash_hex text,
+  p_session_expires_at timestamptz
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_link record;
+  v_session_id bigint;
+begin
+  if p_token_hash_hex !~ '^[0-9a-f]{64}$'
+     or p_session_hash_hex !~ '^[0-9a-f]{64}$'
+     or p_session_expires_at <= now()
+     or p_session_expires_at > now() + interval '30 days' then
+    return null;
+  end if;
+
+  select
+    l.id as link_id,
+    l.staff_member_id,
+    s.display_name,
+    s.email::text as email,
+    s.role
+  into v_link
+  from public.stay_play_staff_login_links l
+  join public.stay_play_staff_members s on s.id = l.staff_member_id
+  where l.token_hash = decode(p_token_hash_hex, 'hex')
+    and l.used_at is null
+    and l.revoked_at is null
+    and l.expires_at > now()
+    and s.active = true
+  for update of l;
+
+  if not found then
+    return null;
+  end if;
+
+  update public.stay_play_staff_login_links
+  set used_at = now()
+  where id = v_link.link_id;
+
+  insert into public.stay_play_staff_sessions (staff_member_id, token_hash, expires_at, last_seen_at)
+  values (
+    v_link.staff_member_id,
+    decode(p_session_hash_hex, 'hex'),
+    p_session_expires_at,
+    now()
+  )
+  returning id into v_session_id;
+
+  return jsonb_build_object(
+    'authenticated', true,
+    'sessionId', v_session_id,
+    'staffMemberId', v_link.staff_member_id,
+    'displayName', v_link.display_name,
+    'email', v_link.email,
+    'role', v_link.role
+  );
+end;
+$$;
+
+create or replace function public.get_stay_play_staff_session(p_session_hash_hex text)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_session record;
+begin
+  if p_session_hash_hex !~ '^[0-9a-f]{64}$' then
+    return null;
+  end if;
+
+  select
+    ss.id as session_id,
+    sm.id as staff_member_id,
+    sm.display_name,
+    sm.email::text as email,
+    sm.role,
+    ss.expires_at
+  into v_session
+  from public.stay_play_staff_sessions ss
+  join public.stay_play_staff_members sm on sm.id = ss.staff_member_id
+  where ss.token_hash = decode(p_session_hash_hex, 'hex')
+    and ss.revoked_at is null
+    and ss.expires_at > now()
+    and sm.active = true;
+
+  if not found then
+    return null;
+  end if;
+
+  update public.stay_play_staff_sessions
+  set last_seen_at = now()
+  where id = v_session.session_id;
+
+  return jsonb_build_object(
+    'authenticated', true,
+    'sessionId', v_session.session_id,
+    'staffMemberId', v_session.staff_member_id,
+    'displayName', v_session.display_name,
+    'email', v_session.email,
+    'role', v_session.role,
+    'expiresAt', v_session.expires_at
+  );
+end;
+$$;
+
+create or replace function public.revoke_stay_play_staff_session(p_session_hash_hex text)
+returns boolean
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if p_session_hash_hex !~ '^[0-9a-f]{64}$' then
+    return false;
+  end if;
+
+  update public.stay_play_staff_sessions
+  set revoked_at = coalesce(revoked_at, now())
+  where token_hash = decode(p_session_hash_hex, 'hex');
+
+  return found;
+end;
+$$;
+
+revoke all on function public.issue_stay_play_staff_link(text, text, timestamptz) from public, anon, authenticated;
+revoke all on function public.redeem_stay_play_staff_link(text, text, timestamptz) from public, anon, authenticated;
+revoke all on function public.get_stay_play_staff_session(text) from public, anon, authenticated;
+revoke all on function public.revoke_stay_play_staff_session(text) from public, anon, authenticated;
+grant execute on function public.issue_stay_play_staff_link(text, text, timestamptz) to service_role;
+grant execute on function public.redeem_stay_play_staff_link(text, text, timestamptz) to service_role;
+grant execute on function public.get_stay_play_staff_session(text) to service_role;
+grant execute on function public.revoke_stay_play_staff_session(text) to service_role;
+
+-- Live staff operations and authoritative confirmation-email details.
+-- All functions are server-only and invoked by Vercel after staff-session validation.
+
+alter table public.stay_play_family_statements
+  drop constraint if exists stay_play_family_statements_status_check;
+
+alter table public.stay_play_family_statements
+  add constraint stay_play_family_statements_status_check
+  check (status in ('ready', 'sent', 'paid', 'waived'));
+
+create unique index if not exists stay_play_billing_runs_period_unique_idx
+  on public.stay_play_billing_runs (period_start, period_end);
+
+create or replace function public.get_stay_play_booking_confirmation(p_booking_id bigint)
+returns jsonb
+language sql
+security invoker
+set search_path = ''
+as $$
+  with target as (
+    select b.id as booking_id, b.family_id
+    from public.stay_play_bookings b
+    where b.id = p_booking_id
+  ), selected_days as (
+    select
+      pd.id as program_day_id,
+      pd.service_date,
+      t.family_id,
+      count(*)::integer as selected_child_count,
+      array_agg(c.full_name::text order by c.full_name::text) as children
+    from target t
+    join public.stay_play_booking_items bi on bi.booking_id = t.booking_id
+    join public.stay_play_children c on c.id = bi.child_id
+    join public.stay_play_program_days pd on pd.id = bi.program_day_id
+    where bi.status in ('booked', 'late_cancelled')
+    group by pd.id, t.family_id
+  ), family_counts as (
+    select
+      sd.*,
+      count(all_items.id)::integer as family_child_count,
+      count(all_items.id) filter (where all_items.booking_id <> p_booking_id)::integer as previous_child_count,
+      max(s.single_child_rate_cents)::integer as single_rate_cents,
+      max(s.sibling_rate_cents)::integer as sibling_rate_cents
+    from selected_days sd
+    join public.stay_play_sessions s on true
+    join public.stay_play_program_days pd on pd.id = sd.program_day_id and pd.session_id = s.id
+    join public.stay_play_bookings family_booking on family_booking.family_id = sd.family_id
+    join public.stay_play_booking_items all_items
+      on all_items.booking_id = family_booking.id
+     and all_items.program_day_id = sd.program_day_id
+     and all_items.status in ('booked', 'late_cancelled')
+    group by sd.program_day_id, sd.service_date, sd.family_id, sd.selected_child_count, sd.children
+  ), lines as (
+    select
+      service_date,
+      selected_child_count,
+      children,
+      family_child_count,
+      case when family_child_count = 1 then single_rate_cents else sibling_rate_cents end as family_day_rate_cents,
+      greatest(
+        (case when family_child_count = 1 then single_rate_cents else sibling_rate_cents end)
+        - (case when previous_child_count = 0 then 0 when previous_child_count = 1 then single_rate_cents else sibling_rate_cents end),
+        0
+      )::integer as added_charge_cents
+    from family_counts
+  )
+  select jsonb_build_object(
+    'lines', coalesce((
+      select jsonb_agg(jsonb_build_object(
+        'serviceDate', service_date,
+        'selectedChildCount', selected_child_count,
+        'children', children,
+        'familyChildCount', family_child_count,
+        'familyDayRateCents', family_day_rate_cents,
+        'addedChargeCents', added_charge_cents
+      ) order by service_date)
+      from lines
+    ), '[]'::jsonb),
+    'addedChargeCents', coalesce((select sum(added_charge_cents) from lines), 0)
+  );
+$$;
+
+create or replace function public.get_stay_play_staff_schedule(p_start_date date, p_end_date date)
+returns jsonb
+language sql
+security invoker
+set search_path = ''
+as $$
+  with days as (
+    select
+      pd.id as program_day_id,
+      pd.service_date,
+      s.name as session_name,
+      s.start_time,
+      s.end_time,
+      pd.capacity,
+      count(bi.id) filter (where bi.status = 'booked') as booked_count,
+      pd.capacity - count(bi.id) filter (where bi.status = 'booked') as open_count,
+      pd.booking_enabled,
+      pd.closure_note
+    from public.stay_play_program_days pd
+    join public.stay_play_sessions s on s.id = pd.session_id
+    left join public.stay_play_booking_items bi on bi.program_day_id = pd.id
+    where pd.service_date between p_start_date and p_end_date
+    group by pd.id, s.id
+  )
+  select coalesce(jsonb_agg(jsonb_build_object(
+    'programDayId', program_day_id,
+    'serviceDate', service_date,
+    'sessionName', session_name,
+    'startTime', start_time,
+    'endTime', end_time,
+    'capacity', capacity,
+    'bookedCount', booked_count,
+    'openCount', open_count,
+    'bookingEnabled', booking_enabled,
+    'closureNote', closure_note
+  ) order by service_date), '[]'::jsonb)
+  from days;
+$$;
+
+create or replace function public.get_stay_play_staff_roster(p_service_date date)
+returns jsonb
+language sql
+security invoker
+set search_path = ''
+as $$
+  select coalesce(jsonb_agg(jsonb_build_object(
+    'bookingItemId', bi.id,
+    'childName', c.full_name::text,
+    'parentName', f.parent_name,
+    'email', f.email::text,
+    'confirmationCode', b.confirmation_code
+  ) order by c.full_name::text), '[]'::jsonb)
+  from public.stay_play_booking_items bi
+  join public.stay_play_bookings b on b.id = bi.booking_id
+  join public.stay_play_families f on f.id = b.family_id
+  join public.stay_play_children c on c.id = bi.child_id
+  join public.stay_play_program_days pd on pd.id = bi.program_day_id
+  where pd.service_date = p_service_date
+    and bi.status = 'booked';
+$$;
+
+create or replace function public.get_stay_play_staff_billing(p_start_date date, p_end_date date)
+returns jsonb
+language sql
+security invoker
+set search_path = ''
+as $$
+  with selected_run as (
+    select br.id
+    from public.stay_play_billing_runs br
+    where br.period_start = p_start_date and br.period_end = p_end_date
+    limit 1
+  ), lines as (
+    select
+      bl.family_id,
+      bl.parent_name,
+      bl.email,
+      bl.service_date,
+      bl.child_count,
+      bl.children,
+      bl.rate_cents,
+      case when bl.child_count = 1 then 1 else 2 end as rate_number,
+      coalesce(fs.status, 'ready') as status
+    from public.stay_play_billing_lines bl
+    left join selected_run sr on true
+    left join public.stay_play_family_statements fs
+      on fs.billing_run_id = sr.id and fs.family_id = bl.family_id
+    where bl.service_date between p_start_date and p_end_date
+  ), families as (
+    select
+      family_id,
+      parent_name,
+      email,
+      count(*)::integer as billable_days,
+      sum(child_count)::integer as child_spots,
+      count(*) filter (where rate_number = 1)::integer as single_rate_days,
+      count(*) filter (where rate_number = 2)::integer as sibling_rate_days,
+      sum(rate_cents)::integer as total_cents,
+      max(status) as status
+    from lines
+    group by family_id, parent_name, email
+  )
+  select jsonb_build_object(
+    'periodStart', p_start_date,
+    'periodEnd', p_end_date,
+    'lines', coalesce((select jsonb_agg(jsonb_build_object(
+      'familyId', family_id,
+      'parentName', parent_name,
+      'email', email,
+      'serviceDate', service_date,
+      'childCount', child_count,
+      'children', children,
+      'rateNumber', rate_number,
+      'rateCents', rate_cents,
+      'status', status
+    ) order by service_date, parent_name) from lines), '[]'::jsonb),
+    'families', coalesce((select jsonb_agg(jsonb_build_object(
+      'familyId', family_id,
+      'parentName', parent_name,
+      'email', email,
+      'billableDays', billable_days,
+      'childSpots', child_spots,
+      'singleRateDays', single_rate_days,
+      'siblingRateDays', sibling_rate_days,
+      'totalCents', total_cents,
+      'status', status
+    ) order by parent_name) from families), '[]'::jsonb),
+    'totalCents', coalesce((select sum(total_cents) from families), 0),
+    'familyCount', (select count(*) from families),
+    'childSpots', coalesce((select sum(child_spots) from families), 0)
+  );
+$$;
+
+create or replace function public.set_stay_play_staff_billing_status(
+  p_period_start date,
+  p_period_end date,
+  p_family_id bigint,
+  p_status text
+)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+declare
+  v_run_id bigint;
+  v_statement_id bigint;
+  v_total_cents integer;
+begin
+  if p_period_end < p_period_start
+     or p_status not in ('ready', 'sent', 'paid', 'waived') then
+    raise exception 'Invalid billing status request.';
+  end if;
+
+  select coalesce(sum(bl.rate_cents), 0)::integer
+  into v_total_cents
+  from public.stay_play_billing_lines bl
+  where bl.family_id = p_family_id
+    and bl.service_date between p_period_start and p_period_end;
+
+  if v_total_cents = 0 then
+    raise exception 'No billable reservations exist for this family and period.';
+  end if;
+
+  insert into public.stay_play_billing_runs (name, period_start, period_end)
+  values (
+    to_char(p_period_start, 'Mon DD, YYYY') || '–' || to_char(p_period_end, 'Mon DD, YYYY'),
+    p_period_start,
+    p_period_end
+  )
+  on conflict (period_start, period_end) do update set name = excluded.name
+  returning id into v_run_id;
+
+  insert into public.stay_play_family_statements (
+    billing_run_id, family_id, total_cents, status, sent_at, paid_at, updated_at
+  ) values (
+    v_run_id,
+    p_family_id,
+    v_total_cents,
+    p_status,
+    case when p_status in ('sent', 'paid') then now() else null end,
+    case when p_status = 'paid' then now() else null end,
+    now()
+  )
+  on conflict (billing_run_id, family_id) do update set
+    total_cents = excluded.total_cents,
+    status = excluded.status,
+    sent_at = case
+      when excluded.status in ('sent', 'paid') then coalesce(public.stay_play_family_statements.sent_at, now())
+      else null
+    end,
+    paid_at = case
+      when excluded.status = 'paid' then coalesce(public.stay_play_family_statements.paid_at, now())
+      else null
+    end,
+    updated_at = now()
+  returning id into v_statement_id;
+
+  delete from public.stay_play_statement_items where statement_id = v_statement_id;
+
+  insert into public.stay_play_statement_items (
+    statement_id, program_day_id, child_count, rate_cents, booking_item_ids
+  )
+  select
+    v_statement_id,
+    pd.id,
+    count(*)::smallint,
+    case when count(*) = 1 then max(s.single_child_rate_cents) else max(s.sibling_rate_cents) end,
+    array_agg(bi.id order by bi.id)
+  from public.stay_play_booking_items bi
+  join public.stay_play_bookings b on b.id = bi.booking_id
+  join public.stay_play_program_days pd on pd.id = bi.program_day_id
+  join public.stay_play_sessions s on s.id = pd.session_id
+  where b.family_id = p_family_id
+    and pd.service_date between p_period_start and p_period_end
+    and bi.status in ('booked', 'late_cancelled')
+  group by pd.id;
+
+  return jsonb_build_object(
+    'familyId', p_family_id,
+    'status', p_status,
+    'totalCents', v_total_cents,
+    'statementId', v_statement_id
+  );
+end;
+$$;
+
+create or replace function public.set_stay_play_staff_day(
+  p_service_date date,
+  p_booking_enabled boolean,
+  p_closure_note text default null
+)
+returns jsonb
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+declare
+  v_day public.stay_play_program_days%rowtype;
+  v_booked_count integer;
+begin
+  select * into v_day
+  from public.stay_play_program_days
+  where service_date = p_service_date
+  for update;
+
+  if not found then
+    raise exception 'Program day not found.';
+  end if;
+
+  select count(*)::integer into v_booked_count
+  from public.stay_play_booking_items
+  where program_day_id = v_day.id and status = 'booked';
+
+  if not p_booking_enabled and v_booked_count > 0 then
+    raise exception 'This day has active bookings. Contact those families before closing it.';
+  end if;
+
+  update public.stay_play_program_days
+  set booking_enabled = p_booking_enabled,
+      closure_note = case
+        when p_booking_enabled then null
+        else coalesce(nullif(btrim(p_closure_note), ''), 'School closed')
+      end,
+      updated_at = now()
+  where id = v_day.id
+  returning * into v_day;
+
+  return jsonb_build_object(
+    'serviceDate', v_day.service_date,
+    'bookingEnabled', v_day.booking_enabled,
+    'closureNote', v_day.closure_note,
+    'bookedCount', v_booked_count
+  );
+end;
+$$;
+
+revoke all on function public.get_stay_play_booking_confirmation(bigint) from public, anon, authenticated;
+revoke all on function public.get_stay_play_staff_schedule(date, date) from public, anon, authenticated;
+revoke all on function public.get_stay_play_staff_roster(date) from public, anon, authenticated;
+revoke all on function public.get_stay_play_staff_billing(date, date) from public, anon, authenticated;
+revoke all on function public.set_stay_play_staff_billing_status(date, date, bigint, text) from public, anon, authenticated;
+revoke all on function public.set_stay_play_staff_day(date, boolean, text) from public, anon, authenticated;
+
+grant execute on function public.get_stay_play_booking_confirmation(bigint) to service_role;
+grant execute on function public.get_stay_play_staff_schedule(date, date) to service_role;
+grant execute on function public.get_stay_play_staff_roster(date) to service_role;
+grant execute on function public.get_stay_play_staff_billing(date, date) to service_role;
+grant execute on function public.set_stay_play_staff_billing_status(date, date, bigint, text) to service_role;
+grant execute on function public.set_stay_play_staff_day(date, boolean, text) to service_role;

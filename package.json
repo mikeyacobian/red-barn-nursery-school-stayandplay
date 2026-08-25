@@ -7,7 +7,13 @@
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test",
-    "check": "node --check api/availability.js && node --check api/bookings.js && node --check api/manage/request-link.js && node --check api/manage/booking.js && node --check api/manage/cancel.js"
+    "build:pages": "node scripts/build-static-pages.mjs",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "test:browser": "playwright test",
+    "test:browser:list": "playwright test --list",
+    "check": "node scripts/build-static-pages.mjs --check && node --check scripts/build-static-pages.mjs && node --check scripts/test-server.mjs && node --check playwright.config.js && node --check staff-dashboard.js && node --check api/availability.js && node --check api/bookings.js && node --check api/manage/request-link.js && node --check api/manage/booking.js && node --check api/manage/cancel.js && node --check api/staff/request-link.js && node --check api/staff/redeem.js && node --check api/staff/session.js && node --check api/staff/logout.js && node --check api/staff/schedule.js && node --check api/staff/roster.js && node --check api/staff/billing.js && node --check api/staff/billing-status.js && node --check api/staff/day-settings.js && node --check api/_lib/staff-auth.js && node --check api/_lib/params.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
   }
 }

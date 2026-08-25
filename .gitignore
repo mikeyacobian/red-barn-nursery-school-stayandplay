@@ -3,5 +3,9 @@
 .env.*
 !.env.example
 .vercel
+supabase/.temp/
 node_modules
 npm-debug.log*
+playwright-report/
+test-results/
+.env*
