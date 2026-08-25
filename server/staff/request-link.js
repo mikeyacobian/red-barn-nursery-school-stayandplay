@@ -1,7 +1,7 @@
-import { json, requireMethod, bodyOf } from '../_lib/http.js';
-import { sendStaffLoginEmail } from '../_lib/email.js';
-import { rpc } from '../_lib/supabase.js';
-import { appUrl, hashSecureToken, newSecureToken } from '../_lib/tokens.js';
+import { json, requireMethod, bodyOf } from '../../api/_lib/http.js';
+import { sendStaffLoginEmail } from '../../api/_lib/email.js';
+import { rpc } from '../../api/_lib/supabase.js';
+import { appUrl, hashSecureToken, newSecureToken } from '../../api/_lib/tokens.js';
 
 const genericMessage = 'If that email is authorized for staff access, a secure link is on its way.';
 

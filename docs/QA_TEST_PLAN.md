@@ -360,7 +360,7 @@ This section contains the implementation context needed to resume after conversa
 - `api/manage/request-link.js`: the catch currently emits 503.
 - `manage.html`: displays the non-200 error verbatim.
 - `api/_lib/email.js`: Resend request and sender configuration.
-- The new `api/staff/request-link.js` is a useful pattern: it logs internal failures but always returns the same generic browser response.
+- The staff request-link handler in `server/staff/request-link.js` is a useful pattern: it logs internal failures but always returns the same generic browser response.
 
 **Recommended fix direction**
 
@@ -384,7 +384,7 @@ This section contains the implementation context needed to resume after conversa
 
 **Relevant code**
 
-- `staff-login.html`; `api/staff/*`; `api/_lib/staff-auth.js`; `api/_lib/tokens.js`; `api/_lib/email.js`; `staff.html`; `vercel.json`.
+- `staff-login.html`; `api/staff.js`; `server/staff/*`; `api/_lib/staff-auth.js`; `api/_lib/tokens.js`; `api/_lib/email.js`; `staff.html`; `vercel.json`.
 - `supabase/migrations/20260825045423_staff_auth.sql` and the appended staff-auth section of `supabase/schema.sql`.
 
 **Remaining work and guardrails**

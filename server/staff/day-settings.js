@@ -1,7 +1,7 @@
-import { bodyOf, json, requireMethod } from '../_lib/http.js';
-import { isoDate } from '../_lib/params.js';
-import { requireStaffSession } from '../_lib/staff-auth.js';
-import { rpc } from '../_lib/supabase.js';
+import { bodyOf, json, requireMethod } from '../../api/_lib/http.js';
+import { isoDate } from '../../api/_lib/params.js';
+import { requireStaffSession } from '../../api/_lib/staff-auth.js';
+import { rpc } from '../../api/_lib/supabase.js';
 
 export default async function handler(request, response) {
   if (!requireMethod(request, response, ['POST'])) return;

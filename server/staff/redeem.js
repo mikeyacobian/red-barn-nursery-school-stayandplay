@@ -1,7 +1,7 @@
-import { json, requireMethod, bodyOf } from '../_lib/http.js';
-import { rpc } from '../_lib/supabase.js';
-import { STAFF_SESSION_SECONDS, setStaffSessionCookie, publicStaff } from '../_lib/staff-auth.js';
-import { hashSecureToken, newSecureToken } from '../_lib/tokens.js';
+import { json, requireMethod, bodyOf } from '../../api/_lib/http.js';
+import { rpc } from '../../api/_lib/supabase.js';
+import { STAFF_SESSION_SECONDS, setStaffSessionCookie, publicStaff } from '../../api/_lib/staff-auth.js';
+import { hashSecureToken, newSecureToken } from '../../api/_lib/tokens.js';
 
 export default async function handler(request, response) {
   if (!requireMethod(request, response, ['POST'])) return;

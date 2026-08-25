@@ -5,6 +5,9 @@
       "maxDuration": 10
     }
   },
+  "rewrites": [
+    { "source": "/api/staff/:action", "destination": "/api/staff?action=:action" }
+  ],
   "headers": [
     {
       "source": "/staff-login.html",
