@@ -1,0 +1,1743 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Red Barn Stay and Play — Parent Booking</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Red Barn Stay and Play — Parent Booking" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Red Barn Stay and Play — Parent Booking&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: var(--border-radius-lg, 12.5px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress {
+  display: flex;
+  height: 6px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 6px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: 16px !important;
+  height: 16px !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;rb-calendar-booking&quot;&gt;
+  &lt;section class=&quot;rb-shell&quot; aria-label=&quot;Red Barn Stay and Play booking preview&quot;&gt;
+    &lt;header class=&quot;rb-header&quot;&gt;
+      &lt;a class=&quot;rb-brand&quot; href=&quot;#&quot; aria-label=&quot;Red Barn Nursery School home&quot;&gt;
+        &lt;span class=&quot;rb-logo&quot; aria-hidden=&quot;true&quot;&gt;
+          &lt;svg viewBox=&quot;0 0 64 64&quot;&gt;
+            &lt;circle cx=&quot;32&quot; cy=&quot;32&quot; r=&quot;29&quot;&gt;&lt;/circle&gt;
+            &lt;path d=&quot;M17 29 32 17l15 12M21 27v21h22V27M25 48V34h14v14M25 34l14 14M39 34 25 48&quot;&gt;&lt;/path&gt;
+          &lt;/svg&gt;
+        &lt;/span&gt;
+        &lt;span&gt;&lt;strong&gt;RED BARN&lt;/strong&gt;&lt;small&gt;NURSERY SCHOOL&lt;/small&gt;&lt;/span&gt;
+      &lt;/a&gt;
+      &lt;nav class=&quot;rb-nav&quot; aria-label=&quot;Main navigation&quot;&gt;
+        &lt;a href=&quot;#&quot; class=&quot;is-active&quot;&gt;Programs&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;About Us&lt;/a&gt;
+        &lt;a href=&quot;#&quot;&gt;Admissions&lt;/a&gt;
+      &lt;/nav&gt;
+      &lt;button class=&quot;rb-help&quot; type=&quot;button&quot;&gt;Booking help&lt;/button&gt;
+    &lt;/header&gt;
+
+    &lt;main class=&quot;rb-main&quot;&gt;
+      &lt;div class=&quot;rb-hero&quot;&gt;
+        &lt;div&gt;
+          &lt;p class=&quot;rb-kicker&quot;&gt;STAY &amp;amp; PLAY · SESSION 1&lt;/p&gt;
+          &lt;h1&gt;Book Stay &amp;amp; Play&lt;/h1&gt;
+          &lt;p&gt;September 14–December 18 · Noon–2:00 PM&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;span class=&quot;rb-live&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Live availability&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;rb-workspace&quot;&gt;
+        &lt;aside class=&quot;rb-family&quot; aria-labelledby=&quot;rb-family-title&quot;&gt;
+          &lt;div class=&quot;rb-panel-heading&quot;&gt;
+            &lt;span class=&quot;rb-step&quot;&gt;1&lt;/span&gt;
+            &lt;div&gt;&lt;h2 id=&quot;rb-family-title&quot;&gt;Your family&lt;/h2&gt;&lt;p&gt;No account required&lt;/p&gt;&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;label class=&quot;rb-field&quot; for=&quot;rb-parent-name&quot;&gt;
+            &lt;span&gt;Parent or guardian name&lt;/span&gt;
+            &lt;input id=&quot;rb-parent-name&quot; type=&quot;text&quot; value=&quot;Jordan Miller&quot; autocomplete=&quot;name&quot; required&gt;
+          &lt;/label&gt;
+          &lt;label class=&quot;rb-field&quot; for=&quot;rb-parent-email&quot;&gt;
+            &lt;span&gt;Email&lt;/span&gt;
+            &lt;input id=&quot;rb-parent-email&quot; type=&quot;email&quot; value=&quot;jordan@example.com&quot; autocomplete=&quot;email&quot; required&gt;
+          &lt;/label&gt;
+
+          &lt;div class=&quot;rb-children-heading&quot;&gt;
+            &lt;h3&gt;Children&lt;/h3&gt;
+            &lt;span id=&quot;rb-child-count&quot;&gt;2&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;rb-child-list&quot; id=&quot;rb-child-list&quot;&gt;&lt;/div&gt;
+          &lt;button class=&quot;rb-add-child&quot; id=&quot;rb-add-child&quot; type=&quot;button&quot;&gt;&lt;b aria-hidden=&quot;true&quot;&gt;+&lt;/b&gt;Add another child&lt;/button&gt;
+        &lt;/aside&gt;
+
+        &lt;section class=&quot;rb-calendar-panel&quot; aria-labelledby=&quot;rb-calendar-title&quot;&gt;
+          &lt;div class=&quot;rb-calendar-heading&quot;&gt;
+            &lt;div class=&quot;rb-panel-heading&quot;&gt;
+              &lt;span class=&quot;rb-step&quot;&gt;2&lt;/span&gt;
+              &lt;div&gt;&lt;h2 id=&quot;rb-calendar-title&quot;&gt;Choose dates&lt;/h2&gt;&lt;p&gt;Weekdays only&lt;/p&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;rb-month-nav&quot; aria-label=&quot;Calendar navigation&quot;&gt;
+              &lt;button type=&quot;button&quot; disabled aria-label=&quot;Previous month&quot;&gt;‹&lt;/button&gt;
+              &lt;strong&gt;September 2026&lt;/strong&gt;
+              &lt;button type=&quot;button&quot; aria-label=&quot;Next month&quot;&gt;›&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;rb-assign-bar&quot;&gt;
+            &lt;span&gt;Select dates for&lt;/span&gt;
+            &lt;div class=&quot;rb-targets&quot; id=&quot;rb-targets&quot; aria-label=&quot;Choose which children to schedule&quot;&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;p class=&quot;rb-helper&quot;&gt;Use &lt;strong&gt;Everyone&lt;/strong&gt; for shared dates, then choose one child to add or remove individual days.&lt;/p&gt;
+
+          &lt;div class=&quot;rb-weekdays&quot; aria-hidden=&quot;true&quot;&gt;
+            &lt;span&gt;MON&lt;/span&gt;&lt;span&gt;TUE&lt;/span&gt;&lt;span&gt;WED&lt;/span&gt;&lt;span&gt;THU&lt;/span&gt;&lt;span&gt;FRI&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;rb-calendar&quot; id=&quot;rb-calendar&quot;&gt;&lt;/div&gt;
+
+          &lt;div class=&quot;rb-legend&quot; aria-label=&quot;Availability legend&quot;&gt;
+            &lt;span&gt;&lt;i class=&quot;rb-dot rb-dot-open&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Open spot&lt;/span&gt;
+            &lt;span&gt;&lt;i class=&quot;rb-dot rb-dot-booked&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Booked&lt;/span&gt;
+            &lt;span&gt;Each date has 14 spots · names stay private&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;p class=&quot;rb-status&quot; id=&quot;rb-status&quot; aria-live=&quot;polite&quot;&gt;Everyone is selected. Calendar changes apply to both children.&lt;/p&gt;
+        &lt;/section&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;rb-policy&quot;&gt;&lt;span aria-hidden=&quot;true&quot;&gt;◷&lt;/span&gt;&lt;p&gt;&lt;strong&gt;Book or cancel by noon the day before.&lt;/strong&gt; Later cancellations are still billed.&lt;/p&gt;&lt;/div&gt;
+
+      &lt;section class=&quot;rb-booking-summary&quot; aria-label=&quot;Booking summary&quot;&gt;
+        &lt;div class=&quot;rb-summary-copy&quot;&gt;
+          &lt;p id=&quot;rb-summary-line&quot; aria-live=&quot;polite&quot;&gt;4 child-spots across 3 dates&lt;/p&gt;
+          &lt;strong id=&quot;rb-summary-price&quot;&gt;$175 added to your school bill&lt;/strong&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;rb-selected-days&quot; id=&quot;rb-selected-days&quot; aria-label=&quot;Selected dates and children&quot;&gt;&lt;/div&gt;
+        &lt;button class=&quot;rb-review-button&quot; id=&quot;rb-review-button&quot; type=&quot;button&quot;&gt;Review booking&lt;/button&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+
+    &lt;div class=&quot;rb-review-backdrop&quot; id=&quot;rb-review-backdrop&quot; hidden&gt;
+      &lt;section class=&quot;rb-review&quot; role=&quot;dialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;rb-review-title&quot;&gt;
+        &lt;div class=&quot;rb-review-heading&quot;&gt;
+          &lt;div&gt;&lt;p class=&quot;rb-kicker&quot;&gt;REVIEW&lt;/p&gt;&lt;h2 id=&quot;rb-review-title&quot;&gt;Your Stay &amp;amp; Play booking&lt;/h2&gt;&lt;/div&gt;
+          &lt;button id=&quot;rb-close-review&quot; type=&quot;button&quot; aria-label=&quot;Close review&quot;&gt;×&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;p class=&quot;rb-review-family&quot; id=&quot;rb-review-family&quot;&gt;&lt;/p&gt;
+        &lt;div class=&quot;rb-review-list&quot; id=&quot;rb-review-list&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;rb-review-total&quot;&gt;&lt;span&gt;Estimated school bill&lt;/span&gt;&lt;strong id=&quot;rb-review-total&quot;&gt;$175&lt;/strong&gt;&lt;/div&gt;
+        &lt;p class=&quot;rb-billing-note&quot;&gt;&lt;strong&gt;No payment is due now.&lt;/strong&gt; Availability is checked once more when you confirm.&lt;/p&gt;
+        &lt;button class=&quot;rb-confirm&quot; type=&quot;button&quot;&gt;Confirm reservation&lt;/button&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;style&gt;
+    #rb-calendar-booking {
+      --rb-red: #e61717;
+      --rb-red-deep: #c81010;
+      --rb-ink: #111111;
+      --rb-muted: #696965;
+      --rb-line: #deded9;
+      --rb-soft: #f5f4f0;
+      --rb-paper: #ffffff;
+      --rb-pale-red: #fff0f0;
+      --rb-booked: #343431;
+      color-scheme: light;
+      width: 100%;
+      color: var(--rb-ink);
+      font-family: Arial, Helvetica, ui-sans-serif, sans-serif;
+    }
+    #rb-calendar-booking * { box-sizing: border-box; }
+    #rb-calendar-booking button, #rb-calendar-booking input { font: inherit; }
+    #rb-calendar-booking .rb-shell { position: relative; overflow: hidden; width: 100%; background: var(--rb-paper); border: 1px solid var(--rb-line); border-radius: 18px; }
+    #rb-calendar-booking .rb-header { display: flex; align-items: center; gap: clamp(18px, 4vw, 40px); padding: 13px clamp(16px, 4vw, 32px); border-bottom: 1px solid var(--rb-line); background: var(--rb-paper); }
+    #rb-calendar-booking .rb-brand { display: inline-flex; align-items: center; gap: 9px; color: var(--rb-ink); text-decoration: none; }
+    #rb-calendar-booking .rb-brand &gt; span:last-child { display: grid; gap: 1px; }
+    #rb-calendar-booking .rb-brand strong { font-size: 12px; letter-spacing: .1em; }
+    #rb-calendar-booking .rb-brand small { font-size: 7px; font-weight: 800; letter-spacing: .14em; }
+    #rb-calendar-booking .rb-logo { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 50%; background: var(--rb-red); color: #fff; }
+    #rb-calendar-booking .rb-logo svg { width: 43px; height: 43px; }
+    #rb-calendar-booking .rb-logo circle, #rb-calendar-booking .rb-logo path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    #rb-calendar-booking .rb-nav { display: flex; align-items: center; gap: 23px; flex: 1; }
+    #rb-calendar-booking .rb-nav a { padding: 7px 0 5px; border-bottom: 1px solid transparent; color: var(--rb-ink); font-size: 13px; font-weight: 700; text-decoration: none; }
+    #rb-calendar-booking .rb-nav a.is-active { border-color: var(--rb-ink); }
+    #rb-calendar-booking .rb-help, #rb-calendar-booking .rb-review-button, #rb-calendar-booking .rb-confirm { border: 0; border-radius: 999px; background: var(--rb-red); color: #fff; font-weight: 800; cursor: pointer; }
+    #rb-calendar-booking .rb-help { padding: 11px 16px; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+    #rb-calendar-booking .rb-main { padding: 24px clamp(15px, 3.5vw, 32px) 27px; }
+    #rb-calendar-booking .rb-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+    #rb-calendar-booking .rb-kicker { margin: 0 0 6px; color: var(--rb-red); font-size: 10px; font-weight: 900; letter-spacing: .14em; }
+    #rb-calendar-booking h1 { margin: 0; font-size: clamp(28px, 5vw, 40px); line-height: 1; letter-spacing: -.04em; }
+    #rb-calendar-booking .rb-hero p:last-child { margin: 8px 0 0; color: var(--rb-muted); font-size: 12px; }
+    #rb-calendar-booking .rb-live { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border-radius: 999px; background: var(--rb-soft); font-size: 11px; font-weight: 800; white-space: nowrap; }
+    #rb-calendar-booking .rb-live i { width: 8px; height: 8px; border-radius: 50%; background: var(--rb-red); }
+    #rb-calendar-booking .rb-workspace { display: grid; grid-template-columns: minmax(190px, .68fr) minmax(0, 1.5fr); gap: 17px; margin-top: 23px; align-items: start; }
+    #rb-calendar-booking .rb-family, #rb-calendar-booking .rb-calendar-panel { padding: 17px; border: 1px solid var(--rb-line); border-radius: 15px; background: var(--rb-paper); }
+    #rb-calendar-booking .rb-panel-heading { display: flex; align-items: center; gap: 9px; }
+    #rb-calendar-booking .rb-panel-heading h2 { margin: 0; font-size: 17px; letter-spacing: -.02em; }
+    #rb-calendar-booking .rb-panel-heading p { margin: 2px 0 0; color: var(--rb-muted); font-size: 10px; }
+    #rb-calendar-booking .rb-step { display: grid; place-items: center; width: 24px; height: 24px; flex: none; border-radius: 50%; background: var(--rb-red); color: #fff; font-size: 11px; font-weight: 900; }
+    #rb-calendar-booking .rb-field { display: grid; gap: 5px; margin-top: 13px; color: var(--rb-ink); font-size: 10px; font-weight: 800; }
+    #rb-calendar-booking .rb-field input { width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); outline-color: var(--rb-red); }
+    #rb-calendar-booking .rb-field input:focus { border-color: var(--rb-red); }
+    #rb-calendar-booking .rb-children-heading { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--rb-line); }
+    #rb-calendar-booking .rb-children-heading h3 { margin: 0; font-size: 13px; }
+    #rb-calendar-booking .rb-children-heading span { display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--rb-soft); color: var(--rb-muted); font-size: 10px; font-weight: 800; }
+    #rb-calendar-booking .rb-child-list { display: grid; gap: 8px; margin-top: 9px; }
+    #rb-calendar-booking .rb-child-row { display: grid; grid-template-columns: 25px minmax(0, 1fr) 27px; gap: 7px; align-items: center; }
+    #rb-calendar-booking .rb-child-number { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--rb-pale-red); color: var(--rb-red-deep); font-size: 10px; font-weight: 900; }
+    #rb-calendar-booking .rb-child-row input { width: 100%; min-width: 0; padding: 9px 10px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); outline-color: var(--rb-red); }
+    #rb-calendar-booking .rb-remove-child { display: grid; place-items: center; width: 27px; height: 27px; border: 0; border-radius: 50%; background: transparent; color: var(--rb-muted); font-size: 18px; cursor: pointer; }
+    #rb-calendar-booking .rb-remove-child:disabled { opacity: 0; cursor: default; }
+    #rb-calendar-booking .rb-add-child { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; padding: 0; border: 0; background: transparent; color: var(--rb-red-deep); font-size: 11px; font-weight: 800; cursor: pointer; }
+    #rb-calendar-booking .rb-add-child b { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: var(--rb-red); color: #fff; font-size: 17px; line-height: 1; }
+    #rb-calendar-booking .rb-add-child:disabled { opacity: .45; cursor: not-allowed; }
+    #rb-calendar-booking .rb-calendar-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    #rb-calendar-booking .rb-month-nav { display: flex; align-items: center; gap: 8px; }
+    #rb-calendar-booking .rb-month-nav strong { min-width: 106px; text-align: center; font-size: 11px; }
+    #rb-calendar-booking .rb-month-nav button, #rb-calendar-booking #rb-close-review { display: grid; place-items: center; width: 29px; height: 29px; border: 1px solid var(--rb-line); border-radius: 50%; background: var(--rb-paper); color: var(--rb-ink); cursor: pointer; }
+    #rb-calendar-booking .rb-month-nav button:disabled { opacity: .35; cursor: default; }
+    #rb-calendar-booking .rb-assign-bar { display: flex; align-items: center; gap: 9px; margin-top: 14px; }
+    #rb-calendar-booking .rb-assign-bar &gt; span { flex: none; color: var(--rb-muted); font-size: 10px; font-weight: 800; }
+    #rb-calendar-booking .rb-targets { display: flex; flex-wrap: wrap; gap: 5px; }
+    #rb-calendar-booking .rb-target { padding: 6px 9px; border: 1px solid var(--rb-line); border-radius: 999px; background: var(--rb-paper); color: var(--rb-ink); font-size: 10px; font-weight: 800; cursor: pointer; }
+    #rb-calendar-booking .rb-target[aria-pressed=&quot;true&quot;] { border-color: var(--rb-red); background: var(--rb-red); color: #fff; }
+    #rb-calendar-booking .rb-helper { margin: 7px 0 11px; color: var(--rb-muted); font-size: 10px; line-height: 1.35; }
+    #rb-calendar-booking .rb-weekdays, #rb-calendar-booking .rb-calendar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+    #rb-calendar-booking .rb-weekdays { margin-bottom: 5px; }
+    #rb-calendar-booking .rb-weekdays span { text-align: center; color: var(--rb-muted); font-size: 8px; font-weight: 900; letter-spacing: .1em; }
+    #rb-calendar-booking .rb-day { position: relative; display: grid; align-content: start; gap: 5px; min-width: 0; min-height: 78px; padding: 7px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); text-align: left; cursor: pointer; }
+    #rb-calendar-booking .rb-day:hover:not(:disabled) { border-color: var(--rb-red); }
+    #rb-calendar-booking .rb-day.has-family { border-color: var(--rb-red); box-shadow: inset 0 0 0 1px var(--rb-red); }
+    #rb-calendar-booking .rb-day.is-active-child { background: var(--rb-pale-red); }
+    #rb-calendar-booking .rb-day:disabled { cursor: not-allowed; opacity: .43; background: var(--rb-soft); }
+    #rb-calendar-booking .rb-day.rb-blank { visibility: hidden; }
+    #rb-calendar-booking .rb-day-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 3px; }
+    #rb-calendar-booking .rb-day-number { font-size: 12px; font-weight: 900; }
+    #rb-calendar-booking .rb-family-count { padding: 2px 4px; border-radius: 999px; background: var(--rb-red); color: #fff; font-size: 7px; font-weight: 900; white-space: nowrap; }
+    #rb-calendar-booking .rb-spot-label { overflow: hidden; color: var(--rb-muted); font-size: 8px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+    #rb-calendar-booking .rb-day.is-low .rb-spot-label { color: var(--rb-red-deep); }
+    #rb-calendar-booking .rb-mini-map { display: grid; grid-template-columns: repeat(7, 6px); gap: 3px 2px; min-height: 15px; }
+    #rb-calendar-booking .rb-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; }
+    #rb-calendar-booking .rb-mini-map .rb-dot { width: 6px; height: 6px; }
+    #rb-calendar-booking .rb-dot-open { border: 1px solid var(--rb-red); background: transparent; }
+    #rb-calendar-booking .rb-dot-booked { background: var(--rb-booked); }
+    #rb-calendar-booking .rb-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; color: var(--rb-muted); font-size: 9px; }
+    #rb-calendar-booking .rb-legend span { display: inline-flex; align-items: center; gap: 5px; }
+    #rb-calendar-booking .rb-status { margin: 8px 0 0; min-height: 14px; color: var(--rb-red-deep); font-size: 10px; font-weight: 700; }
+    #rb-calendar-booking .rb-policy { display: flex; align-items: flex-start; gap: 9px; margin-top: 14px; padding: 10px 12px; border-left: 4px solid var(--rb-red); background: var(--rb-soft); }
+    #rb-calendar-booking .rb-policy span { color: var(--rb-red); }
+    #rb-calendar-booking .rb-policy p { margin: 0; font-size: 10px; line-height: 1.4; }
+    #rb-calendar-booking .rb-booking-summary { display: grid; grid-template-columns: auto minmax(180px, 1fr) auto; align-items: center; gap: 16px; margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--rb-ink); }
+    #rb-calendar-booking .rb-summary-copy p { margin: 0 0 3px; color: var(--rb-muted); font-size: 10px; }
+    #rb-calendar-booking .rb-summary-copy strong { font-size: 13px; }
+    #rb-calendar-booking .rb-selected-days { display: flex; flex-wrap: wrap; gap: 5px; }
+    #rb-calendar-booking .rb-selected-day { padding: 5px 7px; border-radius: 7px; background: var(--rb-soft); color: var(--rb-ink); font-size: 9px; white-space: nowrap; }
+    #rb-calendar-booking .rb-review-button { padding: 12px 17px; white-space: nowrap; }
+    #rb-calendar-booking .rb-review-button:disabled { opacity: .45; cursor: not-allowed; }
+    #rb-calendar-booking .rb-review-backdrop { position: absolute; inset: 0; z-index: 10; display: grid; align-items: end; background: rgba(0,0,0,.58); }
+    #rb-calendar-booking .rb-review-backdrop[hidden] { display: none; }
+    #rb-calendar-booking .rb-review { width: min(100%, 620px); max-height: 78%; overflow: auto; margin: 0 auto; padding: 24px 26px 28px; border-radius: 20px 20px 0 0; background: var(--rb-paper); color: var(--rb-ink); box-shadow: 0 -20px 65px rgba(0,0,0,.26); }
+    #rb-calendar-booking .rb-review-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+    #rb-calendar-booking .rb-review-heading h2 { margin: 0; font-size: 23px; }
+    #rb-calendar-booking #rb-close-review { font-size: 20px; }
+    #rb-calendar-booking .rb-review-family { margin: 13px 0; color: var(--rb-muted); font-size: 11px; }
+    #rb-calendar-booking .rb-review-list { border-top: 1px solid var(--rb-line); }
+    #rb-calendar-booking .rb-review-row { display: flex; justify-content: space-between; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--rb-line); }
+    #rb-calendar-booking .rb-review-row span { color: var(--rb-muted); font-size: 11px; line-height: 1.4; }
+    #rb-calendar-booking .rb-review-row strong { font-size: 12px; }
+    #rb-calendar-booking .rb-review-total { display: flex; justify-content: space-between; align-items: baseline; padding-top: 15px; }
+    #rb-calendar-booking .rb-review-total span { color: var(--rb-muted); font-size: 11px; }
+    #rb-calendar-booking .rb-review-total strong { font-size: 22px; }
+    #rb-calendar-booking .rb-billing-note { margin: 14px 0; padding: 11px; background: var(--rb-soft); font-size: 10px; line-height: 1.4; }
+    #rb-calendar-booking .rb-billing-note strong { color: var(--rb-red-deep); }
+    #rb-calendar-booking .rb-confirm { width: 100%; padding: 13px; }
+    @media (max-width: 680px) {
+      #rb-calendar-booking .rb-nav { display: none; }
+      #rb-calendar-booking .rb-brand { flex: 1; }
+      #rb-calendar-booking .rb-workspace { grid-template-columns: 1fr; }
+      #rb-calendar-booking .rb-family { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 10px; }
+      #rb-calendar-booking .rb-family .rb-panel-heading, #rb-calendar-booking .rb-children-heading, #rb-calendar-booking .rb-child-list, #rb-calendar-booking .rb-add-child { grid-column: 1 / -1; }
+      #rb-calendar-booking .rb-booking-summary { grid-template-columns: 1fr auto; }
+      #rb-calendar-booking .rb-selected-days { grid-column: 1 / -1; grid-row: 2; }
+    }
+    @media (max-width: 450px) {
+      #rb-calendar-booking .rb-header { padding: 11px 13px; }
+      #rb-calendar-booking .rb-brand &gt; span:last-child { display: none; }
+      #rb-calendar-booking .rb-help { padding: 9px 11px; }
+      #rb-calendar-booking .rb-main { padding: 20px 11px 23px; }
+      #rb-calendar-booking .rb-hero { display: grid; }
+      #rb-calendar-booking .rb-live { justify-self: start; }
+      #rb-calendar-booking .rb-family { display: block; }
+      #rb-calendar-booking .rb-calendar-panel { padding: 12px 8px; }
+      #rb-calendar-booking .rb-calendar-heading { display: grid; }
+      #rb-calendar-booking .rb-month-nav { justify-content: space-between; }
+      #rb-calendar-booking .rb-assign-bar { align-items: flex-start; flex-direction: column; }
+      #rb-calendar-booking .rb-day { min-height: 70px; padding: 5px 4px; }
+      #rb-calendar-booking .rb-mini-map { grid-template-columns: repeat(7, 4px); gap: 3px 1px; }
+      #rb-calendar-booking .rb-mini-map .rb-dot { width: 4px; height: 4px; }
+      #rb-calendar-booking .rb-family-count { font-size: 6px; padding: 2px 3px; }
+      #rb-calendar-booking .rb-spot-label { font-size: 7px; }
+      #rb-calendar-booking .rb-booking-summary { display: grid; grid-template-columns: 1fr; }
+      #rb-calendar-booking .rb-selected-days { grid-column: auto; grid-row: auto; }
+      #rb-calendar-booking .rb-review-button { width: 100%; }
+    }
+  &lt;/style&gt;
+
+  &lt;script&gt;
+    (() =&gt; {
+      const root = document.getElementById(&#x27;rb-calendar-booking&#x27;);
+      const childList = root.querySelector(&#x27;#rb-child-list&#x27;);
+      const childCount = root.querySelector(&#x27;#rb-child-count&#x27;);
+      const addChildButton = root.querySelector(&#x27;#rb-add-child&#x27;);
+      const targets = root.querySelector(&#x27;#rb-targets&#x27;);
+      const calendar = root.querySelector(&#x27;#rb-calendar&#x27;);
+      const status = root.querySelector(&#x27;#rb-status&#x27;);
+      const summaryLine = root.querySelector(&#x27;#rb-summary-line&#x27;);
+      const summaryPrice = root.querySelector(&#x27;#rb-summary-price&#x27;);
+      const selectedDays = root.querySelector(&#x27;#rb-selected-days&#x27;);
+      const reviewButton = root.querySelector(&#x27;#rb-review-button&#x27;);
+      const backdrop = root.querySelector(&#x27;#rb-review-backdrop&#x27;);
+      const closeReview = root.querySelector(&#x27;#rb-close-review&#x27;);
+      const reviewFamily = root.querySelector(&#x27;#rb-review-family&#x27;);
+      const reviewList = root.querySelector(&#x27;#rb-review-list&#x27;);
+      const reviewTotal = root.querySelector(&#x27;#rb-review-total&#x27;);
+      const parentName = root.querySelector(&#x27;#rb-parent-name&#x27;);
+      const parentEmail = root.querySelector(&#x27;#rb-parent-email&#x27;);
+
+      let children = [
+        { id: &#x27;child-1&#x27;, name: &#x27;Ava Miller&#x27; },
+        { id: &#x27;child-2&#x27;, name: &#x27;Leo Miller&#x27; }
+      ];
+      let activeTarget = &#x27;all&#x27;;
+      let nextChildNumber = 3;
+
+      const dayData = [
+        null,
+        { date: &#x27;2026-09-01&#x27;, day: 1, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-02&#x27;, day: 2, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-03&#x27;, day: 3, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-04&#x27;, day: 4, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-07&#x27;, day: 7, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-08&#x27;, day: 8, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-09&#x27;, day: 9, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-10&#x27;, day: 10, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-11&#x27;, day: 11, unavailable: &#x27;Session not open&#x27; },
+        { date: &#x27;2026-09-14&#x27;, day: 14, spots: 9 },
+        { date: &#x27;2026-09-15&#x27;, day: 15, spots: 0 },
+        { date: &#x27;2026-09-16&#x27;, day: 16, spots: 4 },
+        { date: &#x27;2026-09-17&#x27;, day: 17, spots: 12 },
+        { date: &#x27;2026-09-18&#x27;, day: 18, spots: 2 },
+        { date: &#x27;2026-09-21&#x27;, day: 21, spots: 7 },
+        { date: &#x27;2026-09-22&#x27;, day: 22, spots: 1 },
+        { date: &#x27;2026-09-23&#x27;, day: 23, unavailable: &#x27;School closed&#x27; },
+        { date: &#x27;2026-09-24&#x27;, day: 24, spots: 10 },
+        { date: &#x27;2026-09-25&#x27;, day: 25, spots: 6 },
+        { date: &#x27;2026-09-28&#x27;, day: 28, spots: 14 },
+        { date: &#x27;2026-09-29&#x27;, day: 29, spots: 3 },
+        { date: &#x27;2026-09-30&#x27;, day: 30, spots: 8 },
+        null,
+        null
+      ];
+
+      const assignments = new Map([
+        [&#x27;2026-09-14&#x27;, new Set([&#x27;child-1&#x27;, &#x27;child-2&#x27;])],
+        [&#x27;2026-09-16&#x27;, new Set([&#x27;child-1&#x27;])],
+        [&#x27;2026-09-18&#x27;, new Set([&#x27;child-2&#x27;])]
+      ]);
+
+      function namedChildren() {
+        return children.filter(child =&gt; child.name.trim());
+      }
+
+      function childName(id) {
+        return children.find(child =&gt; child.id === id)?.name.trim() || &#x27;Unnamed child&#x27;;
+      }
+
+      function shortName(child) {
+        return child.name.trim().split(/\s+/)[0] || `Child ${children.indexOf(child) + 1}`;
+      }
+
+      function formatDate(dateString) {
+        return new Intl.DateTimeFormat(&#x27;en-US&#x27;, { weekday: &#x27;short&#x27;, month: &#x27;short&#x27;, day: &#x27;numeric&#x27;, timeZone: &#x27;UTC&#x27; }).format(new Date(`${dateString}T12:00:00Z`));
+      }
+
+      function availabilityText(day) {
+        if (day.unavailable) return day.unavailable;
+        if (day.spots === 0) return &#x27;Full&#x27;;
+        if (day.spots === 1) return &#x27;Only 1 left&#x27;;
+        if (day.spots &lt;= 3) return `Only ${day.spots} left`;
+        return `${day.spots} open`;
+      }
+
+      function priceForCount(count) {
+        return count === 1 ? 50 : count &gt; 1 ? 75 : 0;
+      }
+
+      function renderChildren() {
+        childList.innerHTML = &#x27;&#x27;;
+        children.forEach((child, index) =&gt; {
+          const row = document.createElement(&#x27;div&#x27;);
+          row.className = &#x27;rb-child-row&#x27;;
+
+          const number = document.createElement(&#x27;span&#x27;);
+          number.className = &#x27;rb-child-number&#x27;;
+          number.textContent = String(index + 1);
+
+          const input = document.createElement(&#x27;input&#x27;);
+          input.type = &#x27;text&#x27;;
+          input.value = child.name;
+          input.setAttribute(&#x27;aria-label&#x27;, `Child ${index + 1} full name`);
+          input.placeholder = `Child ${index + 1} full name`;
+          input.addEventListener(&#x27;input&#x27;, event =&gt; {
+            child.name = event.target.value;
+            renderTargets();
+            updateCalendar();
+            updateSummary();
+          });
+
+          const remove = document.createElement(&#x27;button&#x27;);
+          remove.type = &#x27;button&#x27;;
+          remove.className = &#x27;rb-remove-child&#x27;;
+          remove.textContent = &#x27;×&#x27;;
+          remove.disabled = children.length === 1;
+          remove.setAttribute(&#x27;aria-label&#x27;, `Remove child ${index + 1}`);
+          remove.addEventListener(&#x27;click&#x27;, () =&gt; removeChild(child.id));
+
+          row.append(number, input, remove);
+          childList.append(row);
+        });
+        childCount.textContent = String(namedChildren().length);
+        addChildButton.disabled = children.length &gt;= 6;
+      }
+
+      function addChild() {
+        const id = `child-${nextChildNumber++}`;
+        children.push({ id, name: &#x27;&#x27; });
+        renderChildren();
+        renderTargets();
+        updateCalendar();
+        const inputs = childList.querySelectorAll(&#x27;input&#x27;);
+        inputs[inputs.length - 1].focus();
+        status.textContent = &#x27;New child added. Enter their name, then choose dates for them.&#x27;;
+      }
+
+      function removeChild(id) {
+        children = children.filter(child =&gt; child.id !== id);
+        assignments.forEach(set =&gt; set.delete(id));
+        if (activeTarget === id) activeTarget = &#x27;all&#x27;;
+        renderChildren();
+        renderTargets();
+        updateCalendar();
+        updateSummary();
+      }
+
+      function renderTargets() {
+        targets.innerHTML = &#x27;&#x27;;
+        const availableChildren = namedChildren();
+        const options = [{ id: &#x27;all&#x27;, label: `Everyone (${availableChildren.length})` }, ...availableChildren.map(child =&gt; ({ id: child.id, label: shortName(child) }))];
+        if (!options.some(option =&gt; option.id === activeTarget)) activeTarget = &#x27;all&#x27;;
+
+        options.forEach(option =&gt; {
+          const button = document.createElement(&#x27;button&#x27;);
+          button.type = &#x27;button&#x27;;
+          button.className = &#x27;rb-target&#x27;;
+          button.textContent = option.label;
+          button.setAttribute(&#x27;aria-pressed&#x27;, String(activeTarget === option.id));
+          button.addEventListener(&#x27;click&#x27;, () =&gt; {
+            activeTarget = option.id;
+            renderTargets();
+            updateCalendar();
+            status.textContent = activeTarget === &#x27;all&#x27;
+              ? `Everyone is selected. Calendar changes apply to all ${availableChildren.length} children.`
+              : `${childName(activeTarget)} is selected. Calendar changes apply only to this child.`;
+          });
+          targets.append(button);
+        });
+      }
+
+      function targetIds() {
+        return activeTarget === &#x27;all&#x27; ? namedChildren().map(child =&gt; child.id) : [activeTarget];
+      }
+
+      function canAddTargets(day, assigned, ids) {
+        const missing = ids.filter(id =&gt; !assigned.has(id));
+        return assigned.size + missing.length &lt;= day.spots;
+      }
+
+      function toggleDate(day) {
+        const ids = targetIds();
+        if (!ids.length) {
+          status.textContent = &#x27;Add at least one child before selecting dates.&#x27;;
+          return;
+        }
+        const assigned = assignments.get(day.date) || new Set();
+        const allAssigned = ids.every(id =&gt; assigned.has(id));
+
+        if (allAssigned) {
+          ids.forEach(id =&gt; assigned.delete(id));
+          status.textContent = `${ids.length === 1 ? childName(ids[0]) : &#x27;Everyone&#x27;} removed from ${formatDate(day.date)}.`;
+        } else if (canAddTargets(day, assigned, ids)) {
+          ids.forEach(id =&gt; assigned.add(id));
+          status.textContent = `${ids.length === 1 ? childName(ids[0]) : &#x27;Everyone&#x27;} added to ${formatDate(day.date)}.`;
+        } else {
+          status.textContent = `${formatDate(day.date)} does not have enough spots for that selection.`;
+          return;
+        }
+
+        if (assigned.size) assignments.set(day.date, assigned);
+        else assignments.delete(day.date);
+        updateCalendar();
+        updateSummary();
+      }
+
+      function buildCalendar() {
+        calendar.innerHTML = &#x27;&#x27;;
+        dayData.forEach(day =&gt; {
+          if (!day) {
+            const blank = document.createElement(&#x27;span&#x27;);
+            blank.className = &#x27;rb-day rb-blank&#x27;;
+            blank.setAttribute(&#x27;aria-hidden&#x27;, &#x27;true&#x27;);
+            calendar.append(blank);
+            return;
+          }
+
+          const button = document.createElement(&#x27;button&#x27;);
+          button.type = &#x27;button&#x27;;
+          button.className = &#x27;rb-day&#x27;;
+          button.dataset.date = day.date;
+          button.innerHTML = `
+            &lt;span class=&quot;rb-day-top&quot;&gt;&lt;strong class=&quot;rb-day-number&quot;&gt;${day.day}&lt;/strong&gt;&lt;span class=&quot;rb-family-count&quot; hidden&gt;&lt;/span&gt;&lt;/span&gt;
+            &lt;span class=&quot;rb-spot-label&quot;&gt;${availabilityText(day)}&lt;/span&gt;
+            &lt;span class=&quot;rb-mini-map&quot;&gt;&lt;/span&gt;
+          `;
+          if (day.unavailable || day.spots === 0) button.disabled = true;
+          if (!day.unavailable) {
+            const map = button.querySelector(&#x27;.rb-mini-map&#x27;);
+            const booked = 14 - day.spots;
+            map.setAttribute(&#x27;role&#x27;, &#x27;img&#x27;);
+            map.setAttribute(&#x27;aria-label&#x27;, `${booked} booked and ${day.spots} open out of 14 spots`);
+            map.innerHTML = Array.from({ length: 14 }, (_, index) =&gt; `&lt;i class=&quot;rb-dot ${index &lt; booked ? &#x27;rb-dot-booked&#x27; : &#x27;rb-dot-open&#x27;}&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;`).join(&#x27;&#x27;);
+          }
+          button.addEventListener(&#x27;click&#x27;, () =&gt; toggleDate(day));
+          calendar.append(button);
+        });
+        updateCalendar();
+      }
+
+      function updateCalendar() {
+        const ids = targetIds();
+        dayData.filter(Boolean).forEach(day =&gt; {
+          const button = calendar.querySelector(`[data-date=&quot;${day.date}&quot;]`);
+          if (!button) return;
+          const assigned = assignments.get(day.date) || new Set();
+          [...assigned].forEach(id =&gt; {
+            if (!children.some(child =&gt; child.id === id)) assigned.delete(id);
+          });
+          const allTargetAssigned = ids.length &gt; 0 &amp;&amp; ids.every(id =&gt; assigned.has(id));
+          const canAdd = !day.unavailable &amp;&amp; day.spots &gt; 0 &amp;&amp; canAddTargets(day, assigned, ids);
+          button.classList.toggle(&#x27;has-family&#x27;, assigned.size &gt; 0);
+          button.classList.toggle(&#x27;is-active-child&#x27;, allTargetAssigned);
+          button.classList.toggle(&#x27;is-low&#x27;, !day.unavailable &amp;&amp; day.spots &gt; 0 &amp;&amp; day.spots &lt;= 3);
+          button.disabled = Boolean(day.unavailable) || day.spots === 0 || (!allTargetAssigned &amp;&amp; !canAdd);
+
+          const badge = button.querySelector(&#x27;.rb-family-count&#x27;);
+          badge.hidden = assigned.size === 0;
+          badge.textContent = `${assigned.size} ${assigned.size === 1 ? &#x27;kid&#x27; : &#x27;kids&#x27;}`;
+          const names = [...assigned].map(childName);
+          button.setAttribute(&#x27;aria-label&#x27;, `${formatDate(day.date)}, ${availabilityText(day)}${names.length ? `, selected for ${names.join(&#x27; and &#x27;)}` : &#x27;&#x27;}`);
+          button.setAttribute(&#x27;aria-pressed&#x27;, String(allTargetAssigned));
+        });
+      }
+
+      function bookedDates() {
+        return [...assignments.entries()].filter(([, set]) =&gt; set.size).sort(([a], [b]) =&gt; a.localeCompare(b));
+      }
+
+      function updateSummary() {
+        const dates = bookedDates();
+        const childSpots = dates.reduce((sum, [, set]) =&gt; sum + set.size, 0);
+        const total = dates.reduce((sum, [, set]) =&gt; sum + priceForCount(set.size), 0);
+        summaryLine.textContent = `${childSpots} child-${childSpots === 1 ? &#x27;spot&#x27; : &#x27;spots&#x27;} across ${dates.length} ${dates.length === 1 ? &#x27;date&#x27; : &#x27;dates&#x27;}`;
+        summaryPrice.textContent = dates.length ? `$${total} added to your school bill` : &#x27;Choose at least one date&#x27;;
+        reviewButton.disabled = !dates.length || !namedChildren().length || !parentName.value.trim() || !parentEmail.validity.valid;
+
+        selectedDays.innerHTML = &#x27;&#x27;;
+        dates.forEach(([date, set]) =&gt; {
+          const item = document.createElement(&#x27;span&#x27;);
+          item.className = &#x27;rb-selected-day&#x27;;
+          item.textContent = `${formatDate(date).replace(&#x27;,&#x27;, &#x27;&#x27;)} · ${[...set].map(id =&gt; shortName(children.find(child =&gt; child.id === id))).join(&#x27; + &#x27;)}`;
+          selectedDays.append(item);
+        });
+      }
+
+      function openReview() {
+        const dates = bookedDates();
+        const total = dates.reduce((sum, [, set]) =&gt; sum + priceForCount(set.size), 0);
+        reviewFamily.textContent = `${parentName.value.trim()} · ${parentEmail.value.trim()}`;
+        reviewList.innerHTML = &#x27;&#x27;;
+        dates.forEach(([date, set]) =&gt; {
+          const row = document.createElement(&#x27;div&#x27;);
+          row.className = &#x27;rb-review-row&#x27;;
+          const details = document.createElement(&#x27;span&#x27;);
+          details.textContent = `${formatDate(date)} · Noon–2:00 PM · ${[...set].map(childName).join(&#x27; and &#x27;)}`;
+          const price = document.createElement(&#x27;strong&#x27;);
+          price.textContent = `$${priceForCount(set.size)}`;
+          row.append(details, price);
+          reviewList.append(row);
+        });
+        reviewTotal.textContent = `$${total}`;
+        backdrop.hidden = false;
+        closeReview.focus();
+      }
+
+      addChildButton.addEventListener(&#x27;click&#x27;, addChild);
+      [parentName, parentEmail].forEach(input =&gt; input.addEventListener(&#x27;input&#x27;, updateSummary));
+      reviewButton.addEventListener(&#x27;click&#x27;, openReview);
+      closeReview.addEventListener(&#x27;click&#x27;, () =&gt; {
+        backdrop.hidden = true;
+        reviewButton.focus();
+      });
+      backdrop.addEventListener(&#x27;click&#x27;, event =&gt; {
+        if (event.target === backdrop) closeReview.click();
+      });
+
+      renderChildren();
+      renderTargets();
+      buildCalendar();
+      updateSummary();
+    })();
+  &lt;/script&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handleLeave = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>

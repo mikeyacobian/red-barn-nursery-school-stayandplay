@@ -1,0 +1,422 @@
+<div id="rb-staff-output">
+  <section class="rb-admin" aria-label="Red Barn Stay and Play staff dashboard preview">
+    <header class="rb-header">
+      <a class="rb-brand" href="#" aria-label="Red Barn Nursery School staff home">
+        <span class="rb-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="29"></circle>
+            <path d="M17 29 32 17l15 12M21 27v21h22V27M25 48V34h14v14M25 34l14 14M39 34 25 48"></path>
+          </svg>
+        </span>
+        <span><strong>RED BARN</strong><small>STAFF · STAY &amp; PLAY</small></span>
+      </a>
+      <nav class="rb-nav" aria-label="Staff navigation">
+        <button type="button" data-view="schedule" aria-pressed="true">Schedule</button>
+        <button type="button" data-view="billing" aria-pressed="false">Billing</button>
+      </nav>
+      <button class="rb-profile" type="button" aria-label="Staff account">MS</button>
+    </header>
+
+    <main class="rb-main">
+      <section class="rb-view" id="rb-billing-view" aria-labelledby="rb-billing-title" hidden>
+        <div class="rb-title-row">
+          <div>
+            <p class="rb-kicker">STAFF OUTPUT</p>
+            <h1 id="rb-billing-title">Billing report</h1>
+            <p>Review charges before sending them to BILL.com.</p>
+          </div>
+          <div class="rb-actions">
+            <button class="rb-secondary" id="rb-export" type="button">Download CSV</button>
+          </div>
+        </div>
+
+        <div class="rb-filters">
+          <label>Billing period
+            <select id="rb-period">
+              <option>Sep 14–Sep 30, 2026</option>
+              <option>October 2026</option>
+              <option>Custom range</option>
+            </select>
+          </label>
+          <label>Status
+            <select>
+              <option>Ready to bill</option>
+              <option>Already sent</option>
+              <option>Waived</option>
+              <option>All statuses</option>
+            </select>
+          </label>
+          <div class="rb-view-toggle" aria-label="Billing report view">
+            <button type="button" data-report="charges" aria-pressed="false">Charges by date</button>
+            <button type="button" data-report="families" aria-pressed="true">Family totals</button>
+          </div>
+        </div>
+
+        <div class="rb-stats" aria-label="Billing totals">
+          <div><span>Period total</span><strong>$475</strong></div>
+          <div><span>Families</span><strong>5</strong></div>
+          <div><span>Child-spots</span><strong>12</strong></div>
+        </div>
+
+        <div class="rb-report-head">
+          <div><h2 id="rb-report-heading">Family totals</h2><p id="rb-report-caption">One row per family for the selected period</p></div>
+          <span id="rb-row-count">5 families</span>
+        </div>
+
+        <div class="rb-table-wrap" id="rb-charges-table" hidden>
+          <table>
+            <thead><tr><th>Date</th><th>Family</th><th>Children</th><th class="rb-number">Spots</th><th class="rb-number">Rate #</th><th class="rb-money">Rate</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Sep 14</td><td>Jordan Miller</td><td>Ava, Leo</td><td class="rb-number">2</td><td class="rb-number">2</td><td class="rb-money">$75</td><td><span class="rb-status rb-sent">Sent</span></td></tr>
+              <tr><td>Sep 16</td><td>Jordan Miller</td><td>Ava</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status rb-sent">Sent</span></td></tr>
+              <tr><td>Sep 18</td><td>Jordan Miller</td><td>Leo</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status rb-sent">Sent</span></td></tr>
+              <tr><td>Sep 14</td><td>Casey Smith</td><td>Nora</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status">Ready</span></td></tr>
+              <tr><td>Sep 17</td><td>Priya Patel</td><td>Mira, Anish</td><td class="rb-number">2</td><td class="rb-number">2</td><td class="rb-money">$75</td><td><span class="rb-status rb-paid">Paid</span></td></tr>
+              <tr><td>Sep 21</td><td>Casey Smith</td><td>Nora</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status">Ready</span></td></tr>
+              <tr><td>Sep 22</td><td>Taylor Lee</td><td>Maya</td><td class="rb-number">1</td><td class="rb-number">1</td><td class="rb-money">$50</td><td><span class="rb-status">Ready</span></td></tr>
+              <tr><td>Sep 24</td><td>Elena Garcia</td><td>Sofia, Eli, Noah</td><td class="rb-number">3</td><td class="rb-number">2</td><td class="rb-money">$75</td><td><span class="rb-status">Ready</span></td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3">Period total</td><td class="rb-number">12</td><td></td><td class="rb-money">$475</td><td></td></tr></tfoot>
+          </table>
+        </div>
+
+        <div class="rb-table-wrap" id="rb-families-table">
+          <table>
+            <thead><tr><th>Family</th><th>Email</th><th class="rb-number">Dates</th><th class="rb-number">Child-spots</th><th>Rate mix</th><th class="rb-money">Total</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Jordan Miller</td><td>jordan@example.com</td><td class="rb-number">3</td><td class="rb-number">4</td><td>2 × #1 · 1 × #2</td><td class="rb-money">$175</td><td><select class="rb-billing-status" aria-label="Jordan Miller billing status"><option>Ready</option><option selected>Sent</option><option>Paid</option><option>Waived</option></select></td></tr>
+              <tr><td>Casey Smith</td><td>casey@example.com</td><td class="rb-number">2</td><td class="rb-number">2</td><td>2 × #1</td><td class="rb-money">$100</td><td><select class="rb-billing-status" aria-label="Casey Smith billing status"><option selected>Ready</option><option>Sent</option><option>Paid</option><option>Waived</option></select></td></tr>
+              <tr><td>Priya Patel</td><td>priya@example.com</td><td class="rb-number">1</td><td class="rb-number">2</td><td>1 × #2</td><td class="rb-money">$75</td><td><select class="rb-billing-status" aria-label="Priya Patel billing status"><option>Ready</option><option>Sent</option><option selected>Paid</option><option>Waived</option></select></td></tr>
+              <tr><td>Taylor Lee</td><td>taylor@example.com</td><td class="rb-number">1</td><td class="rb-number">1</td><td>1 × #1</td><td class="rb-money">$50</td><td><select class="rb-billing-status" aria-label="Taylor Lee billing status"><option selected>Ready</option><option>Sent</option><option>Paid</option><option>Waived</option></select></td></tr>
+              <tr><td>Elena Garcia</td><td>elena@example.com</td><td class="rb-number">1</td><td class="rb-number">3</td><td>1 × #2</td><td class="rb-money">$75</td><td><select class="rb-billing-status" aria-label="Elena Garcia billing status"><option selected>Ready</option><option>Sent</option><option>Paid</option><option>Waived</option></select></td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3">5 families</td><td class="rb-number">12</td><td></td><td class="rb-money">$475</td><td></td></tr></tfoot>
+          </table>
+        </div>
+
+        <div class="rb-rate-key">
+          <strong>Rate key</strong>
+          <span><b>#1</b> Single child · $50</span>
+          <span><b>#2</b> Two or more siblings · $75</span>
+        </div>
+        <p class="rb-billing-help">Change a family’s status here. Every charge included in that family total is updated together.</p>
+        <p class="rb-feedback" id="rb-feedback" aria-live="polite"></p>
+      </section>
+
+      <section class="rb-view" id="rb-schedule-view" aria-labelledby="rb-schedule-title">
+        <div class="rb-title-row">
+          <div>
+            <p class="rb-kicker">DAILY OPERATIONS</p>
+            <h1 id="rb-schedule-title">Schedule</h1>
+            <p>Select a day to see its roster and remaining spots.</p>
+          </div>
+          <div class="rb-month-nav" aria-label="Calendar navigation">
+            <button type="button" disabled aria-label="Previous month">‹</button>
+            <strong>September 2026</strong>
+            <button type="button" aria-label="Next month">›</button>
+          </div>
+        </div>
+
+        <div class="rb-schedule-layout">
+          <section class="rb-calendar-panel" aria-label="September Stay and Play schedule">
+            <div class="rb-weekdays" aria-hidden="true"><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span></div>
+            <div class="rb-calendar" id="rb-schedule-calendar"></div>
+            <div class="rb-calendar-key"><span><i></i>Has bookings</span><span><i class="is-full"></i>Full</span><span>Capacity: 14 children per day</span></div>
+          </section>
+
+          <aside class="rb-day-detail" aria-labelledby="rb-day-title">
+            <div class="rb-day-detail-head">
+              <div><p class="rb-kicker">SELECTED DAY</p><h2 id="rb-day-title">Monday, September 14</h2><span>Noon–2:00 PM</span></div>
+              <button class="rb-secondary" type="button">Print</button>
+            </div>
+            <div class="rb-capacity">
+              <span>Booked</span><strong id="rb-booked-count">11 of 14</strong>
+              <div class="rb-capacity-dots" id="rb-capacity-dots" aria-label="11 booked and 3 open spots"></div>
+            </div>
+            <div class="rb-roster-list" id="rb-roster-list"></div>
+            <p class="rb-more" id="rb-roster-note">Showing 6 of 11 children.</p>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <style>
+    #rb-staff-output {
+      --rb-red: #e61717;
+      --rb-red-deep: #c81010;
+      --rb-ink: #111111;
+      --rb-muted: #696965;
+      --rb-line: #deded9;
+      --rb-soft: #f5f4f0;
+      --rb-paper: #ffffff;
+      --rb-pale-red: #fff0f0;
+      color-scheme: light;
+      width: 100%;
+      color: var(--rb-ink);
+      font-family: Arial, Helvetica, ui-sans-serif, sans-serif;
+    }
+    #rb-staff-output * { box-sizing: border-box; }
+    #rb-staff-output button, #rb-staff-output select { font: inherit; }
+    #rb-staff-output .rb-admin { overflow: hidden; width: 100%; background: var(--rb-paper); border: 1px solid var(--rb-line); border-radius: 18px; }
+    #rb-staff-output .rb-header { display: flex; align-items: center; gap: clamp(18px, 4vw, 40px); padding: 13px clamp(15px, 4vw, 30px); border-bottom: 1px solid var(--rb-line); }
+    #rb-staff-output .rb-brand { display: inline-flex; align-items: center; gap: 9px; color: var(--rb-ink); text-decoration: none; }
+    #rb-staff-output .rb-brand > span:last-child { display: grid; gap: 1px; }
+    #rb-staff-output .rb-brand strong { font-size: 12px; letter-spacing: .1em; }
+    #rb-staff-output .rb-brand small { font-size: 7px; font-weight: 800; letter-spacing: .12em; }
+    #rb-staff-output .rb-logo { display: grid; place-items: center; width: 46px; height: 46px; flex: none; border-radius: 50%; background: var(--rb-red); color: #fff; }
+    #rb-staff-output .rb-logo svg { width: 41px; height: 41px; }
+    #rb-staff-output .rb-logo circle, #rb-staff-output .rb-logo path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    #rb-staff-output .rb-nav { display: flex; align-items: stretch; gap: 22px; align-self: stretch; flex: 1; }
+    #rb-staff-output .rb-nav button { padding: 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--rb-muted); font-size: 12px; font-weight: 800; cursor: pointer; }
+    #rb-staff-output .rb-nav button[aria-pressed="true"] { border-color: var(--rb-red); color: var(--rb-ink); }
+    #rb-staff-output .rb-profile { display: grid; place-items: center; width: 34px; height: 34px; border: 0; border-radius: 50%; background: var(--rb-soft); color: var(--rb-ink); font-size: 10px; font-weight: 900; cursor: pointer; }
+    #rb-staff-output .rb-main { padding: 24px clamp(15px, 4vw, 34px) 29px; }
+    #rb-staff-output .rb-view[hidden], #rb-staff-output [hidden] { display: none; }
+    #rb-staff-output .rb-title-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; }
+    #rb-staff-output .rb-kicker { margin: 0 0 6px; color: var(--rb-red); font-size: 9px; font-weight: 900; letter-spacing: .14em; }
+    #rb-staff-output h1 { margin: 0; font-size: clamp(28px, 5vw, 39px); line-height: 1; letter-spacing: -.04em; }
+    #rb-staff-output .rb-title-row p:last-child { margin: 7px 0 0; color: var(--rb-muted); font-size: 11px; }
+    #rb-staff-output .rb-actions { display: flex; gap: 7px; }
+    #rb-staff-output .rb-primary, #rb-staff-output .rb-secondary { padding: 10px 14px; border-radius: 999px; font-size: 10px; font-weight: 800; cursor: pointer; }
+    #rb-staff-output .rb-primary { border: 1px solid var(--rb-red); background: var(--rb-red); color: #fff; }
+    #rb-staff-output .rb-secondary { border: 1px solid var(--rb-line); background: var(--rb-paper); color: var(--rb-ink); }
+    #rb-staff-output .rb-filters { display: grid; grid-template-columns: minmax(150px, .8fr) minmax(140px, .55fr) minmax(230px, 1.25fr); gap: 10px; align-items: end; margin-top: 21px; padding: 12px; background: var(--rb-soft); }
+    #rb-staff-output .rb-filters label { display: grid; gap: 5px; color: var(--rb-muted); font-size: 9px; font-weight: 800; }
+    #rb-staff-output .rb-filters select { width: 100%; min-width: 0; padding: 8px 9px; border: 1px solid var(--rb-line); border-radius: 8px; background: var(--rb-paper); color: var(--rb-ink); }
+    #rb-staff-output .rb-view-toggle { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); }
+    #rb-staff-output .rb-view-toggle button { padding: 7px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--rb-muted); font-size: 9px; font-weight: 800; cursor: pointer; }
+    #rb-staff-output .rb-view-toggle button[aria-pressed="true"] { background: var(--rb-red); color: #fff; }
+    #rb-staff-output .rb-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 12px; border-top: 1px solid var(--rb-line); border-bottom: 1px solid var(--rb-line); }
+    #rb-staff-output .rb-stats div { display: grid; gap: 3px; padding: 12px 14px; border-right: 1px solid var(--rb-line); }
+    #rb-staff-output .rb-stats div:last-child { border-right: 0; }
+    #rb-staff-output .rb-stats span { color: var(--rb-muted); font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    #rb-staff-output .rb-stats strong { font-size: 20px; }
+    #rb-staff-output .rb-report-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-top: 19px; }
+    #rb-staff-output .rb-report-head h2 { margin: 0; font-size: 16px; }
+    #rb-staff-output .rb-report-head p { margin: 3px 0 0; color: var(--rb-muted); font-size: 9px; }
+    #rb-staff-output .rb-report-head > span { color: var(--rb-muted); font-size: 9px; }
+    #rb-staff-output .rb-table-wrap { margin-top: 8px; overflow-x: auto; }
+    #rb-staff-output table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    #rb-staff-output th, #rb-staff-output td { padding: 9px 8px; border-bottom: 1px solid var(--rb-line); text-align: left; vertical-align: middle; white-space: nowrap; }
+    #rb-staff-output th { color: var(--rb-muted); font-size: 8px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+    #rb-staff-output tbody tr:hover { background: var(--rb-soft); }
+    #rb-staff-output tfoot td { border-bottom: 0; border-top: 2px solid var(--rb-ink); font-weight: 900; }
+    #rb-staff-output .rb-number, #rb-staff-output .rb-money { text-align: right; font-variant-numeric: tabular-nums; }
+    #rb-staff-output .rb-money { font-weight: 900; }
+    #rb-staff-output .rb-status { display: inline-flex; align-items: center; padding: 4px 6px; border-radius: 999px; background: var(--rb-soft); color: var(--rb-ink); font-size: 8px; font-weight: 900; }
+    #rb-staff-output .rb-status.rb-late { background: var(--rb-pale-red); color: var(--rb-red-deep); }
+    #rb-staff-output .rb-status.rb-sent { background: #eef2ff; color: #334a9a; }
+    #rb-staff-output .rb-status.rb-paid { background: #e9f6ed; color: #24683a; }
+    #rb-staff-output .rb-billing-status { min-width: 82px; padding: 6px 7px; border: 1px solid var(--rb-line); border-radius: 8px; background: var(--rb-paper); color: var(--rb-ink); font-size: 9px; font-weight: 800; }
+    #rb-staff-output .rb-rate-key { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; padding: 9px 11px; background: var(--rb-soft); color: var(--rb-muted); font-size: 9px; }
+    #rb-staff-output .rb-rate-key strong { color: var(--rb-ink); }
+    #rb-staff-output .rb-rate-key b { color: var(--rb-red-deep); }
+    #rb-staff-output .rb-billing-help { margin: 9px 0 0; color: var(--rb-muted); font-size: 9px; }
+    #rb-staff-output .rb-feedback { min-height: 14px; margin: 8px 0 0; color: var(--rb-red-deep); font-size: 9px; font-weight: 800; }
+    #rb-staff-output .rb-month-nav { display: flex; align-items: center; gap: 8px; }
+    #rb-staff-output .rb-month-nav strong { min-width: 108px; text-align: center; font-size: 11px; }
+    #rb-staff-output .rb-month-nav button { display: grid; place-items: center; width: 29px; height: 29px; border: 1px solid var(--rb-line); border-radius: 50%; background: var(--rb-paper); color: var(--rb-ink); cursor: pointer; }
+    #rb-staff-output .rb-month-nav button:disabled { opacity: .35; cursor: default; }
+    #rb-staff-output .rb-schedule-layout { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(220px, .72fr); gap: 14px; margin-top: 20px; align-items: start; }
+    #rb-staff-output .rb-calendar-panel, #rb-staff-output .rb-day-detail { padding: 14px; border: 1px solid var(--rb-line); border-radius: 13px; background: var(--rb-paper); }
+    #rb-staff-output .rb-weekdays, #rb-staff-output .rb-calendar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+    #rb-staff-output .rb-weekdays { margin-bottom: 5px; }
+    #rb-staff-output .rb-weekdays span { text-align: center; color: var(--rb-muted); font-size: 8px; font-weight: 900; letter-spacing: .08em; }
+    #rb-staff-output .rb-day { display: grid; align-content: start; gap: 5px; min-width: 0; min-height: 65px; padding: 7px; border: 1px solid var(--rb-line); border-radius: 8px; background: var(--rb-paper); color: var(--rb-ink); text-align: left; cursor: pointer; }
+    #rb-staff-output .rb-day:hover:not(:disabled), #rb-staff-output .rb-day[aria-pressed="true"] { border-color: var(--rb-red); }
+    #rb-staff-output .rb-day[aria-pressed="true"] { box-shadow: inset 0 0 0 1px var(--rb-red); background: var(--rb-pale-red); }
+    #rb-staff-output .rb-day:disabled { opacity: .4; cursor: not-allowed; background: var(--rb-soft); }
+    #rb-staff-output .rb-day.rb-blank { visibility: hidden; }
+    #rb-staff-output .rb-day-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 3px; }
+    #rb-staff-output .rb-day-number { font-size: 11px; font-weight: 900; }
+    #rb-staff-output .rb-day-count { padding: 2px 4px; border-radius: 999px; background: var(--rb-soft); color: var(--rb-ink); font-size: 7px; font-weight: 900; }
+    #rb-staff-output .rb-day.is-full .rb-day-count { background: var(--rb-red); color: #fff; }
+    #rb-staff-output .rb-day-label { color: var(--rb-muted); font-size: 8px; font-weight: 800; }
+    #rb-staff-output .rb-calendar-key { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 10px; color: var(--rb-muted); font-size: 8px; }
+    #rb-staff-output .rb-calendar-key span { display: inline-flex; align-items: center; gap: 5px; }
+    #rb-staff-output .rb-calendar-key i { width: 7px; height: 7px; border-radius: 50%; background: var(--rb-ink); }
+    #rb-staff-output .rb-calendar-key i.is-full { background: var(--rb-red); }
+    #rb-staff-output .rb-day-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    #rb-staff-output .rb-day-detail-head h2 { margin: 0; font-size: 16px; line-height: 1.1; }
+    #rb-staff-output .rb-day-detail-head span { display: block; margin-top: 4px; color: var(--rb-muted); font-size: 9px; }
+    #rb-staff-output .rb-capacity { display: grid; grid-template-columns: auto auto; align-items: center; gap: 5px 9px; margin-top: 14px; padding: 9px; background: var(--rb-soft); }
+    #rb-staff-output .rb-capacity > span { color: var(--rb-muted); font-size: 9px; font-weight: 800; }
+    #rb-staff-output .rb-capacity > strong { font-size: 13px; }
+    #rb-staff-output .rb-capacity-dots { display: flex; flex-wrap: wrap; grid-column: 1 / -1; gap: 4px; }
+    #rb-staff-output .rb-capacity-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--rb-ink); }
+    #rb-staff-output .rb-capacity-dots i.is-open { border: 1px solid var(--rb-red); background: transparent; }
+    #rb-staff-output .rb-roster-list { display: grid; gap: 0; margin-top: 10px; border-top: 1px solid var(--rb-line); }
+    #rb-staff-output .rb-roster-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--rb-line); }
+    #rb-staff-output .rb-roster-row strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    #rb-staff-output .rb-roster-row span { grid-column: 1 / -1; color: var(--rb-muted); font-size: 8px; }
+    #rb-staff-output .rb-roster-row b { color: var(--rb-red-deep); font-size: 8px; }
+    #rb-staff-output .rb-more { margin: 10px 0 0; color: var(--rb-muted); font-size: 9px; }
+    @media (max-width: 650px) {
+      #rb-staff-output .rb-header { gap: 13px; }
+      #rb-staff-output .rb-brand > span:last-child { display: none; }
+      #rb-staff-output .rb-nav { justify-content: center; }
+      #rb-staff-output .rb-title-row { align-items: flex-start; flex-direction: column; }
+      #rb-staff-output .rb-filters { grid-template-columns: 1fr 1fr; }
+      #rb-staff-output .rb-view-toggle { grid-column: 1 / -1; }
+      #rb-staff-output .rb-schedule-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 420px) {
+      #rb-staff-output .rb-header { padding: 10px 11px; }
+      #rb-staff-output .rb-logo { width: 40px; height: 40px; }
+      #rb-staff-output .rb-logo svg { width: 36px; height: 36px; }
+      #rb-staff-output .rb-nav { gap: 12px; }
+      #rb-staff-output .rb-nav button { font-size: 10px; }
+      #rb-staff-output .rb-main { padding: 20px 11px 24px; }
+      #rb-staff-output .rb-actions { width: 100%; }
+      #rb-staff-output .rb-actions button { flex: 1; }
+      #rb-staff-output .rb-filters { grid-template-columns: 1fr; }
+      #rb-staff-output .rb-view-toggle { grid-column: auto; }
+      #rb-staff-output .rb-stats strong { font-size: 17px; }
+      #rb-staff-output .rb-stats div { padding: 10px 8px; }
+      #rb-staff-output .rb-day { min-height: 57px; padding: 5px; }
+      #rb-staff-output .rb-day-count { font-size: 6px; }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById('rb-staff-output');
+      const navButtons = [...root.querySelectorAll('.rb-nav button')];
+      const billingView = root.querySelector('#rb-billing-view');
+      const scheduleView = root.querySelector('#rb-schedule-view');
+      const reportButtons = [...root.querySelectorAll('.rb-view-toggle button')];
+      const chargesTable = root.querySelector('#rb-charges-table');
+      const familiesTable = root.querySelector('#rb-families-table');
+      const reportHeading = root.querySelector('#rb-report-heading');
+      const reportCaption = root.querySelector('#rb-report-caption');
+      const rowCount = root.querySelector('#rb-row-count');
+      const feedback = root.querySelector('#rb-feedback');
+      const scheduleCalendar = root.querySelector('#rb-schedule-calendar');
+      const dayTitle = root.querySelector('#rb-day-title');
+      const bookedCount = root.querySelector('#rb-booked-count');
+      const capacityDots = root.querySelector('#rb-capacity-dots');
+      const rosterList = root.querySelector('#rb-roster-list');
+      const rosterNote = root.querySelector('#rb-roster-note');
+
+      const scheduleDays = [
+        null,
+        { day: 1, disabled: 'Not open' }, { day: 2, disabled: 'Not open' }, { day: 3, disabled: 'Not open' }, { day: 4, disabled: 'Not open' },
+        { day: 7, disabled: 'Not open' }, { day: 8, disabled: 'Not open' }, { day: 9, disabled: 'Not open' }, { day: 10, disabled: 'Not open' }, { day: 11, disabled: 'Not open' },
+        { day: 14, booked: 11 }, { day: 15, booked: 14 }, { day: 16, booked: 10 }, { day: 17, booked: 2 }, { day: 18, booked: 12 },
+        { day: 21, booked: 7 }, { day: 22, booked: 13 }, { day: 23, disabled: 'Closed' }, { day: 24, booked: 4 }, { day: 25, booked: 8 },
+        { day: 28, booked: 0 }, { day: 29, booked: 11 }, { day: 30, booked: 6 }, null, null
+      ];
+
+      const rosterByDay = {
+        14: [
+          ['Ava Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'],
+          ['Leo Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'],
+          ['Nora Smith', 'Casey Smith', 'casey@example.com', 'RB-1048'],
+          ['Mira Patel', 'Priya Patel', 'priya@example.com', 'RB-1051'],
+          ['Anish Patel', 'Priya Patel', 'priya@example.com', 'RB-1051'],
+          ['Maya Lee', 'Taylor Lee', 'taylor@example.com', 'RB-1056']
+        ],
+        15: [['Sofia Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061'], ['Eli Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061']],
+        16: [['Ava Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'], ['Nora Smith', 'Casey Smith', 'casey@example.com', 'RB-1048'], ['Olivia Thompson', 'Morgan Thompson', 'morgan@example.com', 'RB-1064']],
+        17: [['Mira Patel', 'Priya Patel', 'priya@example.com', 'RB-1051'], ['Anish Patel', 'Priya Patel', 'priya@example.com', 'RB-1051']],
+        18: [['Leo Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'], ['Maya Lee', 'Taylor Lee', 'taylor@example.com', 'RB-1056']],
+        21: [['Nora Smith', 'Casey Smith', 'casey@example.com', 'RB-1048'], ['Sofia Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061']],
+        22: [['Maya Lee', 'Taylor Lee', 'taylor@example.com', 'RB-1056'], ['Olivia Thompson', 'Morgan Thompson', 'morgan@example.com', 'RB-1064']],
+        24: [['Sofia Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061'], ['Eli Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061'], ['Noah Garcia', 'Elena Garcia', 'elena@example.com', 'RB-1061']],
+        25: [['Ava Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042'], ['Leo Miller', 'Jordan Miller', 'jordan@example.com', 'RB-1042']],
+        29: [['Mira Patel', 'Priya Patel', 'priya@example.com', 'RB-1051']],
+        30: [['Nora Smith', 'Casey Smith', 'casey@example.com', 'RB-1048']]
+      };
+
+      navButtons.forEach(button => button.addEventListener('click', () => {
+        const view = button.dataset.view;
+        navButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        billingView.hidden = view !== 'billing';
+        scheduleView.hidden = view !== 'schedule';
+      }));
+
+      reportButtons.forEach(button => button.addEventListener('click', () => {
+        const report = button.dataset.report;
+        reportButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        chargesTable.hidden = report !== 'charges';
+        familiesTable.hidden = report !== 'families';
+        reportHeading.textContent = report === 'charges' ? 'Charges by date' : 'Family totals';
+        reportCaption.textContent = report === 'charges' ? 'One family charge for each service date' : 'One row per family for the selected period';
+        rowCount.textContent = report === 'charges' ? '8 charges' : '5 families';
+        feedback.textContent = report === 'charges' ? 'Each charge shows the rate used on that date.' : 'Update Sent and Paid status directly in the final column.';
+      }));
+
+      root.querySelectorAll('.rb-billing-status').forEach(select => select.addEventListener('change', event => {
+        const family = event.currentTarget.getAttribute('aria-label').replace(' billing status', '');
+        const statusClass = { Sent: 'rb-sent', Paid: 'rb-paid', Waived: 'rb-late' }[event.currentTarget.value] || '';
+        root.querySelectorAll('#rb-charges-table tbody tr').forEach(row => {
+          if (row.cells[1].textContent !== family) return;
+          const badge = row.querySelector('.rb-status');
+          badge.className = `rb-status ${statusClass}`.trim();
+          badge.textContent = event.currentTarget.value;
+        });
+        feedback.textContent = `${family} marked ${event.currentTarget.value}. The included charges were updated together.`;
+      }));
+
+      root.querySelector('#rb-export').addEventListener('click', event => {
+        event.currentTarget.textContent = 'CSV ready';
+        feedback.textContent = 'The current report view is ready to download as a CSV.';
+      });
+
+      function showDay(day) {
+        const roster = rosterByDay[day.day] || [];
+        const open = 14 - day.booked;
+        dayTitle.textContent = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(`2026-09-${String(day.day).padStart(2, '0')}T12:00:00Z`));
+        bookedCount.textContent = `${day.booked} of 14`;
+        capacityDots.setAttribute('aria-label', `${day.booked} booked and ${open} open spots`);
+        capacityDots.innerHTML = Array.from({ length: 14 }, (_, index) => `<i class="${index >= day.booked ? 'is-open' : ''}" aria-hidden="true"></i>`).join('');
+        rosterList.innerHTML = '';
+        roster.forEach(([child, parent, email, reference]) => {
+          const row = document.createElement('div');
+          row.className = 'rb-roster-row';
+          const childName = document.createElement('strong');
+          childName.textContent = child;
+          const booking = document.createElement('b');
+          booking.textContent = reference;
+          const contact = document.createElement('span');
+          contact.textContent = `${parent} · ${email}`;
+          row.append(childName, booking, contact);
+          rosterList.append(row);
+        });
+        if (!roster.length) {
+          const empty = document.createElement('div');
+          empty.className = 'rb-roster-row';
+          empty.textContent = 'No children signed up yet.';
+          rosterList.append(empty);
+        }
+        rosterNote.textContent = roster.length < day.booked ? `Showing ${roster.length} of ${day.booked} children.` : `${day.booked} ${day.booked === 1 ? 'child' : 'children'} signed up.`;
+        scheduleCalendar.querySelectorAll('.rb-day').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.day) === day.day)));
+      }
+
+      scheduleDays.forEach(day => {
+        if (!day) {
+          const blank = document.createElement('span');
+          blank.className = 'rb-day rb-blank';
+          blank.setAttribute('aria-hidden', 'true');
+          scheduleCalendar.append(blank);
+          return;
+        }
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'rb-day';
+        button.dataset.day = String(day.day);
+        const label = day.disabled || (day.booked === 14 ? 'Full' : `${14 - day.booked} open`);
+        button.innerHTML = `<span class="rb-day-top"><strong class="rb-day-number">${day.day}</strong>${day.disabled ? '' : `<span class="rb-day-count">${day.booked}/14</span>`}</span><span class="rb-day-label">${label}</span>`;
+        button.disabled = Boolean(day.disabled);
+        button.classList.toggle('is-full', day.booked === 14);
+        button.setAttribute('aria-label', `September ${day.day}, ${label}`);
+        button.setAttribute('aria-pressed', 'false');
+        if (!day.disabled) button.addEventListener('click', () => showDay(day));
+        scheduleCalendar.append(button);
+      });
+
+      showDay(scheduleDays.find(day => day?.day === 14));
+    })();
+  </script>
+</div>

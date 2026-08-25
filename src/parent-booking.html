@@ -1,0 +1,591 @@
+<div id="rb-calendar-booking">
+  <section class="rb-shell" aria-label="Red Barn Stay and Play booking preview">
+    <header class="rb-header">
+      <a class="rb-brand" href="#" aria-label="Red Barn Nursery School home">
+        <span class="rb-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64">
+            <circle cx="32" cy="32" r="29"></circle>
+            <path d="M17 29 32 17l15 12M21 27v21h22V27M25 48V34h14v14M25 34l14 14M39 34 25 48"></path>
+          </svg>
+        </span>
+        <span><strong>RED BARN</strong><small>NURSERY SCHOOL</small></span>
+      </a>
+      <nav class="rb-nav" aria-label="Main navigation">
+        <a href="#" class="is-active">Programs</a>
+        <a href="#">About Us</a>
+        <a href="#">Admissions</a>
+      </nav>
+      <button class="rb-help" type="button">Booking help</button>
+    </header>
+
+    <main class="rb-main">
+      <div class="rb-hero">
+        <div>
+          <p class="rb-kicker">STAY &amp; PLAY · SESSION 1</p>
+          <h1>Book Stay &amp; Play</h1>
+          <p>September 14–December 18 · Noon–2:00 PM</p>
+        </div>
+        <span class="rb-live"><i aria-hidden="true"></i>Live availability</span>
+      </div>
+
+      <div class="rb-workspace">
+        <aside class="rb-family" aria-labelledby="rb-family-title">
+          <div class="rb-panel-heading">
+            <span class="rb-step">1</span>
+            <div><h2 id="rb-family-title">Your family</h2><p>No account required</p></div>
+          </div>
+
+          <label class="rb-field" for="rb-parent-name">
+            <span>Parent or guardian name</span>
+            <input id="rb-parent-name" type="text" value="Jordan Miller" autocomplete="name" required>
+          </label>
+          <label class="rb-field" for="rb-parent-email">
+            <span>Email</span>
+            <input id="rb-parent-email" type="email" value="jordan@example.com" autocomplete="email" required>
+          </label>
+
+          <div class="rb-children-heading">
+            <h3>Children</h3>
+            <span id="rb-child-count">2</span>
+          </div>
+          <div class="rb-child-list" id="rb-child-list"></div>
+          <button class="rb-add-child" id="rb-add-child" type="button"><b aria-hidden="true">+</b>Add another child</button>
+        </aside>
+
+        <section class="rb-calendar-panel" aria-labelledby="rb-calendar-title">
+          <div class="rb-calendar-heading">
+            <div class="rb-panel-heading">
+              <span class="rb-step">2</span>
+              <div><h2 id="rb-calendar-title">Choose dates</h2><p>Weekdays only</p></div>
+            </div>
+            <div class="rb-month-nav" aria-label="Calendar navigation">
+              <button type="button" disabled aria-label="Previous month">‹</button>
+              <strong>September 2026</strong>
+              <button type="button" aria-label="Next month">›</button>
+            </div>
+          </div>
+
+          <div class="rb-assign-bar">
+            <span>Select dates for</span>
+            <div class="rb-targets" id="rb-targets" aria-label="Choose which children to schedule"></div>
+          </div>
+          <p class="rb-helper">Use <strong>Everyone</strong> for shared dates, then choose one child to add or remove individual days.</p>
+
+          <div class="rb-weekdays" aria-hidden="true">
+            <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span>
+          </div>
+          <div class="rb-calendar" id="rb-calendar"></div>
+
+          <div class="rb-legend" aria-label="Availability legend">
+            <span><i class="rb-dot rb-dot-open" aria-hidden="true"></i>Open spot</span>
+            <span><i class="rb-dot rb-dot-booked" aria-hidden="true"></i>Booked</span>
+            <span>Each date has 14 spots · names stay private</span>
+          </div>
+          <p class="rb-status" id="rb-status" aria-live="polite">Everyone is selected. Calendar changes apply to both children.</p>
+        </section>
+      </div>
+
+      <div class="rb-policy"><span aria-hidden="true">◷</span><p><strong>Book or cancel by noon the day before.</strong> Later cancellations are still billed.</p></div>
+
+      <section class="rb-booking-summary" aria-label="Booking summary">
+        <div class="rb-summary-copy">
+          <p id="rb-summary-line" aria-live="polite">4 child-spots across 3 dates</p>
+          <strong id="rb-summary-price">$175 added to your school bill</strong>
+        </div>
+        <div class="rb-selected-days" id="rb-selected-days" aria-label="Selected dates and children"></div>
+        <button class="rb-review-button" id="rb-review-button" type="button">Review booking</button>
+      </section>
+    </main>
+
+    <div class="rb-review-backdrop" id="rb-review-backdrop" hidden>
+      <section class="rb-review" role="dialog" aria-modal="true" aria-labelledby="rb-review-title">
+        <div class="rb-review-heading">
+          <div><p class="rb-kicker">REVIEW</p><h2 id="rb-review-title">Your Stay &amp; Play booking</h2></div>
+          <button id="rb-close-review" type="button" aria-label="Close review">×</button>
+        </div>
+        <p class="rb-review-family" id="rb-review-family"></p>
+        <div class="rb-review-list" id="rb-review-list"></div>
+        <div class="rb-review-total"><span>Estimated school bill</span><strong id="rb-review-total">$175</strong></div>
+        <p class="rb-billing-note"><strong>No payment is due now.</strong> Availability is checked once more when you confirm.</p>
+        <button class="rb-confirm" type="button">Confirm reservation</button>
+      </section>
+    </div>
+  </section>
+
+  <style>
+    #rb-calendar-booking {
+      --rb-red: #e61717;
+      --rb-red-deep: #c81010;
+      --rb-ink: #111111;
+      --rb-muted: #696965;
+      --rb-line: #deded9;
+      --rb-soft: #f5f4f0;
+      --rb-paper: #ffffff;
+      --rb-pale-red: #fff0f0;
+      --rb-booked: #343431;
+      color-scheme: light;
+      width: 100%;
+      color: var(--rb-ink);
+      font-family: Arial, Helvetica, ui-sans-serif, sans-serif;
+    }
+    #rb-calendar-booking * { box-sizing: border-box; }
+    #rb-calendar-booking button, #rb-calendar-booking input { font: inherit; }
+    #rb-calendar-booking .rb-shell { position: relative; overflow: hidden; width: 100%; background: var(--rb-paper); border: 1px solid var(--rb-line); border-radius: 18px; }
+    #rb-calendar-booking .rb-header { display: flex; align-items: center; gap: clamp(18px, 4vw, 40px); padding: 13px clamp(16px, 4vw, 32px); border-bottom: 1px solid var(--rb-line); background: var(--rb-paper); }
+    #rb-calendar-booking .rb-brand { display: inline-flex; align-items: center; gap: 9px; color: var(--rb-ink); text-decoration: none; }
+    #rb-calendar-booking .rb-brand > span:last-child { display: grid; gap: 1px; }
+    #rb-calendar-booking .rb-brand strong { font-size: 12px; letter-spacing: .1em; }
+    #rb-calendar-booking .rb-brand small { font-size: 7px; font-weight: 800; letter-spacing: .14em; }
+    #rb-calendar-booking .rb-logo { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 50%; background: var(--rb-red); color: #fff; }
+    #rb-calendar-booking .rb-logo svg { width: 43px; height: 43px; }
+    #rb-calendar-booking .rb-logo circle, #rb-calendar-booking .rb-logo path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    #rb-calendar-booking .rb-nav { display: flex; align-items: center; gap: 23px; flex: 1; }
+    #rb-calendar-booking .rb-nav a { padding: 7px 0 5px; border-bottom: 1px solid transparent; color: var(--rb-ink); font-size: 13px; font-weight: 700; text-decoration: none; }
+    #rb-calendar-booking .rb-nav a.is-active { border-color: var(--rb-ink); }
+    #rb-calendar-booking .rb-help, #rb-calendar-booking .rb-review-button, #rb-calendar-booking .rb-confirm { border: 0; border-radius: 999px; background: var(--rb-red); color: #fff; font-weight: 800; cursor: pointer; }
+    #rb-calendar-booking .rb-help { padding: 11px 16px; font-size: 10px; letter-spacing: .04em; text-transform: uppercase; }
+    #rb-calendar-booking .rb-main { padding: 24px clamp(15px, 3.5vw, 32px) 27px; }
+    #rb-calendar-booking .rb-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+    #rb-calendar-booking .rb-kicker { margin: 0 0 6px; color: var(--rb-red); font-size: 10px; font-weight: 900; letter-spacing: .14em; }
+    #rb-calendar-booking h1 { margin: 0; font-size: clamp(28px, 5vw, 40px); line-height: 1; letter-spacing: -.04em; }
+    #rb-calendar-booking .rb-hero p:last-child { margin: 8px 0 0; color: var(--rb-muted); font-size: 12px; }
+    #rb-calendar-booking .rb-live { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border-radius: 999px; background: var(--rb-soft); font-size: 11px; font-weight: 800; white-space: nowrap; }
+    #rb-calendar-booking .rb-live i { width: 8px; height: 8px; border-radius: 50%; background: var(--rb-red); }
+    #rb-calendar-booking .rb-workspace { display: grid; grid-template-columns: minmax(190px, .68fr) minmax(0, 1.5fr); gap: 17px; margin-top: 23px; align-items: start; }
+    #rb-calendar-booking .rb-family, #rb-calendar-booking .rb-calendar-panel { padding: 17px; border: 1px solid var(--rb-line); border-radius: 15px; background: var(--rb-paper); }
+    #rb-calendar-booking .rb-panel-heading { display: flex; align-items: center; gap: 9px; }
+    #rb-calendar-booking .rb-panel-heading h2 { margin: 0; font-size: 17px; letter-spacing: -.02em; }
+    #rb-calendar-booking .rb-panel-heading p { margin: 2px 0 0; color: var(--rb-muted); font-size: 10px; }
+    #rb-calendar-booking .rb-step { display: grid; place-items: center; width: 24px; height: 24px; flex: none; border-radius: 50%; background: var(--rb-red); color: #fff; font-size: 11px; font-weight: 900; }
+    #rb-calendar-booking .rb-field { display: grid; gap: 5px; margin-top: 13px; color: var(--rb-ink); font-size: 10px; font-weight: 800; }
+    #rb-calendar-booking .rb-field input { width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); outline-color: var(--rb-red); }
+    #rb-calendar-booking .rb-field input:focus { border-color: var(--rb-red); }
+    #rb-calendar-booking .rb-children-heading { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--rb-line); }
+    #rb-calendar-booking .rb-children-heading h3 { margin: 0; font-size: 13px; }
+    #rb-calendar-booking .rb-children-heading span { display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--rb-soft); color: var(--rb-muted); font-size: 10px; font-weight: 800; }
+    #rb-calendar-booking .rb-child-list { display: grid; gap: 8px; margin-top: 9px; }
+    #rb-calendar-booking .rb-child-row { display: grid; grid-template-columns: 25px minmax(0, 1fr) 27px; gap: 7px; align-items: center; }
+    #rb-calendar-booking .rb-child-number { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: var(--rb-pale-red); color: var(--rb-red-deep); font-size: 10px; font-weight: 900; }
+    #rb-calendar-booking .rb-child-row input { width: 100%; min-width: 0; padding: 9px 10px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); outline-color: var(--rb-red); }
+    #rb-calendar-booking .rb-remove-child { display: grid; place-items: center; width: 27px; height: 27px; border: 0; border-radius: 50%; background: transparent; color: var(--rb-muted); font-size: 18px; cursor: pointer; }
+    #rb-calendar-booking .rb-remove-child:disabled { opacity: 0; cursor: default; }
+    #rb-calendar-booking .rb-add-child { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; padding: 0; border: 0; background: transparent; color: var(--rb-red-deep); font-size: 11px; font-weight: 800; cursor: pointer; }
+    #rb-calendar-booking .rb-add-child b { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: var(--rb-red); color: #fff; font-size: 17px; line-height: 1; }
+    #rb-calendar-booking .rb-add-child:disabled { opacity: .45; cursor: not-allowed; }
+    #rb-calendar-booking .rb-calendar-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    #rb-calendar-booking .rb-month-nav { display: flex; align-items: center; gap: 8px; }
+    #rb-calendar-booking .rb-month-nav strong { min-width: 106px; text-align: center; font-size: 11px; }
+    #rb-calendar-booking .rb-month-nav button, #rb-calendar-booking #rb-close-review { display: grid; place-items: center; width: 29px; height: 29px; border: 1px solid var(--rb-line); border-radius: 50%; background: var(--rb-paper); color: var(--rb-ink); cursor: pointer; }
+    #rb-calendar-booking .rb-month-nav button:disabled { opacity: .35; cursor: default; }
+    #rb-calendar-booking .rb-assign-bar { display: flex; align-items: center; gap: 9px; margin-top: 14px; }
+    #rb-calendar-booking .rb-assign-bar > span { flex: none; color: var(--rb-muted); font-size: 10px; font-weight: 800; }
+    #rb-calendar-booking .rb-targets { display: flex; flex-wrap: wrap; gap: 5px; }
+    #rb-calendar-booking .rb-target { padding: 6px 9px; border: 1px solid var(--rb-line); border-radius: 999px; background: var(--rb-paper); color: var(--rb-ink); font-size: 10px; font-weight: 800; cursor: pointer; }
+    #rb-calendar-booking .rb-target[aria-pressed="true"] { border-color: var(--rb-red); background: var(--rb-red); color: #fff; }
+    #rb-calendar-booking .rb-helper { margin: 7px 0 11px; color: var(--rb-muted); font-size: 10px; line-height: 1.35; }
+    #rb-calendar-booking .rb-weekdays, #rb-calendar-booking .rb-calendar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+    #rb-calendar-booking .rb-weekdays { margin-bottom: 5px; }
+    #rb-calendar-booking .rb-weekdays span { text-align: center; color: var(--rb-muted); font-size: 8px; font-weight: 900; letter-spacing: .1em; }
+    #rb-calendar-booking .rb-day { position: relative; display: grid; align-content: start; gap: 5px; min-width: 0; min-height: 78px; padding: 7px; border: 1px solid var(--rb-line); border-radius: 9px; background: var(--rb-paper); color: var(--rb-ink); text-align: left; cursor: pointer; }
+    #rb-calendar-booking .rb-day:hover:not(:disabled) { border-color: var(--rb-red); }
+    #rb-calendar-booking .rb-day.has-family { border-color: var(--rb-red); box-shadow: inset 0 0 0 1px var(--rb-red); }
+    #rb-calendar-booking .rb-day.is-active-child { background: var(--rb-pale-red); }
+    #rb-calendar-booking .rb-day:disabled { cursor: not-allowed; opacity: .43; background: var(--rb-soft); }
+    #rb-calendar-booking .rb-day.rb-blank { visibility: hidden; }
+    #rb-calendar-booking .rb-day-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 3px; }
+    #rb-calendar-booking .rb-day-number { font-size: 12px; font-weight: 900; }
+    #rb-calendar-booking .rb-family-count { padding: 2px 4px; border-radius: 999px; background: var(--rb-red); color: #fff; font-size: 7px; font-weight: 900; white-space: nowrap; }
+    #rb-calendar-booking .rb-spot-label { overflow: hidden; color: var(--rb-muted); font-size: 8px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+    #rb-calendar-booking .rb-day.is-low .rb-spot-label { color: var(--rb-red-deep); }
+    #rb-calendar-booking .rb-mini-map { display: grid; grid-template-columns: repeat(7, 6px); gap: 3px 2px; min-height: 15px; }
+    #rb-calendar-booking .rb-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; }
+    #rb-calendar-booking .rb-mini-map .rb-dot { width: 6px; height: 6px; }
+    #rb-calendar-booking .rb-dot-open { border: 1px solid var(--rb-red); background: transparent; }
+    #rb-calendar-booking .rb-dot-booked { background: var(--rb-booked); }
+    #rb-calendar-booking .rb-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; color: var(--rb-muted); font-size: 9px; }
+    #rb-calendar-booking .rb-legend span { display: inline-flex; align-items: center; gap: 5px; }
+    #rb-calendar-booking .rb-status { margin: 8px 0 0; min-height: 14px; color: var(--rb-red-deep); font-size: 10px; font-weight: 700; }
+    #rb-calendar-booking .rb-policy { display: flex; align-items: flex-start; gap: 9px; margin-top: 14px; padding: 10px 12px; border-left: 4px solid var(--rb-red); background: var(--rb-soft); }
+    #rb-calendar-booking .rb-policy span { color: var(--rb-red); }
+    #rb-calendar-booking .rb-policy p { margin: 0; font-size: 10px; line-height: 1.4; }
+    #rb-calendar-booking .rb-booking-summary { display: grid; grid-template-columns: auto minmax(180px, 1fr) auto; align-items: center; gap: 16px; margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--rb-ink); }
+    #rb-calendar-booking .rb-summary-copy p { margin: 0 0 3px; color: var(--rb-muted); font-size: 10px; }
+    #rb-calendar-booking .rb-summary-copy strong { font-size: 13px; }
+    #rb-calendar-booking .rb-selected-days { display: flex; flex-wrap: wrap; gap: 5px; }
+    #rb-calendar-booking .rb-selected-day { padding: 5px 7px; border-radius: 7px; background: var(--rb-soft); color: var(--rb-ink); font-size: 9px; white-space: nowrap; }
+    #rb-calendar-booking .rb-review-button { padding: 12px 17px; white-space: nowrap; }
+    #rb-calendar-booking .rb-review-button:disabled { opacity: .45; cursor: not-allowed; }
+    #rb-calendar-booking .rb-review-backdrop { position: absolute; inset: 0; z-index: 10; display: grid; align-items: end; background: rgba(0,0,0,.58); }
+    #rb-calendar-booking .rb-review-backdrop[hidden] { display: none; }
+    #rb-calendar-booking .rb-review { width: min(100%, 620px); max-height: 78%; overflow: auto; margin: 0 auto; padding: 24px 26px 28px; border-radius: 20px 20px 0 0; background: var(--rb-paper); color: var(--rb-ink); box-shadow: 0 -20px 65px rgba(0,0,0,.26); }
+    #rb-calendar-booking .rb-review-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+    #rb-calendar-booking .rb-review-heading h2 { margin: 0; font-size: 23px; }
+    #rb-calendar-booking #rb-close-review { font-size: 20px; }
+    #rb-calendar-booking .rb-review-family { margin: 13px 0; color: var(--rb-muted); font-size: 11px; }
+    #rb-calendar-booking .rb-review-list { border-top: 1px solid var(--rb-line); }
+    #rb-calendar-booking .rb-review-row { display: flex; justify-content: space-between; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--rb-line); }
+    #rb-calendar-booking .rb-review-row span { color: var(--rb-muted); font-size: 11px; line-height: 1.4; }
+    #rb-calendar-booking .rb-review-row strong { font-size: 12px; }
+    #rb-calendar-booking .rb-review-total { display: flex; justify-content: space-between; align-items: baseline; padding-top: 15px; }
+    #rb-calendar-booking .rb-review-total span { color: var(--rb-muted); font-size: 11px; }
+    #rb-calendar-booking .rb-review-total strong { font-size: 22px; }
+    #rb-calendar-booking .rb-billing-note { margin: 14px 0; padding: 11px; background: var(--rb-soft); font-size: 10px; line-height: 1.4; }
+    #rb-calendar-booking .rb-billing-note strong { color: var(--rb-red-deep); }
+    #rb-calendar-booking .rb-confirm { width: 100%; padding: 13px; }
+    @media (max-width: 680px) {
+      #rb-calendar-booking .rb-nav { display: none; }
+      #rb-calendar-booking .rb-brand { flex: 1; }
+      #rb-calendar-booking .rb-workspace { grid-template-columns: 1fr; }
+      #rb-calendar-booking .rb-family { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 10px; }
+      #rb-calendar-booking .rb-family .rb-panel-heading, #rb-calendar-booking .rb-children-heading, #rb-calendar-booking .rb-child-list, #rb-calendar-booking .rb-add-child { grid-column: 1 / -1; }
+      #rb-calendar-booking .rb-booking-summary { grid-template-columns: 1fr auto; }
+      #rb-calendar-booking .rb-selected-days { grid-column: 1 / -1; grid-row: 2; }
+    }
+    @media (max-width: 450px) {
+      #rb-calendar-booking .rb-header { padding: 11px 13px; }
+      #rb-calendar-booking .rb-brand > span:last-child { display: none; }
+      #rb-calendar-booking .rb-help { padding: 9px 11px; }
+      #rb-calendar-booking .rb-main { padding: 20px 11px 23px; }
+      #rb-calendar-booking .rb-hero { display: grid; }
+      #rb-calendar-booking .rb-live { justify-self: start; }
+      #rb-calendar-booking .rb-family { display: block; }
+      #rb-calendar-booking .rb-calendar-panel { padding: 12px 8px; }
+      #rb-calendar-booking .rb-calendar-heading { display: grid; }
+      #rb-calendar-booking .rb-month-nav { justify-content: space-between; }
+      #rb-calendar-booking .rb-assign-bar { align-items: flex-start; flex-direction: column; }
+      #rb-calendar-booking .rb-day { min-height: 70px; padding: 5px 4px; }
+      #rb-calendar-booking .rb-mini-map { grid-template-columns: repeat(7, 4px); gap: 3px 1px; }
+      #rb-calendar-booking .rb-mini-map .rb-dot { width: 4px; height: 4px; }
+      #rb-calendar-booking .rb-family-count { font-size: 6px; padding: 2px 3px; }
+      #rb-calendar-booking .rb-spot-label { font-size: 7px; }
+      #rb-calendar-booking .rb-booking-summary { display: grid; grid-template-columns: 1fr; }
+      #rb-calendar-booking .rb-selected-days { grid-column: auto; grid-row: auto; }
+      #rb-calendar-booking .rb-review-button { width: 100%; }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const root = document.getElementById('rb-calendar-booking');
+      const childList = root.querySelector('#rb-child-list');
+      const childCount = root.querySelector('#rb-child-count');
+      const addChildButton = root.querySelector('#rb-add-child');
+      const targets = root.querySelector('#rb-targets');
+      const calendar = root.querySelector('#rb-calendar');
+      const status = root.querySelector('#rb-status');
+      const summaryLine = root.querySelector('#rb-summary-line');
+      const summaryPrice = root.querySelector('#rb-summary-price');
+      const selectedDays = root.querySelector('#rb-selected-days');
+      const reviewButton = root.querySelector('#rb-review-button');
+      const backdrop = root.querySelector('#rb-review-backdrop');
+      const closeReview = root.querySelector('#rb-close-review');
+      const reviewFamily = root.querySelector('#rb-review-family');
+      const reviewList = root.querySelector('#rb-review-list');
+      const reviewTotal = root.querySelector('#rb-review-total');
+      const parentName = root.querySelector('#rb-parent-name');
+      const parentEmail = root.querySelector('#rb-parent-email');
+
+      let children = [
+        { id: 'child-1', name: 'Ava Miller' },
+        { id: 'child-2', name: 'Leo Miller' }
+      ];
+      let activeTarget = 'all';
+      let nextChildNumber = 3;
+
+      const dayData = [
+        null,
+        { date: '2026-09-01', day: 1, unavailable: 'Session not open' },
+        { date: '2026-09-02', day: 2, unavailable: 'Session not open' },
+        { date: '2026-09-03', day: 3, unavailable: 'Session not open' },
+        { date: '2026-09-04', day: 4, unavailable: 'Session not open' },
+        { date: '2026-09-07', day: 7, unavailable: 'Session not open' },
+        { date: '2026-09-08', day: 8, unavailable: 'Session not open' },
+        { date: '2026-09-09', day: 9, unavailable: 'Session not open' },
+        { date: '2026-09-10', day: 10, unavailable: 'Session not open' },
+        { date: '2026-09-11', day: 11, unavailable: 'Session not open' },
+        { date: '2026-09-14', day: 14, spots: 9 },
+        { date: '2026-09-15', day: 15, spots: 0 },
+        { date: '2026-09-16', day: 16, spots: 4 },
+        { date: '2026-09-17', day: 17, spots: 12 },
+        { date: '2026-09-18', day: 18, spots: 2 },
+        { date: '2026-09-21', day: 21, spots: 7 },
+        { date: '2026-09-22', day: 22, spots: 1 },
+        { date: '2026-09-23', day: 23, unavailable: 'School closed' },
+        { date: '2026-09-24', day: 24, spots: 10 },
+        { date: '2026-09-25', day: 25, spots: 6 },
+        { date: '2026-09-28', day: 28, spots: 14 },
+        { date: '2026-09-29', day: 29, spots: 3 },
+        { date: '2026-09-30', day: 30, spots: 8 },
+        null,
+        null
+      ];
+
+      const assignments = new Map([
+        ['2026-09-14', new Set(['child-1', 'child-2'])],
+        ['2026-09-16', new Set(['child-1'])],
+        ['2026-09-18', new Set(['child-2'])]
+      ]);
+
+      function namedChildren() {
+        return children.filter(child => child.name.trim());
+      }
+
+      function childName(id) {
+        return children.find(child => child.id === id)?.name.trim() || 'Unnamed child';
+      }
+
+      function shortName(child) {
+        return child.name.trim().split(/\s+/)[0] || `Child ${children.indexOf(child) + 1}`;
+      }
+
+      function formatDate(dateString) {
+        return new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(`${dateString}T12:00:00Z`));
+      }
+
+      function availabilityText(day) {
+        if (day.unavailable) return day.unavailable;
+        if (day.spots === 0) return 'Full';
+        if (day.spots === 1) return 'Only 1 left';
+        if (day.spots <= 3) return `Only ${day.spots} left`;
+        return `${day.spots} open`;
+      }
+
+      function priceForCount(count) {
+        return count === 1 ? 50 : count > 1 ? 75 : 0;
+      }
+
+      function renderChildren() {
+        childList.innerHTML = '';
+        children.forEach((child, index) => {
+          const row = document.createElement('div');
+          row.className = 'rb-child-row';
+
+          const number = document.createElement('span');
+          number.className = 'rb-child-number';
+          number.textContent = String(index + 1);
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = child.name;
+          input.setAttribute('aria-label', `Child ${index + 1} full name`);
+          input.placeholder = `Child ${index + 1} full name`;
+          input.addEventListener('input', event => {
+            child.name = event.target.value;
+            renderTargets();
+            updateCalendar();
+            updateSummary();
+          });
+
+          const remove = document.createElement('button');
+          remove.type = 'button';
+          remove.className = 'rb-remove-child';
+          remove.textContent = '×';
+          remove.disabled = children.length === 1;
+          remove.setAttribute('aria-label', `Remove child ${index + 1}`);
+          remove.addEventListener('click', () => removeChild(child.id));
+
+          row.append(number, input, remove);
+          childList.append(row);
+        });
+        childCount.textContent = String(namedChildren().length);
+        addChildButton.disabled = children.length >= 6;
+      }
+
+      function addChild() {
+        const id = `child-${nextChildNumber++}`;
+        children.push({ id, name: '' });
+        renderChildren();
+        renderTargets();
+        updateCalendar();
+        const inputs = childList.querySelectorAll('input');
+        inputs[inputs.length - 1].focus();
+        status.textContent = 'New child added. Enter their name, then choose dates for them.';
+      }
+
+      function removeChild(id) {
+        children = children.filter(child => child.id !== id);
+        assignments.forEach(set => set.delete(id));
+        if (activeTarget === id) activeTarget = 'all';
+        renderChildren();
+        renderTargets();
+        updateCalendar();
+        updateSummary();
+      }
+
+      function renderTargets() {
+        targets.innerHTML = '';
+        const availableChildren = namedChildren();
+        const options = [{ id: 'all', label: `Everyone (${availableChildren.length})` }, ...availableChildren.map(child => ({ id: child.id, label: shortName(child) }))];
+        if (!options.some(option => option.id === activeTarget)) activeTarget = 'all';
+
+        options.forEach(option => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'rb-target';
+          button.textContent = option.label;
+          button.setAttribute('aria-pressed', String(activeTarget === option.id));
+          button.addEventListener('click', () => {
+            activeTarget = option.id;
+            renderTargets();
+            updateCalendar();
+            status.textContent = activeTarget === 'all'
+              ? `Everyone is selected. Calendar changes apply to all ${availableChildren.length} children.`
+              : `${childName(activeTarget)} is selected. Calendar changes apply only to this child.`;
+          });
+          targets.append(button);
+        });
+      }
+
+      function targetIds() {
+        return activeTarget === 'all' ? namedChildren().map(child => child.id) : [activeTarget];
+      }
+
+      function canAddTargets(day, assigned, ids) {
+        const missing = ids.filter(id => !assigned.has(id));
+        return assigned.size + missing.length <= day.spots;
+      }
+
+      function toggleDate(day) {
+        const ids = targetIds();
+        if (!ids.length) {
+          status.textContent = 'Add at least one child before selecting dates.';
+          return;
+        }
+        const assigned = assignments.get(day.date) || new Set();
+        const allAssigned = ids.every(id => assigned.has(id));
+
+        if (allAssigned) {
+          ids.forEach(id => assigned.delete(id));
+          status.textContent = `${ids.length === 1 ? childName(ids[0]) : 'Everyone'} removed from ${formatDate(day.date)}.`;
+        } else if (canAddTargets(day, assigned, ids)) {
+          ids.forEach(id => assigned.add(id));
+          status.textContent = `${ids.length === 1 ? childName(ids[0]) : 'Everyone'} added to ${formatDate(day.date)}.`;
+        } else {
+          status.textContent = `${formatDate(day.date)} does not have enough spots for that selection.`;
+          return;
+        }
+
+        if (assigned.size) assignments.set(day.date, assigned);
+        else assignments.delete(day.date);
+        updateCalendar();
+        updateSummary();
+      }
+
+      function buildCalendar() {
+        calendar.innerHTML = '';
+        dayData.forEach(day => {
+          if (!day) {
+            const blank = document.createElement('span');
+            blank.className = 'rb-day rb-blank';
+            blank.setAttribute('aria-hidden', 'true');
+            calendar.append(blank);
+            return;
+          }
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'rb-day';
+          button.dataset.date = day.date;
+          button.innerHTML = `
+            <span class="rb-day-top"><strong class="rb-day-number">${day.day}</strong><span class="rb-family-count" hidden></span></span>
+            <span class="rb-spot-label">${availabilityText(day)}</span>
+            <span class="rb-mini-map"></span>
+          `;
+          if (day.unavailable || day.spots === 0) button.disabled = true;
+          if (!day.unavailable) {
+            const map = button.querySelector('.rb-mini-map');
+            const booked = 14 - day.spots;
+            map.setAttribute('role', 'img');
+            map.setAttribute('aria-label', `${booked} booked and ${day.spots} open out of 14 spots`);
+            map.innerHTML = Array.from({ length: 14 }, (_, index) => `<i class="rb-dot ${index < booked ? 'rb-dot-booked' : 'rb-dot-open'}" aria-hidden="true"></i>`).join('');
+          }
+          button.addEventListener('click', () => toggleDate(day));
+          calendar.append(button);
+        });
+        updateCalendar();
+      }
+
+      function updateCalendar() {
+        const ids = targetIds();
+        dayData.filter(Boolean).forEach(day => {
+          const button = calendar.querySelector(`[data-date="${day.date}"]`);
+          if (!button) return;
+          const assigned = assignments.get(day.date) || new Set();
+          [...assigned].forEach(id => {
+            if (!children.some(child => child.id === id)) assigned.delete(id);
+          });
+          const allTargetAssigned = ids.length > 0 && ids.every(id => assigned.has(id));
+          const canAdd = !day.unavailable && day.spots > 0 && canAddTargets(day, assigned, ids);
+          button.classList.toggle('has-family', assigned.size > 0);
+          button.classList.toggle('is-active-child', allTargetAssigned);
+          button.classList.toggle('is-low', !day.unavailable && day.spots > 0 && day.spots <= 3);
+          button.disabled = Boolean(day.unavailable) || day.spots === 0 || (!allTargetAssigned && !canAdd);
+
+          const badge = button.querySelector('.rb-family-count');
+          badge.hidden = assigned.size === 0;
+          badge.textContent = `${assigned.size} ${assigned.size === 1 ? 'kid' : 'kids'}`;
+          const names = [...assigned].map(childName);
+          button.setAttribute('aria-label', `${formatDate(day.date)}, ${availabilityText(day)}${names.length ? `, selected for ${names.join(' and ')}` : ''}`);
+          button.setAttribute('aria-pressed', String(allTargetAssigned));
+        });
+      }
+
+      function bookedDates() {
+        return [...assignments.entries()].filter(([, set]) => set.size).sort(([a], [b]) => a.localeCompare(b));
+      }
+
+      function updateSummary() {
+        const dates = bookedDates();
+        const childSpots = dates.reduce((sum, [, set]) => sum + set.size, 0);
+        const total = dates.reduce((sum, [, set]) => sum + priceForCount(set.size), 0);
+        summaryLine.textContent = `${childSpots} child-${childSpots === 1 ? 'spot' : 'spots'} across ${dates.length} ${dates.length === 1 ? 'date' : 'dates'}`;
+        summaryPrice.textContent = dates.length ? `$${total} added to your school bill` : 'Choose at least one date';
+        reviewButton.disabled = !dates.length || !namedChildren().length || !parentName.value.trim() || !parentEmail.validity.valid;
+
+        selectedDays.innerHTML = '';
+        dates.forEach(([date, set]) => {
+          const item = document.createElement('span');
+          item.className = 'rb-selected-day';
+          item.textContent = `${formatDate(date).replace(',', '')} · ${[...set].map(id => shortName(children.find(child => child.id === id))).join(' + ')}`;
+          selectedDays.append(item);
+        });
+      }
+
+      function openReview() {
+        const dates = bookedDates();
+        const total = dates.reduce((sum, [, set]) => sum + priceForCount(set.size), 0);
+        reviewFamily.textContent = `${parentName.value.trim()} · ${parentEmail.value.trim()}`;
+        reviewList.innerHTML = '';
+        dates.forEach(([date, set]) => {
+          const row = document.createElement('div');
+          row.className = 'rb-review-row';
+          const details = document.createElement('span');
+          details.textContent = `${formatDate(date)} · Noon–2:00 PM · ${[...set].map(childName).join(' and ')}`;
+          const price = document.createElement('strong');
+          price.textContent = `$${priceForCount(set.size)}`;
+          row.append(details, price);
+          reviewList.append(row);
+        });
+        reviewTotal.textContent = `$${total}`;
+        backdrop.hidden = false;
+        closeReview.focus();
+      }
+
+      addChildButton.addEventListener('click', addChild);
+      [parentName, parentEmail].forEach(input => input.addEventListener('input', updateSummary));
+      reviewButton.addEventListener('click', openReview);
+      closeReview.addEventListener('click', () => {
+        backdrop.hidden = true;
+        reviewButton.focus();
+      });
+      backdrop.addEventListener('click', event => {
+        if (event.target === backdrop) closeReview.click();
+      });
+
+      renderChildren();
+      renderTargets();
+      buildCalendar();
+      updateSummary();
+    })();
+  </script>
+</div>

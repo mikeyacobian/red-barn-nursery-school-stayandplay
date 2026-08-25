@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Red Barn Stay &amp; Play</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 24px clamp(20px, 6vw, 70px);
+      border-bottom: 1px solid #deded9;
+    }
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #e61717;
+      color: #fff;
+      font-weight: 900;
+    }
+    header div:last-child { display: grid; gap: 2px; }
+    header strong { letter-spacing: .1em; }
+    header small { font-weight: 800; letter-spacing: .12em; }
+    main { max-width: 900px; margin: 0 auto; padding: 70px 24px; }
+    p.eyebrow { margin: 0 0 10px; color: #e61717; font-size: 12px; font-weight: 900; letter-spacing: .14em; }
+    h1 { max-width: 700px; margin: 0; font-size: clamp(38px, 7vw, 68px); line-height: .98; letter-spacing: -.05em; }
+    .intro { max-width: 650px; margin: 20px 0 34px; color: #696965; line-height: 1.6; }
+    .links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    a {
+      display: grid;
+      gap: 8px;
+      min-height: 160px;
+      padding: 24px;
+      border: 1px solid #deded9;
+      border-radius: 18px;
+      color: #111;
+      text-decoration: none;
+    }
+    a:hover { border-color: #e61717; }
+    a span { color: #e61717; font-size: 30px; font-weight: 900; }
+    a strong { font-size: 22px; }
+    a small { color: #696965; line-height: 1.5; }
+    footer { margin-top: 34px; color: #696965; font-size: 12px; }
+    @media (max-width: 600px) { .links { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo" aria-hidden="true">RB</div>
+    <div><strong>RED BARN</strong><small>NURSERY SCHOOL</small></div>
+  </header>
+  <main>
+    <p class="eyebrow">STAY &amp; PLAY</p>
+    <h1>Scheduling prototypes</h1>
+    <p class="intro">Interactive, front-end prototypes for the parent reservation flow and the staff schedule and billing views. Data is illustrative and is not connected to Supabase or BILL.com yet.</p>
+    <div class="links">
+      <a href="parent.html"><span>01</span><strong>Parent booking</strong><small>Add children, assign dates, see live capacity, and review the estimated school bill.</small></a>
+      <a href="staff.html"><span>02</span><strong>Staff dashboard</strong><small>Open the schedule by date and manage family billing statuses from Ready through Paid.</small></a>
+    </div>
+    <footer>Prototype only · No real family information is included.</footer>
+  </main>
+</body>
+</html>
