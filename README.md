@@ -9,6 +9,7 @@ The parent booking, secure cancellation, passwordless staff-login, live staff sc
 - **Parent booking:** A shared public form where parents enter contact and child names, assign children to dates, see live capacity, and review charges.
 - **Manage booking:** Parents enter their email, receive a 30-minute secure link, and cancel an individual child/date from their family calendar.
 - **Staff login:** Authorized staff enter an allowlisted email and receive a short-lived one-time dashboard link.
+- **Staff demo:** Enter `test@test.com` on the staff-login page to open a sample-only preview without sending email. It never reads live staff, child, family, or billing data.
 - **Staff dashboard:** A session-gated live schedule with date-level rosters and a billing report with charge detail, family totals, CSV export, and persisted `Ready`, `Sent`, `Paid`, and `Waived` statuses.
 
 ## Current rules represented
@@ -24,6 +25,7 @@ The parent booking, secure cancellation, passwordless staff-login, live staff sc
 
 - Static, light-mode parent and staff interfaces use Red Barn's existing red, white, and black visual language.
 - Vercel Functions in `api/` keep database and email credentials out of the browser.
+- Staff operations share one routed function so the deployment stays within Vercel Hobby's 12-function limit.
 - Supabase/Postgres functions lock program-day rows before booking so simultaneous submissions cannot exceed 14 children.
 - Row Level Security is enabled on every app table. Browser roles cannot read family, child, booking, or billing tables.
 - Secure management tokens are random, stored only as SHA-256 hashes, expire after 30 minutes, and are carried in the URL fragment so they are not included in HTTP requests or normal server logs.

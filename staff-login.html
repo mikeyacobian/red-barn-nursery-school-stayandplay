@@ -27,6 +27,8 @@
   .card { padding:clamp(24px,5vw,36px); border:1px solid var(--line); border-radius:22px; background:var(--paper); box-shadow:0 14px 40px rgba(0,0,0,.05); }
   h2 { margin:0; font-size:24px; letter-spacing:-.025em; }
   .card-copy { margin:10px 0 24px; color:var(--muted); font-size:14px; line-height:1.55; }
+  .demo-note { margin:0 0 24px; padding:12px 14px; border:1px solid #f0b9b9; border-radius:12px; background:#fff0f0; color:#7e1010; font-size:13px; line-height:1.5; }
+  .demo-note code { color:inherit; font-family:inherit; font-weight:900; }
   label { display:grid; gap:8px; font-size:13px; font-weight:900; }
   input { width:100%; padding:16px 17px; border:1px solid var(--line); border-radius:13px; background:#fff; color:var(--ink); font-size:16px; }
   input:focus-visible, button:focus-visible, a:focus-visible { outline:3px solid rgba(230,23,23,.28); outline-offset:3px; }
@@ -61,6 +63,7 @@
   <section class="card" aria-labelledby="staff-login-title">
     <h2 id="staff-login-title">Email me a secure link</h2>
     <p class="card-copy">No password is required. The link expires after 20 minutes.</p>
+    <p class="demo-note"><strong>Demo preview:</strong> Enter <code>test@test.com</code> to view the dashboard with sample data. No email will be sent.</p>
     <form id="staff-login-form" novalidate>
       <label for="staff-email">Staff email
         <input id="staff-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="320" placeholder="you@school.org" required>
@@ -87,6 +90,10 @@
       event.preventDefault();
       if (!email.checkValidity()) {
         email.reportValidity();
+        return;
+      }
+      if (email.value.trim().toLowerCase() === 'test@test.com') {
+        location.assign('/staff-demo.html');
         return;
       }
       button.disabled = true;

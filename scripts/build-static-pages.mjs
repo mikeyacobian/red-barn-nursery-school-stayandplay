@@ -13,7 +13,7 @@ const pageShell = ({ title, content, beforeContent = '', afterContent = '' }) =>
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; font-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>${title}</title>
-<style>:root{color-scheme:light;background:#fff}*{box-sizing:border-box}html,body{min-height:100%;margin:0}body{background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif}[hidden]{display:none!important}.staff-auth-check{display:grid;min-height:100vh;place-items:center;padding:24px;color:#696965;font-weight:800}.staff-auth-check a{color:#c81010}</style>
+<style>:root{color-scheme:light;background:#fff}*{box-sizing:border-box}html,body{min-height:100%;margin:0}body{background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif}[hidden]{display:none!important}.staff-auth-check{display:grid;min-height:100vh;place-items:center;padding:24px;color:#696965;font-weight:800}.staff-auth-check a{color:#c81010}.demo-banner{margin:0;padding:11px 20px;border-bottom:1px solid #f0b9b9;background:#fff0f0;color:#7e1010;font-size:13px;line-height:1.45;text-align:center}.demo-banner strong{margin-right:6px}</style>
 </head>
 <body>
 ${beforeContent}${content}${afterContent}
@@ -111,6 +111,17 @@ const pages = [
       beforeContent: '<main class="staff-auth-check" id="staff-auth-check" role="status" aria-live="polite">Checking staff access…</main>\n<div id="staff-dashboard" hidden>\n',
       content,
       afterContent: `\n</div>\n${staffAuthScript}`
+    })
+  },
+  {
+    source: 'src/staff-dashboard.html',
+    target: 'staff-demo.html',
+    title: 'Red Barn Stay & Play — Staff Demo',
+    wrap: content => pageShell({
+      title: 'Red Barn Stay & Play — Staff Demo',
+      beforeContent: '<script>document.documentElement.dataset.staffRole="staff";document.documentElement.dataset.staffDemo="true";</script>\n<aside class="demo-banner" role="status"><strong>Demo preview</strong> Sample data only. No live child, family, or billing records are shown.</aside>\n<div id="staff-dashboard">\n',
+      content,
+      afterContent: `\n</div>\n<script>(()=>{const profile=document.getElementById('rb-staff-profile');const exit=document.getElementById('rb-staff-signout');const brand=document.querySelector('.rb-brand');if(profile){profile.textContent='DE';profile.title='Exit demo';}if(exit){exit.setAttribute('aria-label','Exit demo');exit.addEventListener('click',()=>location.replace('/staff-login.html'));}if(brand)brand.href='/staff-demo.html';})();</script>`
     })
   }
 ];

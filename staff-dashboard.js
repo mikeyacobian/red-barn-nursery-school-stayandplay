@@ -16,6 +16,59 @@ export function money(cents) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(Number(cents || 0) / 100);
 }
 
+function demoResponse(url) {
+  const requestUrl = new URL(url, 'https://demo.invalid');
+  const route = requestUrl.pathname;
+
+  if (route === '/api/staff/schedule') {
+    return {
+      days: [
+        { programDayId: 9001, serviceDate: '2026-09-14', sessionName: 'Session 1', startTime: '12:00:00', endTime: '14:00:00', capacity: 14, bookedCount: 3, openCount: 11, bookingEnabled: true, closureNote: null },
+        { programDayId: 9002, serviceDate: '2026-09-15', sessionName: 'Session 1', startTime: '12:00:00', endTime: '14:00:00', capacity: 14, bookedCount: 0, openCount: 14, bookingEnabled: true, closureNote: null },
+        { programDayId: 9003, serviceDate: '2026-09-16', sessionName: 'Session 1', startTime: '12:00:00', endTime: '14:00:00', capacity: 14, bookedCount: 0, openCount: 14, bookingEnabled: true, closureNote: null },
+        { programDayId: 9004, serviceDate: '2026-09-17', sessionName: 'Session 1', startTime: '12:00:00', endTime: '14:00:00', capacity: 14, bookedCount: 2, openCount: 12, bookingEnabled: true, closureNote: null }
+      ].filter(day => day.serviceDate >= (requestUrl.searchParams.get('start') || '') && day.serviceDate <= (requestUrl.searchParams.get('end') || '9999-12-31'))
+    };
+  }
+
+  if (route === '/api/staff/roster') {
+    const rosters = {
+      '2026-09-14': [
+        { childName: 'Ava Example', parentName: 'Jordan Example', email: 'parent1@example.test', confirmationCode: 'DEMO0001' },
+        { childName: 'Leo Example', parentName: 'Jordan Example', email: 'parent1@example.test', confirmationCode: 'DEMO0001' },
+        { childName: 'Sam Example', parentName: 'Taylor Example', email: 'parent2@example.test', confirmationCode: 'DEMO0002' }
+      ],
+      '2026-09-17': [
+        { childName: 'Sam Example', parentName: 'Taylor Example', email: 'parent2@example.test', confirmationCode: 'DEMO0002' },
+        { childName: 'Riley Example', parentName: 'Casey Example', email: 'parent3@example.test', confirmationCode: 'DEMO0003' }
+      ]
+    };
+    return { roster: rosters[requestUrl.searchParams.get('date')] || [] };
+  }
+
+  if (route === '/api/staff/billing') {
+    return {
+      periodStart: '2026-09-14',
+      periodEnd: '2026-09-30',
+      lines: [
+        { familyId: 9001, parentName: 'Jordan Example', email: 'parent1@example.test', serviceDate: '2026-09-14', childCount: 2, children: 'Ava Example, Leo Example', rateNumber: 2, rateCents: 7500, status: 'ready' },
+        { familyId: 9002, parentName: 'Taylor Example', email: 'parent2@example.test', serviceDate: '2026-09-14', childCount: 1, children: 'Sam Example', rateNumber: 1, rateCents: 5000, status: 'sent' },
+        { familyId: 9002, parentName: 'Taylor Example', email: 'parent2@example.test', serviceDate: '2026-09-17', childCount: 1, children: 'Sam Example', rateNumber: 1, rateCents: 5000, status: 'sent' }
+      ],
+      families: [
+        { familyId: 9001, parentName: 'Jordan Example', email: 'parent1@example.test', billableDays: 1, childSpots: 2, singleRateDays: 0, siblingRateDays: 1, totalCents: 7500, status: 'ready' },
+        { familyId: 9002, parentName: 'Taylor Example', email: 'parent2@example.test', billableDays: 2, childSpots: 2, singleRateDays: 2, siblingRateDays: 0, totalCents: 10000, status: 'sent' }
+      ],
+      totalCents: 17500,
+      familyCount: 2,
+      childSpots: 4
+    };
+  }
+
+  if (route === '/api/staff/billing-status') return { saved: true };
+  throw new Error('That action is not available in the demo preview.');
+}
+
 function initStaffDashboard() {
   const root = document.getElementById('rb-staff-output');
   if (!root || root.dataset.liveInitialized === 'true') return;
@@ -60,6 +113,7 @@ function initStaffDashboard() {
   };
 
   const requestJson = async (url, options = {}) => {
+    if (document.documentElement.dataset.staffDemo === 'true') return demoResponse(url, options);
     const response = await fetch(url, { credentials: 'same-origin', cache: 'no-store', ...options });
     const result = await response.json().catch(() => ({}));
     if (response.status === 401) {

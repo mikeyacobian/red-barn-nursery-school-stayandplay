@@ -8,6 +8,29 @@ test('unauthenticated staff is redirected before dashboard data is shown', async
   await expect(page.getByText('Billing report')).toHaveCount(0);
 });
 
+test('test@test.com opens a sample-only demo without calling protected staff data APIs', async ({ page }) => {
+  let protectedDataCalls = 0;
+  page.on('request', request => {
+    const pathname = new URL(request.url()).pathname;
+    if (pathname.startsWith('/api/staff/') && pathname !== '/api/staff/session') protectedDataCalls += 1;
+  });
+  await page.route('**/api/staff/session', route => route.fulfill({ status: 401, json: { authenticated: false } }));
+
+  await page.goto('/staff-login.html');
+  await page.getByLabel('Staff email').fill('test@test.com');
+  await page.getByRole('button', { name: 'Email me a secure link' }).click();
+
+  await page.waitForURL('**/staff-demo.html');
+  await expect(page.getByText('Demo preview', { exact: true })).toBeVisible();
+  await expect(page.getByText(/Sample data only/)).toBeVisible();
+  await expect(page.locator('#rb-staff-profile')).toHaveText('DE');
+  await expect(page.getByText('Ava Example', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Billing' }).click();
+  await expect(page.locator('#rb-families-body').getByText('Jordan Example', { exact: true })).toBeVisible();
+  await expect(page.locator('#rb-families-body').getByText('$75.00')).toBeVisible();
+  expect(protectedDataCalls).toBe(0);
+});
+
 test('authorized staff sees live schedule, billing, and a real CSV download', async ({ page }) => {
   let statusRequest = null;
   await page.route('**/api/staff/session', route => route.fulfill({ json: { authenticated: true, staff: { displayName: 'Morgan Staff', role: 'admin' } } }));
