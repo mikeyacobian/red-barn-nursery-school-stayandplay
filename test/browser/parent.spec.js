@@ -30,6 +30,7 @@ test('parent can assign siblings, navigate months, and dismiss review with Escap
   await page.goto('/parent.html');
 
   await expect(page.getByText('Live availability')).toBeVisible();
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/favicon.svg');
   await expect(page.locator('iframe')).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Manage booking' })).toHaveAttribute('href', '/manage.html');
   await expect(page.getByRole('link', { name: /Programs|About Us|Admissions/ })).toHaveCount(0);
